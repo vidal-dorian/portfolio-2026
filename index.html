@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorian Vidal — Développeur logiciel</title>
+    <meta name="description" content="Portfolio de Dorian Vidal, étudiant en BUT Informatique à Rodez : API REST en C#, PHP et Java. Disponible pour un stage ou une alternance.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ff7a1a'/><text x='50' y='68' font-size='50' font-weight='700' font-family='sans-serif' text-anchor='middle' fill='%230d0b09'>DV</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Icônes (format feather), appelées avec <use href="#i-nom"> -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></symbol>
+        <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+        <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></symbol>
+    </svg>
+
+    <header class="bar">
+        <a class="logo" href="#accueil">Dorian<span>.Vidal</span></a>
+        <nav aria-label="Sections">
+            <a href="#projets">/projets</a>
+            <a href="#a-propos">/a-propos</a>
+            <a href="#competences">/competences</a>
+            <a href="#contact">/contact</a>
+        </nav>
+        <p class="clock">Rodez <time></time></p>
+    </header>
+
+    <div class="page">
+        <aside class="id">
+            <p class="pill">Disponible · stage / alternance</p>
+            <h1>Dorian Vidal</h1>
+            <p class="role">Étudiant en BUT Informatique à Rodez, à la recherche d'une alternance.</p>
+
+            <!-- Console décorative : script.js y « appelle » la section en cours de lecture -->
+            <div class="console" aria-hidden="true">
+                <p class="req"><b>GET</b><span class="path">/</span><i></i><span class="status">200 OK</span></p>
+<pre class="res">{
+  "nom": "Dorian Vidal",
+  "role": "Développeur logiciel",
+  "formation": "BUT Informatique",
+  "ville": "Rodez",
+  "dispo": ["stage", "alternance"]
+}</pre>
+                <p class="foot"><span>dorian.vidal/api</span><span class="ms">12 ms</span></p>
+            </div>
+
+            <div class="socials">
+                <a href="mailto:dorian.vidal@iut-rodez.fr" aria-label="Email"><svg class="i"><use href="#i-mail"/></svg></a>
+                <a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="i"><use href="#i-linkedin"/></svg></a>
+                <a href="https://github.com/vidal-dorian" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i"><use href="#i-github"/></svg></a>
+            </div>
+        </aside>
+
+        <main>
+            <section id="accueil">
+                <p class="tag"><span>00</span>GET /</p>
+                <h2 class="big">Développeur <span class="swap" aria-hidden="true">logiciel</span><span class="sr">logiciel</span></h2>
+                <p class="lead">
+                    Passionné par le développement logiciel et les nouvelles technologies.
+                    Actuellement en 3<sup>e</sup> année de BUT Informatique, je construis des solutions
+                    élégantes et efficaces.
+                </p>
+                <p class="cta">
+                    <a class="btn primary" href="#projets">Voir mes projets</a>
+                    <a class="btn" href="#contact">Me contacter</a>
+                </p>
+
+                <dl class="stats">
+                    <div><dt>année de BUT</dt><dd>3<sup>e</sup></dd></div>
+                    <div><dt>projets</dt><dd>7</dd></div>
+                    <div><dt>langages pratiqués</dt><dd>5</dd></div>
+                </dl>
+
+
+                <a class="now" href="#livreo">
+                    <small>En ce moment</small>
+                    <p>Je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : API Spring Boot et application Android.</p>
+                    <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                </a>
+
+                <div class="marquee" aria-hidden="true">
+                    <ul><li>C#</li><li>ASP.NET Core</li><li>PHP</li><li>Java</li><li>JavaFX</li><li>SQL</li><li>Python</li><li>REST API</li><li>OAuth2</li><li>Docker</li><li>Git</li><li>Linux</li></ul>
+                </div>
+            </section>
+
+            <section id="projets">
+                <p class="tag"><span>01</span>GET /projets</p>
+                <h2 class="big">Mes <span>projets</span></h2>
+                <div class="rows">
+                    <details>
+                        <summary>
+                            <span class="idx">01</span>
+                            <div>
+                                <h3>API interne pour ITSM/CMDB (iTop)</h3>
+                                <p>API REST interne — C# / ASP.NET Core</p>
+                            </div>
+                            <span class="chip pro">Stage</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">Avril – août 2026 · Stage</p>
+                            <p>API REST interne développée en C# / ASP.NET Core, qui fait communiquer les applications internes de l'entreprise avec iTop, un outil ITSM/CMDB open source, pour mettre à jour la CMDB. Elle dialogue avec l'API REST/JSON d'iTop via des requêtes OQL (Object Query Language).</p>
+                            <p>Le projet suit une architecture en couches stricte (Controllers → Services → DTOs → Models), avec une modélisation métier dédiée aux entités du CMDB (serveurs, bases de données, applications web, instances logicielles).</p>
+                            <ul>
+                                <li>Architecture en couches (Controllers → Services → DTOs → Models)</li>
+                                <li>Construction dynamique de requêtes OQL et gestion de leur échappement</li>
+                                <li>Couverture de tests systématique (DTO, Service, Controller) avec MSTest</li>
+                                <li>Documentation API via Swashbuckle / OpenAPI</li>
+                                <li>Analyse statique et qualité de code (SonarQube / Roslyn)</li>
+                            </ul>
+                            <ul class="tags"><li>C#</li><li>ASP.NET Core</li><li>RestSharp</li><li>MSTest</li><li>Swagger / OpenAPI</li><li>iTop / OQL</li></ul>
+                            <p><small>Projet interne — code source non public.</small></p>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="idx">02</span>
+                            <div>
+                                <h3>Synchronisation ITSM multi-sources (iTop)</h3>
+                                <p>Framework PHP — collecteurs OAuth2</p>
+                            </div>
+                            <span class="chip pro">Stage</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">Avril – août 2026 · Stage</p>
+                            <p>Extension du framework open source de collecte de données de Combodo pour iTop (<code>itop-data-collector-base</code>), permettant de synchroniser automatiquement des données fournisseurs et clients issues d'API REST externes protégées par OAuth2 vers le CMDB iTop, en remplacement d'une saisie manuelle.</p>
+
+                            <ol class="pipe" aria-label="Pipeline de synchronisation">
+                                <li style="--i:0">API externe <small>OAuth2</small></li>
+                                <li style="--i:1">Authentification <small>client-credentials</small></li>
+                                <li style="--i:2">Collector <small>Prepare / Fetch</small></li>
+                                <li style="--i:3">Model <small>mapping vers les attributs iTop</small></li>
+                                <li style="--i:4">Export CSV</li>
+                                <li style="--i:5">synchro_import.php <small>définition JSON</small></li>
+                                <li style="--i:6">synchro_exec.php <small>réconciliation dans iTop</small></li>
+                            </ol>
+
+                            <p>Le travail a surtout porté sur la fiabilisation d'une première implémentation fragile : diagnostic d'échecs de configuration silencieux, explicitation de la gestion des erreurs HTTP, et correction d'une fuite d'identifiants OAuth2 en clair dans les logs, identifiée lors d'une revue de code.</p>
+                            <ul>
+                                <li>Authentification OAuth2 (client-credentials)</li>
+                                <li>Pipeline ETL vers les webservices de réconciliation iTop</li>
+                                <li>Gestion explicite des erreurs HTTP et logging structuré</li>
+                                <li>Pattern reproductible pour l'ajout de nouvelles sources de données</li>
+                            </ul>
+                            <ul class="tags"><li>PHP</li><li>OAuth2</li><li>REST API</li><li>iTop / Combodo</li><li>ETL</li></ul>
+                            <p><small>Projet interne — code source non public.</small></p>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="idx">03</span>
+                            <div>
+                                <h3>ReviSST — révision pour les SST</h3>
+                                <p>Application desktop JavaFX</p>
+                            </div>
+                            <span class="chip ok">SAE</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">2025 · SAE</p>
+                            <p>Application desktop développée en JavaFX pour la révision des situations et des pictogrammes, destinée aux Sauveteurs Secouristes du Travail (SST).</p>
+                            <p>Le projet suit une architecture MVC stricte, avec persistance des données en JSON et gestion des scores par mode de jeu et par utilisateur.</p>
+                            <img src="images/GrilleRevisst.png" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850" loading="lazy">
+                            <ul>
+                                <li>Gestion des utilisateurs et des scores</li>
+                                <li>Plusieurs modes de jeu</li>
+                                <li>Persistance des données en JSON</li>
+                            </ul>
+                            <ul class="tags"><li>Java</li><li>JavaFX</li><li>JSON</li><li>SceneBuilder</li></ul>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="idx">04</span>
+                            <div>
+                                <h3>Wemember — gestion d'association</h3>
+                                <p>Site web dynamique PHP</p>
+                            </div>
+                            <span class="chip ok">SAE</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">2025 · SAE</p>
+                            <p>Plateforme web collaborative avec système d'authentification, gestion des utilisateurs et tableau de bord administrateur, pour gérer une association.</p>
+                            <p>L'application intègre une gestion des rôles avec différents niveaux de permissions, ainsi que la gestion des documents déposés par les utilisateurs, avec export des données au format PDF.</p>
+                            <img src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912" loading="lazy">
+                            <ul>
+                                <li>Authentification sécurisée et gestion des rôles</li>
+                                <li>Tableau de bord administrateur</li>
+                                <li>Gestion des documents et export PDF</li>
+                                <li>Interface responsive</li>
+                            </ul>
+                            <ul class="tags"><li>PHP</li><li>MySQL</li><li>Bootstrap</li><li>phpMyAdmin</li></ul>
+                        </div>
+                    </details>
+
+                    <details id="livreo">
+                        <summary>
+                            <span class="idx">05</span>
+                            <div>
+                                <h3>Livreo — tournées de livraison</h3>
+                                <p>API Spring Boot et application Android</p>
+                            </div>
+                            <span class="chip wip">SAE · en cours</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">2026 · SAE en cours · Projet de groupe</p>
+                            <p>Livreo est un système de gestion de tournées de livraison pour l'entreprise fictive T.G.V., réalisé en équipe dans le cadre de la SAE S5.A.01 « Développement avancé » du BUT 3.</p>
+                            <p>Une interface « Atelier » sur PC permet de gérer les clients, les commandes, les pièces et les colis. Une application Android destinée aux chauffeurs affiche les colis à livrer et les points de livraison sur une carte, et fonctionne hors ligne.</p>
+                            <p>Étape suivante : l'optimisation de la boucle de livraison.</p>
+                            <ul>
+                                <li>API Spring Boot (Java 21, Maven), conteneurisée avec Docker</li>
+                                <li>Application Android utilisable hors ligne</li>
+                                <li>Géocodage des adresses via la Géoplateforme de l'IGN</li>
+                                <li>Intégration continue avec GitHub Actions</li>
+                                <li>Organisation Scrum, suivi sur GitHub Projects</li>
+                            </ul>
+                            <ul class="tags"><li>Java 21</li><li>Spring Boot</li><li>Maven</li><li>Docker</li><li>Android</li><li>GitHub Actions</li><li>Scrum</li></ul>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="idx">06</span>
+                            <div>
+                                <h3>Watchd — collection de films et séries</h3>
+                                <p>Application web PHP, SQLite et API TMDB</p>
+                            </div>
+                            <span class="chip">Perso</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">Septembre 2026 · Projet personnel</p>
+                            <p>Watchd est une application web personnelle pour gérer sa collection de films et de séries. On recherche un titre via l'API TMDB (recherche en direct, tendances) et on l'ajoute à sa collection, puis on le marque « à voir », « en cours » ou « vu », avec un suivi par saison pour les séries.</p>
+                            <p>On peut noter ce qu'on a vu sur 10 et laisser un commentaire. Les films d'une même saga sont regroupés, avec une fiche détaillée (bande-annonce YouTube) et une interface « cinéma » responsive, sur mobile comme sur PC.</p>
+                            <img src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600" loading="lazy">
+                            <ul>
+                                <li>Recherche en direct et tendances via l'API TMDB</li>
+                                <li>Statuts « à voir », « en cours », « vu » et suivi par saison</li>
+                                <li>Notes sur 10 et commentaires</li>
+                                <li>Regroupement des sagas et fiches détaillées</li>
+                                <li>CSS écrit à la main, responsive</li>
+                            </ul>
+                            <ul class="tags"><li>PHP</li><li>SQLite</li><li>PDO</li><li>API TMDB</li><li>HTML / CSS</li><li>JavaScript</li><li>Cloudflare</li></ul>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <span class="idx">07</span>
+                            <div>
+                                <h3>GestionProjet-IUT — suivi de projet agile</h3>
+                                <p>FastAPI, React et intégration GitHub</p>
+                            </div>
+                            <span class="chip">Perso</span>
+                            <span class="plus" aria-hidden="true"></span>
+                        </summary>
+                        <div class="body">
+                            <p class="meta">Août – octobre 2026 · Projet personnel</p>
+                            <p>GestionProjet-IUT est un outil web de suivi de projet agile (Scrum) pour des équipes étudiantes. Les membres saisissent leurs heures de travail par catégorie, synchronisent les issues et les sprints depuis GitHub, et suivent l'avancement avec un dashboard, un burndown chart et un diagramme de Gantt.</p>
+                            <p>L'outil génère aussi les comptes-rendus des cérémonies Scrum (daily, planification, review, rétrospective) en Word, et des exports Excel des heures.</p>
+                            <img src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900" loading="lazy">
+                            <img src="images/GestionProjetSprints.png" alt="Page Sprints de GestionProjet-IUT : planning et burndown chart" width="1440" height="900" loading="lazy">
+                            <ul>
+                                <li>Saisie des heures par catégorie, dashboard et exports Excel</li>
+                                <li>Synchronisation des issues et des sprints depuis GitHub</li>
+                                <li>Burndown chart et diagramme de Gantt</li>
+                                <li>Comptes-rendus de cérémonies Scrum générés en Word</li>
+                                <li>Authentification par Cloudflare Access (JWT)</li>
+                                <li>Docker Compose, CI/CD GitHub Actions, tests pytest</li>
+                                <li>Déployé sur un Raspberry Pi via Cloudflare Tunnel</li>
+                            </ul>
+                            <ul class="tags"><li>Python</li><li>FastAPI</li><li>SQLAlchemy</li><li>MySQL</li><li>React 19</li><li>TypeScript</li><li>Vite</li><li>Docker</li><li>GitHub Actions</li></ul>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section id="a-propos">
+                <p class="tag"><span>02</span>GET /a-propos</p>
+                <h2 class="big">À propos <span>de moi</span></h2>
+                <div class="prose">
+                    <p>Artisan du code et curieux de nature, je me spécialise dans le développement d'applications web et logicielles. Mon parcours à l'IUT m'a permis d'acquérir des bases solides en algorithmique, bases de données et développement web.</p>
+                    <p>Au-delà du code, je m'intéresse à l'expérience utilisateur et au design d'interface. Je crois en des solutions simples et bien pensées, où chaque ligne de code a un but précis.</p>
+                    <p>En ce moment, je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : une API Spring Boot et une application Android, dans le cadre d'une SAE de 3<sup>e</sup> année.</p>
+                </div>
+                <dl class="table">
+                    <div><dt>formation</dt><dd>BUT Informatique (3<sup>e</sup> année)</dd></div>
+                    <div><dt>localisation</dt><dd>Rodez, France</dd></div>
+                    <div><dt>intérêts</dt><dd>Applications, bases de données, web, algorithmie</dd></div>
+                    <div><dt>disponibilité</dt><dd>Stage / Alternance</dd></div>
+                </dl>
+            </section>
+
+            <section id="competences">
+                <p class="tag"><span>03</span>GET /competences</p>
+                <h2 class="big">Stack <span>technique</span></h2>
+                <dl class="table stack">
+                    <div><dt>langages <span>5</span></dt><dd><ul><li>Java</li><li>PHP</li><li>SQL</li><li>Python</li><li>C#</li></ul></dd></div>
+                    <div><dt>frontend <span>4</span></dt><dd><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Bootstrap</li></ul></dd></div>
+                    <div><dt>backend <span>5</span></dt><dd><ul><li>JavaFX</li><li>ASP.NET Core</li><li>REST API</li><li>OAuth2</li><li>JSON</li></ul></dd></div>
+                    <div><dt>données <span>2</span></dt><dd><ul><li>SQL</li><li>MongoDB</li></ul></dd></div>
+                    <div><dt>outils <span>8</span></dt><dd><ul><li>IntelliJ</li><li>PHPStorm</li><li>Git</li><li>GitHub</li><li>SQL Developer</li><li>Docker</li><li>Linux</li><li>Figma</li></ul></dd></div>
+                </dl>
+            </section>
+
+            <section id="contact">
+                <p class="tag"><span>04</span>GET /contact</p>
+                <h2 class="big">Prenons <span>contact</span></h2>
+                <p class="lead">
+                    Je suis actuellement à la recherche d'une alternance pour poursuivre mon parcours.
+                    N'hésitez pas à me contacter pour discuter de vos projets ou opportunités.
+                </p>
+                <p class="mail">
+                    <a href="mailto:dorian.vidal@iut-rodez.fr">dorian.vidal@iut-rodez.fr</a>
+                    <button type="button" class="btn copy">Copier</button>
+                </p>
+                <div class="rows">
+                    <a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener">
+                        <span class="idx">in</span><b>LinkedIn</b><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                    </a>
+                    <a href="https://github.com/vidal-dorian" target="_blank" rel="noopener">
+                        <span class="idx">gh</span><b>GitHub</b><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>Conçu et développé par Dorian Vidal — HTML, CSS et JavaScript, sans framework.</footer>
+    </div>
+</body>
+</html>
