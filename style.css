@@ -1,16 +1,49 @@
+/* ==========================================================================================
+   Portfolio de Dorian Vidal — feuille de style unique, sans préprocesseur.
+
+   Sommaire
+     1. Réglages          couleurs, marges, hauteur de barre
+     2. Base              remise à zéro, éléments nus, utilitaires
+     3. Briques           étiquette, grand titre, bouton, lien, grand nom
+     4. Barre du haut
+     5. Accueil           feuille rouge, tirages des projets
+     6. Projets           une feuille plein écran par projet, scène, capture, schéma
+     7. À propos
+     8. Stack
+     9. Contact           pied de page
+    10. Pages projet      les <dialog>
+    11. Petits écrans
+    12. Mouvement         toutes les animations, regroupées
+
+   Le geste du site : un bloc arrive de travers et se pose droit. Chaque bloc concerné
+   déclare son angle de départ dans --tilt (et, s'il ne finit pas droit, son angle de repos
+   dans --rest) ; l'animation « settle » de la section 12 fait le reste.
+   ========================================================================================== */
+
+
+/* ---------- 1. Réglages ---------- */
+
 :root {
     --paper: #f8f8f8;
     --gray: #dddee2;
     --ink: #0b0b0b;
-    --accent: #dc2a0c;          /* changer cette ligne recolore tout le site ; ce rouge garde un contraste ≥ 4,5 avec le blanc */
-    --pad: clamp(.75rem, 1.1vw, 1.1rem);
-    --bar-h: 3.25rem;
+    /* Couleur d'accent : changer cette ligne recolore tout le site (penser aussi au favicon
+       dans index.html). Ce rouge garde un contraste d'au moins 4,5 avec le blanc ET avec le
+       fond papier : à vérifier si on le remplace. */
+    --accent: #dc2a0c;
+    --pad: clamp(.75rem, 1.1vw, 1.1rem);   /* marge latérale des sections */
+    --bar-h: 3.25rem;                      /* hauteur de la barre du haut : les feuilles se calent dessous */
+
+    color-scheme: only light;              /* pas d'inversion automatique des couleurs en mode sombre */
 }
+
+
+/* ---------- 2. Base ---------- */
 
 * { box-sizing: border-box; margin: 0; }
 
 html { background: var(--paper); scroll-padding-top: var(--bar-h); }
-html:has(dialog[open]) { overflow: hidden; }
+html:has(dialog[open]) { overflow: hidden; }   /* page figée derrière une page projet ouverte */
 
 body {
     color: var(--ink);
@@ -18,7 +51,8 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Les éléments inclinés dépassent sur les côtés : on coupe sans créer de zone de scroll */
+/* Les blocs inclinés dépassent sur les côtés : on coupe sans créer de zone de scroll
+   (overflow: hidden casserait le position: sticky des feuilles). */
 .hero, main, .foot { overflow-x: clip; }
 
 a { color: inherit; text-decoration: none; }
@@ -30,20 +64,27 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 ::selection { background: var(--accent); color: var(--paper); }
 
+/* Texte réservé aux lecteurs d'écran */
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
+/* Réserve d'icônes SVG (le <symbol> de la flèche), invisible */
+.sprite { position: absolute; width: 0; height: 0; }
+
+/* Icône : la flèche, dessinée au trait dans la couleur du texte */
 .i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .i.back { rotate: 180deg; }
 
-/* ---------- Briques de texte ---------- */
+
+/* ---------- 3. Briques ---------- */
 
 /* Petite étiquette en capitales, précédée d'une barre oblique */
 .tag { font-size: .8125rem; font-weight: 600; line-height: 1.3; letter-spacing: .04em; text-transform: uppercase; }
 .tag::before { content: "/ "; font-weight: 400; }
 .tag sup { margin-left: .4em; font-size: .85em; }
 
+/* Grand titre de section. script.js le découpe en lettres (<b><i>…</i></b>). */
 .big {
-    margin-left: -.04em;
+    margin-left: -.04em;   /* compense l'approche de la première lettre */
     font-size: clamp(3.5rem, 8.7vw, 9.5rem);
     font-weight: 500;
     line-height: .95;
@@ -51,7 +92,12 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     white-space: nowrap;
 }
 
-/* Bouton : bloc plein, noir par défaut. .ghost = contour seul, .light = pour les fonds rouges ou sombres. */
+.big b { font-weight: inherit; }
+.big i { display: inline-block; font-style: normal; transition: translate .25s, color .25s; }
+.big i:hover { color: var(--accent); translate: 0 -.06em; }
+
+/* Bouton : bloc plein, noir par défaut.
+   .ghost = contour seul · .light = sur fond rouge ou sombre · .small = version compacte */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -71,9 +117,6 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     transition: background .2s, color .2s, border-color .2s;
 }
 
-.btn .i { transition: translate .25s; }
-.btn:hover .i:not(.back), .sheet:hover .btn .i { translate: .3em 0; }
-.btn:hover .i.back { translate: -.3em 0; }
 .btn:hover, .sheet:hover .btn { border-color: var(--accent); background: var(--accent); }
 .btn.ghost { background: none; color: var(--ink); }
 .btn.ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
@@ -82,6 +125,10 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .btn.light.ghost { background: none; color: var(--paper); }
 .btn.light.ghost:hover { border-color: var(--paper); background: var(--paper); color: var(--ink); }
 .btn.small { min-height: 2.5rem; padding: .5rem .9rem; font-size: .8125rem; }
+
+.btn .i { transition: translate .25s; }
+.btn:hover .i:not(.back), .sheet:hover .btn .i { translate: .3em 0; }
+.btn:hover .i.back { translate: -.3em 0; }
 
 .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 
@@ -103,18 +150,20 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .link .i { align-self: center; width: .8em; height: .8em; transition: translate .25s; }
 .link:hover { color: var(--accent); }
 .link:hover .i, .card:hover .link .i { translate: .3em 0; }
-.card .link:hover { color: inherit; }
+.card .link:hover { color: inherit; }   /* sur la carte rouge, l'accent serait invisible */
 
 .links { display: flex; flex-wrap: wrap; gap: .75rem 2.25rem; }
 
-/* Grand nom « DORIAN.VIDAL » : un SVG, pour qu'il occupe toujours exactement la largeur */
+/* Grand nom « DORIAN.VIDAL » : un SVG dont le texte est étiré à la largeur exacte du bloc
+   (attribut textLength), quelle que soit la police réellement chargée. */
 .mark { display: block; width: 100%; height: auto; overflow: visible; }
 .mark text { fill: currentColor; font-size: 150px; font-weight: 900; font-stretch: 125%; }
 
-/* ---------- Barre du haut ---------- */
 
-/* Fond papier, pour rester lisible au-dessus de ce qui défile. Transparente seulement
-   tout en haut de la page, sur le rouge de l'accueil (.light, posé par script.js). */
+/* ---------- 4. Barre du haut ---------- */
+
+/* Fond papier, pour rester lisible au-dessus de ce qui défile. Transparente seulement tout
+   en haut de la page, sur le rouge de l'accueil (classe .light posée par script.js). */
 .bar {
     position: fixed;
     inset: 0 0 auto;
@@ -142,22 +191,28 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .bar.light .logo span { color: var(--ink); }
 
 .status { display: flex; align-items: center; gap: .45rem; margin-left: clamp(1rem, 10vw, 11rem); }
-.status::before, .rec::before { content: ""; width: .6em; height: .6em; border-radius: 50%; background: currentColor; }
+.status::before, .rec::before { content: ""; width: .6em; height: .6em; border-radius: 50%; background: currentColor; }   /* pastille */
 .place { margin-left: clamp(0rem, 2vw, 3rem); }
+.clock:not(:empty)::before { content: " — "; }   /* l'heure n'apparaît que si script.js l'a remplie */
 
 .bar nav { display: flex; margin-left: auto; font-size: clamp(.9rem, 1.15vw, 1.05rem); letter-spacing: .01em; }
 .bar nav a { padding: .45rem 0; white-space: nowrap; transition: color .2s; }
 .bar nav a:not(:last-child)::after { content: "/"; margin: 0 .4em; color: var(--ink); font-weight: 400; opacity: .5; }
 .bar.light nav a::after { color: var(--paper); }
 .bar nav a:hover { text-decoration: underline 2px; text-underline-offset: .3em; }
+
+/* Section en cours de lecture (classe .on posée par script.js) */
 .bar nav a.on { color: var(--accent); }
 .bar nav a.on::before { content: ""; display: inline-block; width: .62em; height: .62em; margin-right: .35em; border-radius: 50%; background: currentColor; }
-.bar.light nav a.on { color: var(--ink); }
+.bar.light nav a.on { color: inherit; }   /* sur le rouge, seule la pastille signale la section active */
 
-/* ---------- Accueil : grande feuille rouge ---------- */
 
-.hero { background: var(--gray); }
+/* ---------- 5. Accueil ---------- */
 
+.hero { background: var(--gray); }   /* visible derrière la feuille rouge quand elle bascule */
+
+/* Grande feuille rouge. Grille de 12 colonnes : titre à gauche, texte à droite, puis les
+   tirages, la ligne de légende et le grand nom sur toute la largeur. */
 .hero-sheet {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -167,7 +222,7 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     padding: calc(var(--bar-h) + clamp(1rem, 5vh, 3.5rem)) var(--pad) var(--pad);
     background: var(--accent);
     color: var(--paper);
-    transform-origin: 0 100%;
+    transform-origin: 0 100%;   /* pivot en bas à gauche pour la bascule de sortie */
 }
 
 .hero-title {
@@ -179,13 +234,13 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     letter-spacing: -.05em;
 }
 
-.swap { display: block; color: var(--ink); }
+.swap { display: block; color: var(--ink); }   /* le mot qui tourne (script.js) */
 
 .hero-side { grid-area: 1 / 8 / 2 / 13; display: grid; align-content: start; gap: 1.5rem; padding-top: .5rem; }
 .hero-lead { max-width: 32rem; font-size: clamp(1.15rem, 1.5vw, 1.4rem); font-weight: 500; line-height: 1.32; }
 
-/* Tirages des projets : chacun recouvre seulement le bord droit du précédent, la légende
-   (en bas à gauche) reste donc toujours lisible. */
+/* Tirages des projets. Chacun ne recouvre que le bord droit du précédent (marge négative),
+   donc sa légende, en bas à gauche, reste toujours lisible. */
 .prints { grid-area: 2 / 1 / 3 / 13; display: flex; align-items: center; justify-content: center; padding: clamp(1.5rem, 5vh, 3.5rem) 1.5% 0; }
 
 .print {
@@ -200,10 +255,15 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     transition: rotate .4s cubic-bezier(.2, .8, .2, 1), scale .4s cubic-bezier(.2, .8, .2, 1);
 }
 
-.print:nth-child(even) { translate: 0 14%; }
+.print:nth-child(1) { --tilt: -9deg; }
+.print:nth-child(2) { --tilt: 7deg; }
+.print:nth-child(3) { --tilt: -6deg; }
+.print:nth-child(4) { --tilt: 10deg; }
+.print:nth-child(even) { translate: 0 14%; }   /* un tirage sur deux descend un peu */
+
 .print img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 0; }
 .print span { display: block; margin-top: .5rem; overflow: hidden; font-size: .78rem; font-weight: 600; line-height: 1.2; letter-spacing: .04em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
-.print:hover, .print:focus-visible { z-index: 1; rotate: 0deg; scale: 1.1; }
+.print:hover, .print:focus-visible { z-index: 1; rotate: 0deg; scale: 1.1; }   /* se redresse et passe devant */
 
 .hero-foot {
     grid-area: 3 / 1 / 4 / 13;
@@ -218,20 +278,25 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 }
 
 .hero .mark { grid-area: 4 / 1 / 5 / 13; }
-.hero .mark tspan { fill: var(--ink); }
+.hero .mark tspan { fill: var(--ink); }   /* le point du nom */
 
-/* ---------- En-têtes de section ---------- */
 
+/* ---------- 6. Projets ---------- */
+
+/* En-tête commun aux sections (étiquette, grand titre, liens) */
 .head { padding: clamp(4rem, 15vh, 9rem) var(--pad) clamp(2.5rem, 9vh, 6rem); }
 .head .tag { margin-bottom: 1rem; }   /* laisse la place de l'accent de « À propos » */
 .head .links { margin-top: clamp(1.5rem, 5vh, 3rem); }
 
-/* ---------- Projets : un écran par projet ---------- */
-
-/* Chaque feuille se cale sous la barre (sticky) : la suivante arrive inclinée, se redresse
-   et la recouvre entièrement. Pivot en haut à gauche, ou en haut à droite pour .flip, afin
-   que le coin qui « pend » descende toujours vers le bas, jamais sur la feuille du dessus. */
+/* Une feuille plein écran par projet. Elle se cale sous la barre (sticky) ; la suivante
+   arrive inclinée, se redresse et la recouvre entièrement.
+   Le pivot est en haut à gauche pour une inclinaison positive, en haut à droite pour une
+   négative : ainsi le coin qui « pend » descend toujours vers le bas, jamais sur le contenu
+   au-dessus. --shift décale la feuille vers l'intérieur pendant la bascule, pour que son
+   texte ne sorte pas de l'écran. */
 .sheet {
+    --tilt: 13deg;
+    --shift: 7vw;
     position: sticky;
     top: var(--bar-h);
     display: flex;
@@ -244,20 +309,27 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     transform-origin: 0 0;
 }
 
-.sheet { --shift: 7vw; }
-.sheet:nth-child(even) { background: #ececef; }
-.sheet.flip { --shift: -7vw; transform-origin: 100% 0; }
+.sheet:nth-child(even) { --tilt: -13deg; --shift: -7vw; background: #ececef; transform-origin: 100% 0; }
+
+/* Écrans très bas (téléphone à l'horizontale) : le contenu ne tient plus dans la hauteur,
+   les feuilles redeviennent des blocs qui défilent normalement. */
+@media (max-height: 560px) {
+    .sheet { position: relative; top: 0; height: auto; }
+    .stage { min-height: 16rem; }
+}
 
 .sheet-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .5rem 2rem; }
 .sheet-head .tag { grid-column: 1 / -1; }
-.sheet h3 { font-size: clamp(2.5rem, min(7vw, 11vh), 7rem); font-weight: 500; line-height: .95; letter-spacing: -.05em; margin-left: -.04em; transition: color .2s; }
+.sheet h3 { margin-left: -.04em; font-size: clamp(2.5rem, min(7vw, 11vh), 7rem); font-weight: 500; line-height: .95; letter-spacing: -.05em; transition: color .2s; }
 .sheet:hover h3 { color: var(--accent); }
 .sheet-desc { grid-column: 1; max-width: 46rem; font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.4; }
+.sheet-head .btn { grid-area: 2 / 2 / 5 / 3; }   /* à droite, sur la hauteur titre + description + technos */
+
 .chips { grid-column: 1; display: flex; flex-wrap: wrap; gap: .4rem; }
 .chips li { padding: .3rem .65rem; border: 1.5px solid; font-size: .78rem; font-weight: 600; line-height: 1; letter-spacing: .04em; text-transform: uppercase; }
-.sheet-head .btn { grid-area: 2 / 2 / 5 / 3; }
 
-/* Scène colorée qui porte la capture d'écran ou le schéma du projet */
+/* Scène colorée qui porte la capture d'écran ou le schéma du projet.
+   Elle prend toute la hauteur restante de la feuille. */
 .stage {
     --sx: clamp(1.25rem, 4.5vw, 4.5rem);   /* marges intérieures : côtés, haut, bas */
     --st: clamp(2rem, 6vh, 4rem);
@@ -275,12 +347,14 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .stage.ink { background: var(--ink); }
 .stage.red { background: var(--accent); }
 
-/* Repère de cadrage en pointillé, avec la vraie taille de la capture */
+/* Repère de cadrage en pointillé et son étiquette (attribut data-label du HTML) */
 .stage::before { content: ""; position: absolute; inset: clamp(.5rem, 1.4vh, .9rem); border: 1px dashed; opacity: .55; pointer-events: none; }
 .stage::after { content: attr(data-label); position: absolute; top: clamp(.95rem, 2.3vh, 1.5rem); left: clamp(1.1rem, 2.4vh, 1.6rem); font-size: .75rem; font-weight: 600; line-height: 1; letter-spacing: .05em; text-transform: uppercase; }
 
-/* Capture centrée dans les marges de la scène, réduite si besoin mais jamais agrandie
-   au-delà de sa taille réelle : pas de flou. */
+/* Capture centrée dans les marges de la scène : réduite si besoin, jamais agrandie au-delà
+   de sa taille réelle (pas de flou). Positionnée en absolu pour que ses max-width / max-height
+   en pourcentage se calculent sur la scène, quelle que soit la façon dont celle-ci a reçu sa
+   hauteur. Elle penche dans le sens opposé à sa feuille. */
 .shot {
     --tilt: -9deg;
     position: absolute;
@@ -292,7 +366,8 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     margin: auto;
     box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .5);
 }
-.sheet.flip .shot { --tilt: 9deg; }
+
+.sheet:nth-child(even) .shot { --tilt: 9deg; }
 
 /* Schéma des projets sans capture : des blocs reliés par des flèches */
 .flow { display: flex; align-items: center; gap: clamp(.5rem, 1.8vw, 1.75rem); width: 100%; }
@@ -312,19 +387,16 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     border: 2px solid;
 }
 
-.node:nth-child(4n + 1) { --tilt: -10deg; }
+.node:nth-child(4n + 1) { --tilt: -10deg; }   /* un bloc sur deux (les flèches comptent comme enfants) */
 .node small { font-size: .78rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
 .node b { font-size: clamp(1.15rem, 2.5vw, 2.6rem); font-weight: 500; line-height: 1; letter-spacing: -.035em; }
+
+/* Bloc mis en avant : plein, dans la couleur opposée à celle de la scène */
 .stage.ink .node.hot { border-color: var(--accent); background: var(--accent); }
 .stage.red .node.hot { border-color: var(--ink); background: var(--ink); }
 
-/* Écrans très bas (téléphone à l'horizontale) : on revient à des feuilles qui défilent normalement */
-@media (max-height: 560px) {
-    .sheet { position: relative; top: 0; height: auto; }
-    .stage { min-height: 16rem; }
-}
 
-/* ---------- À propos ---------- */
+/* ---------- 7. À propos ---------- */
 
 .cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 3rem var(--pad); padding: 0 var(--pad) clamp(4rem, 12vh, 8rem); }
 
@@ -333,10 +405,11 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
    signes opposés) pour que la noire ne balaie jamais le texte de la rouge. */
 .cards { grid-column: 1 / span 6; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .card { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 1.25rem; color: var(--paper); transform-origin: 0 0; rotate: var(--rest); }
-.card.red { --rest: 6deg; --tilt: -12deg; grid-area: 1 / 3 / 2 / 7; align-items: flex-start; aspect-ratio: 4 / 4.4; margin-top: 4.5rem; padding-left: calc(25% + 3.75rem); background: var(--accent); }
+.card.red { --tilt: -12deg; --rest: 6deg; grid-area: 1 / 3 / 2 / 7; align-items: flex-start; aspect-ratio: 4 / 4.4; margin-top: 4.5rem; padding-left: calc(25% + 3.75rem); background: var(--accent); }
 .card.red p:not(.tag) { font-size: clamp(1.15rem, 1.55vw, 1.45rem); font-weight: 500; line-height: 1.25; }
-.card.ink { --rest: -1.5deg; --tilt: 12deg; grid-area: 1 / 1 / 2 / 4; aspect-ratio: 4 / 5.2; background: var(--ink); }
+.card.ink { --tilt: 12deg; --rest: -1.5deg; grid-area: 1 / 1 / 2 / 4; aspect-ratio: 4 / 5.2; background: var(--ink); }
 
+/* Chiffres : dans le HTML le libellé (dt) précède la valeur (dd), on les inverse à l'affichage */
 .stats div { display: flex; flex-direction: column-reverse; }
 .stats dd { font-size: clamp(3.25rem, 6.6vw, 7rem); font-weight: 500; line-height: .85; letter-spacing: -.05em; }
 .stats dd sup { font-size: .45em; }
@@ -344,14 +417,15 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 
 .text { grid-column: 7 / -1; display: grid; gap: 1.1rem; padding-left: clamp(0rem, 3.4vw, 4rem); }
 .text > p:not(.tag, .lowdown) { max-width: 38rem; }
-.lowdown { margin-bottom: .5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
+.lowdown { margin-bottom: .5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }   /* paragraphe d'accroche */
 
 .lists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem var(--pad); margin-top: 2rem; }
 .lists ul { margin-top: .9rem; font-size: .9rem; font-weight: 500; line-height: 1.5; letter-spacing: .02em; text-transform: uppercase; }
 
 blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; text-transform: uppercase; }
 
-/* ---------- Stack ---------- */
+
+/* ---------- 8. Stack ---------- */
 
 .stack { padding-bottom: clamp(5rem, 16vh, 10rem); }
 .stack > div { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: .5rem var(--pad); padding: 1rem var(--pad) 1.2rem; border-top: 1px solid; }
@@ -362,9 +436,13 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .stack li:hover { color: var(--accent); }
 .stack li:not(:last-child)::after { content: "/"; margin: 0 .25em; color: var(--ink); font-weight: 300; opacity: .45; }
 
-/* ---------- Contact : pied de page rouge, coupé en biais sous le grand nom ---------- */
 
-.foot { padding-top: 11vw; }
+/* ---------- 9. Contact ---------- */
+
+/* Pied de page rouge coupé en biais sous le grand nom. Le nom est incliné de -6° ; le bord
+   haut du bloc rouge est découpé (clip-path) avec le même dénivelé : 10,5 vw sur 100 vw de
+   large, soit tan(6°). Si on change l'angle, il faut changer les trois « 10.5vw » avec lui. */
+.foot { padding-top: 11vw; }   /* place pour l'extrémité droite du nom, qui remonte */
 .foot > .mark { padding: 0 var(--pad); transform-origin: 0 100%; rotate: -6deg; }
 .foot > .mark tspan { fill: var(--accent); }
 
@@ -373,7 +451,7 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     padding: 16vw var(--pad) var(--pad);
     background: var(--accent);
     color: var(--paper);
-    clip-path: polygon(0 10.5vw, 100% 0, 100% 100%, 0 100%);   /* 10,5 vw de dénivelé = les 6° du nom */
+    clip-path: polygon(0 10.5vw, 100% 0, 100% 100%, 0 100%);
 }
 
 .foot-grid { display: grid; grid-template-columns: 5.5fr 3fr 1.8fr 1.3fr; gap: 2.5rem var(--pad); font-size: 1.2rem; font-weight: 500; line-height: 1.4; }
@@ -392,8 +470,11 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .foot-end p { font-size: .9rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 .foot-end p a { border-bottom: 2px solid; }
 
-/* ---------- Pages projet (les <dialog>) ---------- */
 
+/* ---------- 10. Pages projet ---------- */
+
+/* Chaque projet a sa « page » : un <dialog> plein écran, ouvert par script.js quand
+   l'adresse se termine par son #id. */
 .work {
     width: 100vw;
     max-width: none;
@@ -409,8 +490,11 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 
 .work::backdrop { background: var(--accent); }
 
-/* Sans JavaScript, l'ancre suffit à afficher la page du projet */
-.work:target:not([open]) { display: block; position: fixed; inset: 0; z-index: 20; }
+/* Sans JavaScript, l'ancre suffit à afficher la page du projet. Réservé à ce cas : avec
+   JavaScript, :target reste vrai un instant après la fermeture et la page réapparaîtrait. */
+@media (scripting: none) {
+    .work:target { display: block; position: fixed; inset: 0; z-index: 20; }
+}
 
 .work-bar {
     position: sticky;
@@ -428,22 +512,28 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 
 .work-bar p { font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 
+/* En-tête : la capture du projet en fond (ou du gris s'il n'y en a pas), et un panneau
+   rouge décalé qui porte le titre. */
 .work-hero {
+    position: relative;
     display: flex;
     min-height: calc(100dvh - var(--bar-h));
     padding: 18vh var(--pad) 0 clamp(1rem, 11.7vw, 14rem);
-    background: var(--gray) var(--shot, none) 50% 0 / cover no-repeat;
+    background: var(--gray);
 }
 
-/* Panneau rouge posé sur la capture : elle est floutée dessous pour que le titre reste lisible */
+.hero-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+
+/* Panneau opaque : la capture reste visible autour, en haut et à gauche, et le texte
+   blanc garde tout son contraste. */
 .panel {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: .9rem clamp(.9rem, 1.5vw, 1.5rem) 1.25rem;
-    background: rgb(from var(--accent) r g b / .9);
-    backdrop-filter: blur(18px);
+    background: var(--accent);
     color: var(--paper);
 }
 
@@ -452,7 +542,7 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 
 .panel h2 {
     margin: .12em 0 .14em -.045em;
-    overflow-wrap: anywhere;
+    overflow-wrap: anywhere;   /* « GestionProjet-IUT » doit pouvoir se couper sur mobile */
     font-size: clamp(2.4rem, 9.4vw, 9.75rem);
     font-weight: 500;
     line-height: .95;
@@ -471,9 +561,10 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .credits dt { margin-bottom: .3rem; font-size: .78rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
 .credits dd { font-size: 1.0625rem; font-weight: 500; line-height: 1.4; }
 
-/* Dans une page projet la scène n'est plus dans une feuille : c'est elle qui arrive de travers */
+/* Ici la scène n'est plus dans une feuille : c'est elle qui arrive de travers, et sa
+   capture reste droite dedans. .flip = inclinaison négative, donc pivot en haut à droite. */
 .work .stage { --tilt: 10deg; width: 100%; aspect-ratio: 16 / 9; max-height: 84vh; margin: clamp(1.5rem, 5vh, 3rem) 0; transform-origin: 0 0; }
-.work .stage.flip { transform-origin: 100% 0; }
+.work .stage.flip { --tilt: -10deg; transform-origin: 100% 0; }
 .work .stage .shot { --tilt: 0deg; }
 
 .overview { display: grid; gap: 1em; max-width: 46rem; font-size: clamp(1.1rem, 1.35vw, 1.25rem); line-height: 1.55; }
@@ -486,32 +577,43 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .table li:hover { background: var(--accent); color: var(--paper); }
 .table li:hover::after { opacity: 1; }
 
+/* Variante « pipeline » : trois colonnes (numéro, étape, détail) et une ligne rouge qui
+   descend d'étape en étape (section 12). --i est le rang de l'étape, 0 pour la première. */
 .pipe { text-transform: uppercase; letter-spacing: 0; }
 .pipe li { grid-template-columns: clamp(2.75rem, 9vw, 8rem) 1fr 1.4fr 1.2em; }
 .pipe small { font-size: inherit; }
+.pipe li:nth-child(2) { --i: 1; }
+.pipe li:nth-child(3) { --i: 2; }
+.pipe li:nth-child(4) { --i: 3; }
+.pipe li:nth-child(5) { --i: 4; }
+.pipe li:nth-child(6) { --i: 5; }
+.pipe li:nth-child(7) { --i: 6; }
 
 .work-end { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: clamp(3.5rem, 14vh, 8rem); }
 
-/* ---------- Petits écrans ---------- */
+
+/* ---------- 11. Petits écrans ---------- */
 
 @media (max-width: 760px) {
-    :root { --bar-h: 4.75rem; }
+    :root { --bar-h: 4.75rem; }   /* la barre passe sur deux lignes */
 
-    /* Deux lignes : le logo (qui ramène à l'accueil), puis les quatre autres sections */
+    /* Barre : le logo (qui ramène à l'accueil), puis les quatre autres sections */
     .status, .place, .bar nav a:first-child { display: none; }
-    .bar { height: var(--bar-h); align-content: center; }
+    .bar { align-content: center; }
     .bar nav { justify-content: space-between; width: 100%; margin-left: 0; font-size: .85rem; }
     .bar nav a:not(:last-child)::after { content: none; }
 
+    /* Accueil : tout en colonne, tirages deux par deux */
     .hero-sheet { grid-template-rows: auto auto auto 1fr auto; row-gap: 1.5rem; }
     .hero-title { grid-area: 1 / 1 / 2 / 13; }
     .hero-side { grid-area: 2 / 1 / 3 / 13; }
-    .prints { grid-area: 3 / 1 / 4 / 13; flex-wrap: wrap; justify-content: center; gap: 1.25rem 0; padding: 1rem 3% 0; }
+    .prints { grid-area: 3 / 1 / 4 / 13; flex-wrap: wrap; gap: 1.25rem 0; padding: 1rem 3% 0; }
     .print { flex-basis: 50%; }
     .print:nth-child(even) { translate: 0 8%; }
     .hero-foot { grid-area: 4 / 1 / 5 / 13; align-items: end; }
     .hero .mark { grid-area: 5 / 1 / 6 / 13; }
 
+    /* Projets : bouton sous le texte, schéma en colonne */
     .sheet-head { grid-template-columns: minmax(0, 1fr); }
     .sheet-head .btn { grid-area: auto; justify-self: start; }
     .sheet-desc { font-size: 1rem; }
@@ -521,6 +623,7 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     .node { flex: none; flex-direction: row; align-items: baseline; gap: 1rem; aspect-ratio: auto; padding: .7rem .8rem; }
     .node b { font-size: 1.1rem; text-align: right; }
 
+    /* À propos : la carte rouge passe sous la noire, qui mord sur son haut (vide) */
     .cards, .text { grid-column: 1 / -1; padding-left: 0; }
     .cards { margin-bottom: 2rem; }
     .card.ink { grid-area: 1 / 1 / 2 / 5; }
@@ -532,50 +635,49 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     .reach { grid-column: 1 / -1; }
     .talk { min-width: 100%; }
 
+    /* Pages projet */
     .work-bar p { display: none; }
     .work-hero { padding: 12vh var(--pad) 0 1.5rem; }
     .work .stage { aspect-ratio: 4 / 3; }
     .pipe li { grid-template-columns: 2.75rem 1fr 1.2em; }
-    .pipe small { grid-area: 2 / 2; font-size: .8em; opacity: .75; }
+    .pipe small { grid-area: 2 / 2; font-size: .8em; }   /* le détail passe sous le nom de l'étape */
     .work-end > * { flex: 1 1 100%; }
-    .work-end .btn { width: 100%; }
 }
 
-/* ---------- Mouvement ---------- */
 
-/* Le geste du site : un bloc arrive de travers (--tilt) et se pose droit (--rest, 0° par défaut) */
+/* ---------- 12. Mouvement ---------- */
+
+/* Le geste du site : le bloc part de --tilt et se pose à --rest (0° par défaut).
+   --shift est le décalage horizontal de départ (voir .sheet). */
 @keyframes settle {
     from { rotate: var(--tilt); translate: var(--shift, 0px) 8vh; scale: .94; }
     75% { rotate: calc(var(--tilt) * .12 + var(--rest, 0deg)); translate: 0 0; scale: 1; }
     to { rotate: var(--rest, 0deg); translate: 0 0; scale: 1; }
 }
 
-@keyframes rise { from { opacity: 0; translate: 0 28px; } }
-@keyframes letter { from { opacity: 0; transform: translateY(.5em) rotate(8deg); } }
-@keyframes swing-in { from { rotate: -9deg; translate: 0 18vh; } }
-@keyframes drop-in { from { opacity: 0; rotate: calc(var(--tilt) * 3.5); translate: 0 -6vh; scale: .8; } }
-@keyframes tilt-away { to { rotate: -15deg; } }
-@keyframes work-in { from { opacity: 0; translate: 0 45vh; rotate: 14deg; } }
-@keyframes blink { 50% { opacity: .15; } }
-@keyframes step { 0%, 13.9% { background: var(--accent); color: var(--paper); } 14%, 100% { background: none; color: inherit; } }
-@keyframes step-mark { 0%, 13.9% { opacity: 1; } 14%, 100% { opacity: 0; } }
-
-/* Lettres des grands titres (découpées par script.js) : elles réagissent au survol */
-.big b { font-weight: inherit; }
-.big i { display: inline-block; font-style: normal; transition: translate .25s, color .25s; }
-.big i:hover { color: var(--accent); translate: 0 -.06em; }
+@keyframes rise { from { opacity: 0; translate: 0 28px; } }                                    /* apparition par le bas */
+@keyframes letter { from { opacity: 0; transform: translateY(.5em) rotate(8deg); } }             /* lettre d'un grand titre */
+@keyframes swing-in { from { rotate: -9deg; translate: 0 18vh; } }                               /* feuille rouge, au chargement */
+@keyframes tilt-away { to { rotate: -15deg; } }                                                  /* feuille rouge, à la sortie */
+@keyframes drop-in { from { opacity: 0; rotate: calc(var(--tilt) * 3.5); translate: 0 -6vh; scale: .8; } }   /* tirage qui tombe */
+@keyframes work-in { from { opacity: 0; translate: 0 45vh; rotate: 14deg; } }                    /* ouverture d'une page projet */
+@keyframes blink { 50% { opacity: .15; } }                                                       /* pastille de statut */
+@keyframes step { 0%, 13.9% { background: var(--accent); color: var(--paper); } 14%, 100% { background: none; color: inherit; } }   /* étape active du pipeline : 1 s sur 7 */
+@keyframes step-mark { 0%, 13.9% { opacity: 1; } 14%, 100% { opacity: 0; } }                     /* son marqueur ◀ */
 
 @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
 
     .status::before, .rec::before { animation: blink 1.6s ease-in-out infinite; }
 
-    /* Entrée au chargement : la feuille rouge bascule en place, puis le contenu et les tirages */
+    /* Au chargement : la feuille rouge bascule en place, puis son contenu, puis les tirages */
     .hero-sheet { animation: swing-in 1s cubic-bezier(.2, .8, .2, 1) both; }
     .hero-title, .hero-side > *, .hero-foot, .hero .mark { animation: rise .9s .35s cubic-bezier(.2, .8, .2, 1) both; }
     .hero-side > * { animation-delay: .5s; }
     .hero-foot, .hero .mark { animation-delay: .6s; }
-    .print { animation: drop-in .8s cubic-bezier(.2, .8, .2, 1) backwards; }   /* « backwards » : une fois posé, le survol reprend la main */
+    /* « backwards » et non « both » : une fois le tirage posé, l'animation ne s'applique
+       plus et le survol (rotate / scale en transition) reprend la main. */
+    .print { animation: drop-in .8s cubic-bezier(.2, .8, .2, 1) backwards; }
     .print:nth-child(1) { animation-delay: .7s; }
     .print:nth-child(2) { animation-delay: .82s; }
     .print:nth-child(3) { animation-delay: .94s; }
@@ -586,33 +688,38 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     .work[open] .panel > * { animation: rise .8s .3s cubic-bezier(.2, .8, .2, 1) both; }
     .work[open] .panel > h2 { animation-delay: .4s; }
 
-    /* Pipeline : la ligne rouge descend d'étape en étape */
-    .pipe li { animation: step 7s linear infinite; animation-delay: calc(var(--i) * 1s - 7s); }
+    /* Pipeline : chaque étape s'allume 1 s, l'une après l'autre. Le délai négatif fait
+       démarrer le cycle en cours de route, sans attendre 7 s le premier passage. */
+    .pipe li { animation: step 7s linear infinite; animation-delay: calc(var(--i, 0) * 1s - 7s); }
     .pipe li::after { animation: step-mark 7s linear infinite; animation-delay: inherit; }
 
+    /* --- Animations liées au scroll (Chrome, Edge, Safari récents) --- */
     @supports (animation-timeline: view()) {
-        /* La feuille rouge de l'accueil bascule en quittant l'écran (en plus de son entrée) */
+        /* La feuille rouge bascule en quittant l'écran, en plus de son entrée au chargement */
         .hero-sheet {
             animation: swing-in 1s cubic-bezier(.2, .8, .2, 1) both, tilt-away linear both;
             animation-timeline: auto, view();
             animation-range: normal, exit 0% exit 100%;
         }
 
-        /* Feuilles de projet : droites exactement au moment où elles se calent sous la barre */
+        /* Feuilles de projet : « entry 100% » = feuille entièrement entrée, c'est-à-dire
+           l'instant exact où elle se cale sous la barre. Elle y arrive donc droite. */
         .sheet { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
 
         /* Cartes, scènes des pages projet, captures et blocs de schéma */
         .card, .work .stage { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
         .shot, .node { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
 
-        /* Lettres des grands titres, décalées selon leur rang (--i) */
+        /* Lettres des grands titres, décalées selon leur rang (--i, posé par script.js) */
         .big i {
             animation: letter linear both;
             animation-timeline: view();
             animation-range: entry calc(var(--i, 0) * 14px) entry calc(var(--i, 0) * 14px + 150px);
         }
 
-        /* Apparition des blocs de texte à l'entrée dans l'écran */
+        /* Blocs de texte : apparition sur les 160 premiers pixels de leur entrée. Les
+           derniers blocs d'une page (.work-end, bas du pied de page) en sont exclus : faute
+           de place pour défiler, ils resteraient à moitié transparents. */
         .head > :not(.big), .text > *, .stack > div, .foot-grid > div, .work-body > :not(.work-end, .stage) {
             animation: rise linear both;
             animation-timeline: view();
@@ -620,13 +727,18 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
         }
     }
 
-    /* Navigateurs sans animations liées au scroll : même geste, déclenché par script.js (.in) */
-    @supports not (animation-timeline: view()) {
-        .sheet, .card, .work .stage, .shot, .node { rotate: var(--tilt); transition: rotate 1s cubic-bezier(.2, .8, .2, 1); }
-        :is(.sheet, .card, .work .stage, .shot, .node).in { rotate: var(--rest, 0deg); }
+    /* --- Navigateurs sans animations liées au scroll (Firefox) : même geste, en transition,
+       déclenché par la classe .in que script.js pose à l'entrée dans l'écran. Réservé au cas
+       où JavaScript tourne : sinon les blocs resteraient de travers. --- */
+    @media (scripting: enabled) {
+        @supports not (animation-timeline: view()) {
+            .sheet, .card, .work .stage, .shot, .node { rotate: var(--tilt); transition: rotate 1s cubic-bezier(.2, .8, .2, 1); }
+            :is(.sheet, .card, .work .stage, .shot, .node).in { rotate: var(--rest, 0deg); }
+        }
     }
 }
 
+/* Animations désactivées dans le système : tout est statique */
 @media (prefers-reduced-motion: reduce) {
     *, ::before, ::after { animation: none !important; transition: none !important; }
 }

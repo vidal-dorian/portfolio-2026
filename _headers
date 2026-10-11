@@ -1,0 +1,20 @@
+# En-têtes HTTP de sécurité, appliqués par Cloudflare Pages à toutes les réponses.
+# Documentation : https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Content-Security-Policy : le navigateur refuse tout ce qui n'est pas listé.
+#   - scripts et images : uniquement ceux du site (plus data: pour le favicon)
+#   - styles et polices : le site et Google Fonts
+#   - aucun style ni script en ligne, aucune iframe, aucun formulaire
+#   Toute nouvelle ressource externe (script d'analyse, police, image hébergée ailleurs)
+#   doit être ajoutée ici, sinon elle sera bloquée.
+# X-Frame-Options / frame-ancestors : le site ne peut pas être affiché dans une iframe
+#   (protection contre le détournement de clic).
+# X-Content-Type-Options : le navigateur ne devine pas le type des fichiers.
+# Referrer-Policy : les sites vers lesquels on clique ne reçoivent que le nom de domaine.
+# Permissions-Policy : caméra, micro et géolocalisation désactivés.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
