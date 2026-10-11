@@ -4,342 +4,660 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dorian Vidal — Développeur logiciel</title>
-    <meta name="description" content="Portfolio de Dorian Vidal, étudiant en BUT Informatique à Rodez : API REST en C#, PHP et Java. Disponible pour un stage ou une alternance.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ff7a1a'/><text x='50' y='68' font-size='50' font-weight='700' font-family='sans-serif' text-anchor='middle' fill='%230d0b09'>DV</text></svg>">
+    <meta name="description" content="Portfolio de Dorian Vidal, étudiant en BUT Informatique à Rodez : API REST en C#, PHP, Java et Python. Disponible pour un stage ou une alternance.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ff3a1d'/><text x='50' y='70' font-size='56' font-weight='900' font-family='sans-serif' text-anchor='middle' fill='%23f8f8f8'>DV</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Icônes (format feather), appelées avec <use href="#i-nom"> -->
+    <!-- Flèche réutilisée partout avec <use href="#i-arrow"> -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-        <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></symbol>
-        <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
-        <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
-        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M2 12h20M14 4l8 8-8 8"/></symbol>
     </svg>
 
     <header class="bar">
-        <a class="logo" href="#accueil">Dorian<span>.Vidal</span></a>
+        <a class="logo" href="#accueil">Dorian<span>.</span>Vidal</a>
+        <p class="status">Disponible (stage / alternance)</p>
+        <p class="place">Rodez, France — <time></time></p>
         <nav aria-label="Sections">
-            <a href="#projets">/projets</a>
-            <a href="#a-propos">/a-propos</a>
-            <a href="#competences">/competences</a>
-            <a href="#contact">/contact</a>
+            <a href="#accueil">Accueil</a>
+            <a href="#projets">Projets</a>
+            <a href="#a-propos">À propos</a>
+            <a href="#competences">Stack</a>
+            <a href="#contact">Contact</a>
         </nav>
-        <p class="clock">Rodez <time></time></p>
     </header>
 
-    <div class="page">
-        <aside class="id">
-            <p class="pill">Disponible · stage / alternance</p>
-            <h1>Dorian Vidal</h1>
-            <p class="role">Étudiant en BUT Informatique à Rodez, à la recherche d'une alternance.</p>
-
-            <!-- Console décorative : script.js y « appelle » la section en cours de lecture -->
-            <div class="console" aria-hidden="true">
-                <p class="req"><b>GET</b><span class="path">/</span><i></i><span class="status">200 OK</span></p>
-<pre class="res">{
-  "nom": "Dorian Vidal",
-  "role": "Développeur logiciel",
-  "formation": "BUT Informatique",
-  "ville": "Rodez",
-  "dispo": ["stage", "alternance"]
-}</pre>
-                <p class="foot"><span>dorian.vidal/api</span><span class="ms">12 ms</span></p>
-            </div>
-
-            <div class="socials">
-                <a href="mailto:dorian.vidal@iut-rodez.fr" aria-label="Email"><svg class="i"><use href="#i-mail"/></svg></a>
-                <a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="i"><use href="#i-linkedin"/></svg></a>
-                <a href="https://github.com/vidal-dorian" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i"><use href="#i-github"/></svg></a>
-            </div>
-        </aside>
-
-        <main>
-            <section id="accueil">
-                <p class="tag"><span>00</span>GET /</p>
-                <h2 class="big">Développeur <span class="swap" aria-hidden="true">logiciel</span><span class="sr">logiciel</span></h2>
-                <p class="lead">
+    <!-- ==================== ACCUEIL ==================== -->
+    <section id="accueil" class="hero">
+        <div class="hero-sheet">
+            <h1 class="sr">Dorian Vidal, développeur logiciel</h1>
+            <p class="hero-title" aria-hidden="true">Développeur <span class="swap">logiciel</span></p>
+            <div class="hero-side">
+                <p class="hero-lead">
                     Passionné par le développement logiciel et les nouvelles technologies.
                     Actuellement en 3<sup>e</sup> année de BUT Informatique, je construis des solutions
                     élégantes et efficaces.
                 </p>
-                <p class="cta">
-                    <a class="btn primary" href="#projets">Voir mes projets</a>
-                    <a class="btn" href="#contact">Me contacter</a>
+                <p class="actions">
+                    <a class="btn light" href="#projets">Voir mes 7 projets<svg class="i"><use href="#i-arrow"/></svg></a>
+                    <a class="btn light ghost" href="#contact">Me contacter</a>
                 </p>
+            </div>
 
-                <dl class="stats">
-                    <div><dt>année de BUT</dt><dd>3<sup>e</sup></dd></div>
-                    <div><dt>projets</dt><dd>7</dd></div>
-                    <div><dt>langages pratiqués</dt><dd>5</dd></div>
-                </dl>
+            <!-- Tirages de travers : ils se redressent au survol et ouvrent la page du projet -->
+            <div class="prints">
+                <a class="print" href="#revisst" style="--tilt: -9deg">
+                    <img src="images/GrilleRevisst.png" alt="" width="1276" height="850">
+                    <span>03 — ReviSST</span>
+                </a>
+                <a class="print" href="#wemember" style="--tilt: 7deg">
+                    <img src="images/AccueilWemember.png" alt="" width="1905" height="912">
+                    <span>04 — Wemember</span>
+                </a>
+                <a class="print" href="#watchd" style="--tilt: -6deg">
+                    <img src="images/Watchd.jpg" alt="" width="800" height="600">
+                    <span>06 — Watchd</span>
+                </a>
+                <a class="print" href="#gestionprojet" style="--tilt: 10deg">
+                    <img src="images/GestionProjetDashboard.png" alt="" width="1440" height="900">
+                    <span>07 — GestionProjet-IUT</span>
+                </a>
+            </div>
+            <p class="hero-foot"><span>Défiler pour explorer</span><span>Viewport <output class="viewport">1440 × 900</output></span></p>
+            <svg class="mark" viewBox="0 0 1000 118" role="img" aria-label="Dorian Vidal">
+                <text x="0" y="112" textLength="1000" lengthAdjust="spacingAndGlyphs">DORIAN<tspan>.</tspan>VIDAL</text>
+            </svg>
+        </div>
+    </section>
 
+    <main>
+        <!-- ==================== PROJETS ==================== -->
+        <section id="projets">
+            <header class="head">
+                <p class="tag">Stage, SAE et projets perso</p>
+                <h2 class="big">Projets</h2>
+                <p class="links">
+                    <a class="link" href="#s-api-itop">Stage<sup>[ 2 ]</sup><svg class="i"><use href="#i-arrow"/></svg></a>
+                    <a class="link" href="#s-revisst">SAE<sup>[ 3 ]</sup><svg class="i"><use href="#i-arrow"/></svg></a>
+                    <a class="link" href="#s-watchd">Perso<sup>[ 2 ]</sup><svg class="i"><use href="#i-arrow"/></svg></a>
+                </p>
+            </header>
 
-                <a class="now" href="#livreo">
-                    <small>En ce moment</small>
-                    <p>Je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : API Spring Boot et application Android.</p>
-                    <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <!-- Une « feuille » plein écran par projet : elle arrive de travers, se redresse et recouvre
+                 la précédente. Elle ouvre la page du projet (les <dialog> en bas du fichier). -->
+            <div class="sheets">
+                <a class="sheet" id="s-api-itop" href="#api-itop" style="--tilt: 13deg">
+                    <div class="sheet-head">
+                        <p class="tag">01 / 07 — Stage — Avril – août 2026</p>
+                        <h3>API iTop</h3>
+                        <p class="sheet-desc">Une API REST interne qui fait communiquer les applications de l'entreprise avec iTop pour mettre à jour la CMDB.</p>
+                        <ul class="chips"><li>C#</li><li>ASP.NET Core</li><li>OQL</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage ink" data-label="Schéma du projet">
+                        <div class="flow">
+                            <div class="node"><small>Source</small><b>Applications internes</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>API REST</small><b>C# / ASP.NET Core</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>ITSM / CMDB</small><b>iTop</b></div>
+                        </div>
+                    </div>
                 </a>
 
-                <div class="marquee" aria-hidden="true">
-                    <ul><li>C#</li><li>ASP.NET Core</li><li>PHP</li><li>Java</li><li>JavaFX</li><li>SQL</li><li>Python</li><li>REST API</li><li>OAuth2</li><li>Docker</li><li>Git</li><li>Linux</li></ul>
+                <a class="sheet flip" href="#synchro-itop" style="--tilt: -12deg">
+                    <div class="sheet-head">
+                        <p class="tag">02 / 07 — Stage — Avril – août 2026</p>
+                        <h3>Synchro iTop</h3>
+                        <p class="sheet-desc">La synchronisation automatique de données fournisseurs et clients vers le CMDB iTop, à la place d'une saisie manuelle.</p>
+                        <ul class="chips"><li>PHP</li><li>OAuth2</li><li>ETL</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage red" data-label="Schéma du projet">
+                        <div class="flow">
+                            <div class="node"><small>Sources</small><b>API externes</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>Collecte</small><b>Collector PHP</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>Export</small><b>CSV</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>ITSM / CMDB</small><b>iTop</b></div>
+                        </div>
+                    </div>
+                </a>
+
+                <a class="sheet" id="s-revisst" href="#revisst" style="--tilt: 14deg">
+                    <div class="sheet-head">
+                        <p class="tag">03 / 07 — SAE — 2025</p>
+                        <h3>ReviSST</h3>
+                        <p class="sheet-desc">Une application desktop pour réviser les situations et les pictogrammes des Sauveteurs Secouristes du Travail.</p>
+                        <ul class="chips"><li>Java</li><li>JavaFX</li><li>JSON</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage ink" data-label="Viewport — 1276 × 850">
+                        <img class="shot" src="images/GrilleRevisst.png" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850" loading="lazy">
+                    </div>
+                </a>
+
+                <a class="sheet flip" href="#wemember" style="--tilt: -13deg">
+                    <div class="sheet-head">
+                        <p class="tag">04 / 07 — SAE — 2025</p>
+                        <h3>Wemember</h3>
+                        <p class="sheet-desc">Une plateforme web pour gérer une association : authentification, rôles, documents et tableau de bord.</p>
+                        <ul class="chips"><li>PHP</li><li>MySQL</li><li>Bootstrap</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage red" data-label="Viewport — 1905 × 912">
+                        <img class="shot" src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912" loading="lazy">
+                    </div>
+                </a>
+
+                <a class="sheet" href="#livreo" style="--tilt: 12deg">
+                    <div class="sheet-head">
+                        <p class="tag">05 / 07 — SAE en cours — 2026</p>
+                        <h3>Livreo</h3>
+                        <p class="sheet-desc">La gestion de tournées de livraison : une interface Atelier sur PC, une API et une application Android pour les chauffeurs.</p>
+                        <ul class="chips"><li>Java 21</li><li>Spring Boot</li><li>Android</li><li>Docker</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage ink" data-label="Schéma du projet">
+                        <div class="flow">
+                            <div class="node"><small>Sur PC</small><b>Interface Atelier</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>API</small><b>Spring Boot</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>Chauffeurs</small><b>Application Android</b></div>
+                        </div>
+                    </div>
+                </a>
+
+                <a class="sheet flip" id="s-watchd" href="#watchd" style="--tilt: -14deg">
+                    <div class="sheet-head">
+                        <p class="tag">06 / 07 — Perso — Septembre 2026</p>
+                        <h3>Watchd</h3>
+                        <p class="sheet-desc">Une application web pour gérer sa collection de films et de séries, branchée sur l'API TMDB.</p>
+                        <ul class="chips"><li>PHP</li><li>SQLite</li><li>API TMDB</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage red" data-label="Viewport — 800 × 600">
+                        <img class="shot" src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600" loading="lazy">
+                    </div>
+                </a>
+
+                <a class="sheet" href="#gestionprojet" style="--tilt: 13deg">
+                    <div class="sheet-head">
+                        <p class="tag">07 / 07 — Perso — Août – octobre 2026</p>
+                        <h3>GestionProjet-IUT</h3>
+                        <p class="sheet-desc">Un outil web de suivi de projet agile : heures de travail, sprints GitHub, burndown et diagramme de Gantt.</p>
+                        <ul class="chips"><li>Python</li><li>FastAPI</li><li>React</li><li>TypeScript</li></ul>
+                        <span class="btn">Voir le projet<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </div>
+                    <div class="stage ink" data-label="Viewport — 1440 × 900">
+                        <img class="shot" src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900" loading="lazy">
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ==================== À PROPOS ==================== -->
+        <section id="a-propos">
+            <header class="head">
+                <p class="tag">Qui suis-je</p>
+                <h2 class="big">À propos</h2>
+            </header>
+            <div class="cols">
+                <div class="cards">
+                    <a class="card red" href="#livreo">
+                        <p class="tag">En ce moment</p>
+                        <p>Je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : une API Spring Boot et une application Android.</p>
+                        <span class="link">Voir Livreo<svg class="i"><use href="#i-arrow"/></svg></span>
+                    </a>
+                    <dl class="card ink stats">
+                        <div><dt>année de BUT</dt><dd>3<sup>e</sup></dd></div>
+                        <div><dt>projets</dt><dd>7</dd></div>
+                        <div><dt>langages pratiqués</dt><dd>5</dd></div>
+                    </dl>
                 </div>
-            </section>
-
-            <section id="projets">
-                <p class="tag"><span>01</span>GET /projets</p>
-                <h2 class="big">Mes <span>projets</span></h2>
-                <div class="rows">
-                    <details>
-                        <summary>
-                            <span class="idx">01</span>
-                            <div>
-                                <h3>API interne pour ITSM/CMDB (iTop)</h3>
-                                <p>API REST interne — C# / ASP.NET Core</p>
-                            </div>
-                            <span class="chip pro">Stage</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">Avril – août 2026 · Stage</p>
-                            <p>API REST interne développée en C# / ASP.NET Core, qui fait communiquer les applications internes de l'entreprise avec iTop, un outil ITSM/CMDB open source, pour mettre à jour la CMDB. Elle dialogue avec l'API REST/JSON d'iTop via des requêtes OQL (Object Query Language).</p>
-                            <p>Le projet suit une architecture en couches stricte (Controllers → Services → DTOs → Models), avec une modélisation métier dédiée aux entités du CMDB (serveurs, bases de données, applications web, instances logicielles).</p>
-                            <ul>
-                                <li>Architecture en couches (Controllers → Services → DTOs → Models)</li>
-                                <li>Construction dynamique de requêtes OQL et gestion de leur échappement</li>
-                                <li>Couverture de tests systématique (DTO, Service, Controller) avec MSTest</li>
-                                <li>Documentation API via Swashbuckle / OpenAPI</li>
-                                <li>Analyse statique et qualité de code (SonarQube / Roslyn)</li>
-                            </ul>
-                            <ul class="tags"><li>C#</li><li>ASP.NET Core</li><li>RestSharp</li><li>MSTest</li><li>Swagger / OpenAPI</li><li>iTop / OQL</li></ul>
-                            <p><small>Projet interne — code source non public.</small></p>
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>
-                            <span class="idx">02</span>
-                            <div>
-                                <h3>Synchronisation ITSM multi-sources (iTop)</h3>
-                                <p>Framework PHP — collecteurs OAuth2</p>
-                            </div>
-                            <span class="chip pro">Stage</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">Avril – août 2026 · Stage</p>
-                            <p>Extension du framework open source de collecte de données de Combodo pour iTop (<code>itop-data-collector-base</code>), permettant de synchroniser automatiquement des données fournisseurs et clients issues d'API REST externes protégées par OAuth2 vers le CMDB iTop, en remplacement d'une saisie manuelle.</p>
-
-                            <ol class="pipe" aria-label="Pipeline de synchronisation">
-                                <li style="--i:0">API externe <small>OAuth2</small></li>
-                                <li style="--i:1">Authentification <small>client-credentials</small></li>
-                                <li style="--i:2">Collector <small>Prepare / Fetch</small></li>
-                                <li style="--i:3">Model <small>mapping vers les attributs iTop</small></li>
-                                <li style="--i:4">Export CSV</li>
-                                <li style="--i:5">synchro_import.php <small>définition JSON</small></li>
-                                <li style="--i:6">synchro_exec.php <small>réconciliation dans iTop</small></li>
-                            </ol>
-
-                            <p>Le travail a surtout porté sur la fiabilisation d'une première implémentation fragile : diagnostic d'échecs de configuration silencieux, explicitation de la gestion des erreurs HTTP, et correction d'une fuite d'identifiants OAuth2 en clair dans les logs, identifiée lors d'une revue de code.</p>
-                            <ul>
-                                <li>Authentification OAuth2 (client-credentials)</li>
-                                <li>Pipeline ETL vers les webservices de réconciliation iTop</li>
-                                <li>Gestion explicite des erreurs HTTP et logging structuré</li>
-                                <li>Pattern reproductible pour l'ajout de nouvelles sources de données</li>
-                            </ul>
-                            <ul class="tags"><li>PHP</li><li>OAuth2</li><li>REST API</li><li>iTop / Combodo</li><li>ETL</li></ul>
-                            <p><small>Projet interne — code source non public.</small></p>
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>
-                            <span class="idx">03</span>
-                            <div>
-                                <h3>ReviSST — révision pour les SST</h3>
-                                <p>Application desktop JavaFX</p>
-                            </div>
-                            <span class="chip ok">SAE</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">2025 · SAE</p>
-                            <p>Application desktop développée en JavaFX pour la révision des situations et des pictogrammes, destinée aux Sauveteurs Secouristes du Travail (SST).</p>
-                            <p>Le projet suit une architecture MVC stricte, avec persistance des données en JSON et gestion des scores par mode de jeu et par utilisateur.</p>
-                            <img src="images/GrilleRevisst.png" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850" loading="lazy">
-                            <ul>
-                                <li>Gestion des utilisateurs et des scores</li>
-                                <li>Plusieurs modes de jeu</li>
-                                <li>Persistance des données en JSON</li>
-                            </ul>
-                            <ul class="tags"><li>Java</li><li>JavaFX</li><li>JSON</li><li>SceneBuilder</li></ul>
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>
-                            <span class="idx">04</span>
-                            <div>
-                                <h3>Wemember — gestion d'association</h3>
-                                <p>Site web dynamique PHP</p>
-                            </div>
-                            <span class="chip ok">SAE</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">2025 · SAE</p>
-                            <p>Plateforme web collaborative avec système d'authentification, gestion des utilisateurs et tableau de bord administrateur, pour gérer une association.</p>
-                            <p>L'application intègre une gestion des rôles avec différents niveaux de permissions, ainsi que la gestion des documents déposés par les utilisateurs, avec export des données au format PDF.</p>
-                            <img src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912" loading="lazy">
-                            <ul>
-                                <li>Authentification sécurisée et gestion des rôles</li>
-                                <li>Tableau de bord administrateur</li>
-                                <li>Gestion des documents et export PDF</li>
-                                <li>Interface responsive</li>
-                            </ul>
-                            <ul class="tags"><li>PHP</li><li>MySQL</li><li>Bootstrap</li><li>phpMyAdmin</li></ul>
-                        </div>
-                    </details>
-
-                    <details id="livreo">
-                        <summary>
-                            <span class="idx">05</span>
-                            <div>
-                                <h3>Livreo — tournées de livraison</h3>
-                                <p>API Spring Boot et application Android</p>
-                            </div>
-                            <span class="chip wip">SAE · en cours</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">2026 · SAE en cours · Projet de groupe</p>
-                            <p>Livreo est un système de gestion de tournées de livraison pour l'entreprise fictive T.G.V., réalisé en équipe dans le cadre de la SAE S5.A.01 « Développement avancé » du BUT 3.</p>
-                            <p>Une interface « Atelier » sur PC permet de gérer les clients, les commandes, les pièces et les colis. Une application Android destinée aux chauffeurs affiche les colis à livrer et les points de livraison sur une carte, et fonctionne hors ligne.</p>
-                            <p>Étape suivante : l'optimisation de la boucle de livraison.</p>
-                            <ul>
-                                <li>API Spring Boot (Java 21, Maven), conteneurisée avec Docker</li>
-                                <li>Application Android utilisable hors ligne</li>
-                                <li>Géocodage des adresses via la Géoplateforme de l'IGN</li>
-                                <li>Intégration continue avec GitHub Actions</li>
-                                <li>Organisation Scrum, suivi sur GitHub Projects</li>
-                            </ul>
-                            <ul class="tags"><li>Java 21</li><li>Spring Boot</li><li>Maven</li><li>Docker</li><li>Android</li><li>GitHub Actions</li><li>Scrum</li></ul>
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>
-                            <span class="idx">06</span>
-                            <div>
-                                <h3>Watchd — collection de films et séries</h3>
-                                <p>Application web PHP, SQLite et API TMDB</p>
-                            </div>
-                            <span class="chip">Perso</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">Septembre 2026 · Projet personnel</p>
-                            <p>Watchd est une application web personnelle pour gérer sa collection de films et de séries. On recherche un titre via l'API TMDB (recherche en direct, tendances) et on l'ajoute à sa collection, puis on le marque « à voir », « en cours » ou « vu », avec un suivi par saison pour les séries.</p>
-                            <p>On peut noter ce qu'on a vu sur 10 et laisser un commentaire. Les films d'une même saga sont regroupés, avec une fiche détaillée (bande-annonce YouTube) et une interface « cinéma » responsive, sur mobile comme sur PC.</p>
-                            <img src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600" loading="lazy">
-                            <ul>
-                                <li>Recherche en direct et tendances via l'API TMDB</li>
-                                <li>Statuts « à voir », « en cours », « vu » et suivi par saison</li>
-                                <li>Notes sur 10 et commentaires</li>
-                                <li>Regroupement des sagas et fiches détaillées</li>
-                                <li>CSS écrit à la main, responsive</li>
-                            </ul>
-                            <ul class="tags"><li>PHP</li><li>SQLite</li><li>PDO</li><li>API TMDB</li><li>HTML / CSS</li><li>JavaScript</li><li>Cloudflare</li></ul>
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>
-                            <span class="idx">07</span>
-                            <div>
-                                <h3>GestionProjet-IUT — suivi de projet agile</h3>
-                                <p>FastAPI, React et intégration GitHub</p>
-                            </div>
-                            <span class="chip">Perso</span>
-                            <span class="plus" aria-hidden="true"></span>
-                        </summary>
-                        <div class="body">
-                            <p class="meta">Août – octobre 2026 · Projet personnel</p>
-                            <p>GestionProjet-IUT est un outil web de suivi de projet agile (Scrum) pour des équipes étudiantes. Les membres saisissent leurs heures de travail par catégorie, synchronisent les issues et les sprints depuis GitHub, et suivent l'avancement avec un dashboard, un burndown chart et un diagramme de Gantt.</p>
-                            <p>L'outil génère aussi les comptes-rendus des cérémonies Scrum (daily, planification, review, rétrospective) en Word, et des exports Excel des heures.</p>
-                            <img src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900" loading="lazy">
-                            <img src="images/GestionProjetSprints.png" alt="Page Sprints de GestionProjet-IUT : planning et burndown chart" width="1440" height="900" loading="lazy">
-                            <ul>
-                                <li>Saisie des heures par catégorie, dashboard et exports Excel</li>
-                                <li>Synchronisation des issues et des sprints depuis GitHub</li>
-                                <li>Burndown chart et diagramme de Gantt</li>
-                                <li>Comptes-rendus de cérémonies Scrum générés en Word</li>
-                                <li>Authentification par Cloudflare Access (JWT)</li>
-                                <li>Docker Compose, CI/CD GitHub Actions, tests pytest</li>
-                                <li>Déployé sur un Raspberry Pi via Cloudflare Tunnel</li>
-                            </ul>
-                            <ul class="tags"><li>Python</li><li>FastAPI</li><li>SQLAlchemy</li><li>MySQL</li><li>React 19</li><li>TypeScript</li><li>Vite</li><li>Docker</li><li>GitHub Actions</li></ul>
-                        </div>
-                    </details>
-                </div>
-            </section>
-
-            <section id="a-propos">
-                <p class="tag"><span>02</span>GET /a-propos</p>
-                <h2 class="big">À propos <span>de moi</span></h2>
-                <div class="prose">
-                    <p>Artisan du code et curieux de nature, je me spécialise dans le développement d'applications web et logicielles. Mon parcours à l'IUT m'a permis d'acquérir des bases solides en algorithmique, bases de données et développement web.</p>
+                <div class="text">
+                    <p class="tag">En bref</p>
+                    <p class="lowdown">Artisan du code et curieux de nature, je me spécialise dans le développement d'applications web et logicielles. Mon parcours à l'IUT m'a permis d'acquérir des bases solides en algorithmique, bases de données et développement web.</p>
                     <p>Au-delà du code, je m'intéresse à l'expérience utilisateur et au design d'interface. Je crois en des solutions simples et bien pensées, où chaque ligne de code a un but précis.</p>
                     <p>En ce moment, je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : une API Spring Boot et une application Android, dans le cadre d'une SAE de 3<sup>e</sup> année.</p>
+                    <div class="lists">
+                        <div>
+                            <p class="tag">Parcours</p>
+                            <ul>
+                                <li>BUT Informatique (3<sup>e</sup> année)</li>
+                                <li>Stage — avril à août 2026</li>
+                                <li>Rodez, France</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="tag">Intérêts</p>
+                            <ul>
+                                <li>Applications</li>
+                                <li>Bases de données</li>
+                                <li>Web</li>
+                                <li>Algorithmie</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="tag">Disponibilité</p>
+                            <ul>
+                                <li>Stage</li>
+                                <li>Alternance</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <blockquote>« Des solutions simples et bien pensées. »</blockquote>
                 </div>
-                <dl class="table">
-                    <div><dt>formation</dt><dd>BUT Informatique (3<sup>e</sup> année)</dd></div>
-                    <div><dt>localisation</dt><dd>Rodez, France</dd></div>
-                    <div><dt>intérêts</dt><dd>Applications, bases de données, web, algorithmie</dd></div>
-                    <div><dt>disponibilité</dt><dd>Stage / Alternance</dd></div>
-                </dl>
-            </section>
+            </div>
+        </section>
 
-            <section id="competences">
-                <p class="tag"><span>03</span>GET /competences</p>
-                <h2 class="big">Stack <span>technique</span></h2>
-                <dl class="table stack">
-                    <div><dt>langages <span>5</span></dt><dd><ul><li>Java</li><li>PHP</li><li>SQL</li><li>Python</li><li>C#</li></ul></dd></div>
-                    <div><dt>frontend <span>4</span></dt><dd><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Bootstrap</li></ul></dd></div>
-                    <div><dt>backend <span>5</span></dt><dd><ul><li>JavaFX</li><li>ASP.NET Core</li><li>REST API</li><li>OAuth2</li><li>JSON</li></ul></dd></div>
-                    <div><dt>données <span>2</span></dt><dd><ul><li>SQL</li><li>MongoDB</li></ul></dd></div>
-                    <div><dt>outils <span>8</span></dt><dd><ul><li>IntelliJ</li><li>PHPStorm</li><li>Git</li><li>GitHub</li><li>SQL Developer</li><li>Docker</li><li>Linux</li><li>Figma</li></ul></dd></div>
-                </dl>
-            </section>
+        <!-- ==================== STACK ==================== -->
+        <section id="competences">
+            <header class="head">
+                <p class="tag">Langages et outils</p>
+                <h2 class="big">Stack</h2>
+            </header>
+            <dl class="stack">
+                <div><dt class="tag">Langages<sup>[ 5 ]</sup></dt><dd><ul><li>Java</li><li>PHP</li><li>SQL</li><li>Python</li><li>C#</li></ul></dd></div>
+                <div><dt class="tag">Frontend<sup>[ 4 ]</sup></dt><dd><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Bootstrap</li></ul></dd></div>
+                <div><dt class="tag">Backend<sup>[ 5 ]</sup></dt><dd><ul><li>JavaFX</li><li>ASP.NET Core</li><li>REST API</li><li>OAuth2</li><li>JSON</li></ul></dd></div>
+                <div><dt class="tag">Données<sup>[ 2 ]</sup></dt><dd><ul><li>SQL</li><li>MongoDB</li></ul></dd></div>
+                <div><dt class="tag">Outils<sup>[ 8 ]</sup></dt><dd><ul><li>IntelliJ</li><li>PHPStorm</li><li>Git</li><li>GitHub</li><li>SQL Developer</li><li>Docker</li><li>Linux</li><li>Figma</li></ul></dd></div>
+            </dl>
+        </section>
+    </main>
 
-            <section id="contact">
-                <p class="tag"><span>04</span>GET /contact</p>
-                <h2 class="big">Prenons <span>contact</span></h2>
-                <p class="lead">
-                    Je suis actuellement à la recherche d'une alternance pour poursuivre mon parcours.
-                    N'hésitez pas à me contacter pour discuter de vos projets ou opportunités.
-                </p>
-                <p class="mail">
-                    <a href="mailto:dorian.vidal@iut-rodez.fr">dorian.vidal@iut-rodez.fr</a>
-                    <button type="button" class="btn copy">Copier</button>
-                </p>
-                <div class="rows">
-                    <a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener">
-                        <span class="idx">in</span><b>LinkedIn</b><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
-                    </a>
-                    <a href="https://github.com/vidal-dorian" target="_blank" rel="noopener">
-                        <span class="idx">gh</span><b>GitHub</b><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
-                    </a>
+    <!-- ==================== CONTACT ==================== -->
+    <footer id="contact" class="foot">
+        <svg class="mark" viewBox="0 0 1000 118" aria-hidden="true">
+            <text x="0" y="112" textLength="1000" lengthAdjust="spacingAndGlyphs">DORIAN<tspan>.</tspan>VIDAL</text>
+        </svg>
+        <div class="foot-main">
+            <div class="foot-grid">
+                <div class="reach">
+                    <p class="tag">Écrire</p>
+                    <p class="mail">
+                        <a href="mailto:dorian.vidal@iut-rodez.fr">dorian.vidal@iut-rodez.fr</a>
+                        <button type="button" class="btn light ghost small copy">Copier</button>
+                    </p>
+                    <p>Je suis actuellement à la recherche d'une alternance pour poursuivre mon parcours. N'hésitez pas à me contacter pour discuter de vos projets ou opportunités.</p>
                 </div>
-            </section>
-        </main>
+                <div>
+                    <p class="tag">Où</p>
+                    <p>BUT Informatique<br>IUT de Rodez<br>Rodez, France</p>
+                </div>
+                <div>
+                    <p class="tag">Réseaux</p>
+                    <ul>
+                        <li><a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener">LinkedIn</a></li>
+                        <li><a href="https://github.com/vidal-dorian" target="_blank" rel="noopener">GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="tag">Nav</p>
+                    <ul>
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#projets">Projets</a></li>
+                        <li><a href="#a-propos">À propos</a></li>
+                        <li><a href="#competences">Stack</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="foot-end">
+                <a class="talk" href="mailto:dorian.vidal@iut-rodez.fr">Parlons-en<svg class="i"><use href="#i-arrow"/></svg></a>
+                <p>© Dorian Vidal 2026 / HTML, CSS et JavaScript, sans framework / <a href="#accueil">Haut</a></p>
+            </div>
+        </div>
+    </footer>
 
-        <footer>Conçu et développé par Dorian Vidal — HTML, CSS et JavaScript, sans framework.</footer>
-    </div>
+    <!-- ==================== PAGES PROJET ==================== -->
+    <!-- Ouvertes par script.js quand l'adresse se termine par leur #id (lien d'une feuille, « projet suivant »…) -->
+
+    <dialog class="work" id="api-itop" aria-labelledby="t-api-itop">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 01 / 07</p>
+            <a class="btn small" href="#synchro-itop">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero">
+            <div class="panel">
+                <p class="metas"><span>C# / ASP.NET Core</span><span>Stage</span><span class="rec">Avril – août 2026</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-api-itop">API iTop</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Une API REST interne en C# / ASP.NET Core qui fait communiquer les applications internes de l'entreprise avec iTop, un outil ITSM/CMDB open source, pour mettre à jour la CMDB.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>Stage</dd></div>
+                <div><dt>Période</dt><dd>Avril – août 2026</dd></div>
+                <div><dt>Technos</dt><dd>C#, ASP.NET Core, RestSharp, MSTest, Swagger / OpenAPI, iTop / OQL</dd></div>
+                <div><dt>Code source</dt><dd>Projet interne, non public</dd></div>
+            </dl>
+            <div class="stage ink" data-label="Schéma du projet">
+                <div class="flow">
+                            <div class="node"><small>Source</small><b>Applications internes</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>API REST</small><b>C# / ASP.NET Core</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>ITSM / CMDB</small><b>iTop</b></div>
+                        </div>
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>L'API sert d'intermédiaire entre les consommateurs internes et iTop : elle dialogue avec son API REST/JSON via des requêtes OQL (Object Query Language).</p>
+                <p>Le projet suit une architecture en couches stricte (Controllers → Services → DTOs → Models), avec une modélisation métier dédiée aux entités du CMDB : serveurs, bases de données, applications web, instances logicielles.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Architecture en couches (Controllers → Services → DTOs → Models)</li>
+                <li>Construction dynamique de requêtes OQL et gestion de leur échappement</li>
+                <li>Couverture de tests systématique (DTO, Service, Controller) avec MSTest</li>
+                <li>Documentation API via Swashbuckle / OpenAPI</li>
+                <li>Analyse statique et qualité de code (SonarQube / Roslyn)</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#synchro-itop">Projet suivant : Synchro iTop<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="synchro-itop" aria-labelledby="t-synchro-itop">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 02 / 07</p>
+            <a class="btn small" href="#revisst">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero">
+            <div class="panel">
+                <p class="metas"><span>PHP / OAuth2</span><span>Stage</span><span class="rec">Avril – août 2026</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-synchro-itop">Synchro iTop</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Une extension du framework open source de collecte de données de Combodo pour iTop, qui synchronise automatiquement des données fournisseurs et clients vers le CMDB, en remplacement d'une saisie manuelle.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>Stage</dd></div>
+                <div><dt>Période</dt><dd>Avril – août 2026</dd></div>
+                <div><dt>Technos</dt><dd>PHP, OAuth2, REST API, iTop / Combodo, ETL</dd></div>
+                <div><dt>Code source</dt><dd>Projet interne, non public</dd></div>
+            </dl>
+            <div class="stage red" data-label="Schéma du projet">
+                <div class="flow">
+                            <div class="node"><small>Sources</small><b>API externes</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>Collecte</small><b>Collector PHP</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>Export</small><b>CSV</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>ITSM / CMDB</small><b>iTop</b></div>
+                        </div>
+            </div>
+            <p class="tag">Pipeline de synchronisation</p>
+            <ol class="table pipe">
+                <li style="--i:0"><span>API externe</span><small>OAuth2</small></li>
+                <li style="--i:1"><span>Authentification</span><small>client-credentials</small></li>
+                <li style="--i:2"><span>Collector</span><small>Prepare / Fetch</small></li>
+                <li style="--i:3"><span>Model</span><small>mapping vers les attributs iTop</small></li>
+                <li style="--i:4"><span>Export CSV</span><small>fichier intermédiaire</small></li>
+                <li style="--i:5"><span>synchro_import.php</span><small>définition JSON</small></li>
+                <li style="--i:6"><span>synchro_exec.php</span><small>réconciliation dans iTop</small></li>
+            </ol>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>Les données viennent d'API REST externes protégées par OAuth2 et passent par le framework <code>itop-data-collector-base</code> avant d'être réconciliées dans iTop.</p>
+                <p>Le travail a surtout porté sur la fiabilisation d'une première implémentation fragile : diagnostic d'échecs de configuration silencieux, explicitation de la gestion des erreurs HTTP, et correction d'une fuite d'identifiants OAuth2 en clair dans les logs, identifiée lors d'une revue de code.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Authentification OAuth2 (client-credentials)</li>
+                <li>Pipeline ETL vers les webservices de réconciliation iTop</li>
+                <li>Gestion explicite des erreurs HTTP et logging structuré</li>
+                <li>Pattern reproductible pour l'ajout de nouvelles sources de données</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#revisst">Projet suivant : ReviSST<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="revisst" aria-labelledby="t-revisst">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 03 / 07</p>
+            <a class="btn small" href="#wemember">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero" style="--shot: url(images/GrilleRevisst.png)">
+            <div class="panel">
+                <p class="metas"><span>Java / JavaFX</span><span>SAE</span><span class="rec">2025</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-revisst">ReviSST</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Une application desktop JavaFX pour réviser les situations et les pictogrammes, destinée aux Sauveteurs Secouristes du Travail (SST).</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>SAE du BUT Informatique</dd></div>
+                <div><dt>Période</dt><dd>2025</dd></div>
+                <div><dt>Technos</dt><dd>Java, JavaFX, JSON, SceneBuilder</dd></div>
+            </dl>
+            <div class="stage ink" data-label="Viewport — 1276 × 850" style="--tilt: 10deg">
+                <img class="shot" src="images/GrilleRevisst.png" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850" loading="lazy">
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>Le projet suit une architecture MVC stricte, avec persistance des données en JSON et gestion des scores par mode de jeu et par utilisateur.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Gestion des utilisateurs et des scores</li>
+                <li>Plusieurs modes de jeu</li>
+                <li>Persistance des données en JSON</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#wemember">Projet suivant : Wemember<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="wemember" aria-labelledby="t-wemember">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 04 / 07</p>
+            <a class="btn small" href="#livreo">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero" style="--shot: url(images/AccueilWemember.png)">
+            <div class="panel">
+                <p class="metas"><span>PHP / MySQL</span><span>SAE</span><span class="rec">2025</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-wemember">Wemember</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Une plateforme web collaborative pour gérer une association : authentification, gestion des utilisateurs et tableau de bord administrateur.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>SAE du BUT Informatique</dd></div>
+                <div><dt>Période</dt><dd>2025</dd></div>
+                <div><dt>Technos</dt><dd>PHP, MySQL, Bootstrap, phpMyAdmin</dd></div>
+            </dl>
+            <div class="stage red" data-label="Viewport — 1905 × 912" style="--tilt: 10deg">
+                <img class="shot" src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912" loading="lazy">
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>L'application intègre une gestion des rôles avec différents niveaux de permissions, ainsi que la gestion des documents déposés par les utilisateurs, avec export des données au format PDF.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Authentification sécurisée et gestion des rôles</li>
+                <li>Tableau de bord administrateur</li>
+                <li>Gestion des documents et export PDF</li>
+                <li>Interface responsive</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#livreo">Projet suivant : Livreo<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="livreo" aria-labelledby="t-livreo">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 05 / 07</p>
+            <a class="btn small" href="#watchd">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero">
+            <div class="panel">
+                <p class="metas"><span>Spring Boot / Android</span><span>SAE en cours</span><span class="rec">2026</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-livreo">Livreo</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Un système de gestion de tournées de livraison pour l'entreprise fictive T.G.V., réalisé en équipe dans le cadre de la SAE S5.A.01 « Développement avancé » du BUT 3.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>SAE en cours, projet de groupe</dd></div>
+                <div><dt>Période</dt><dd>2026</dd></div>
+                <div><dt>Technos</dt><dd>Java 21, Spring Boot, Maven, Docker, Android, GitHub Actions, Scrum</dd></div>
+            </dl>
+            <div class="stage ink" data-label="Schéma du projet">
+                <div class="flow">
+                            <div class="node"><small>Sur PC</small><b>Interface Atelier</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node hot"><small>API</small><b>Spring Boot</b></div>
+                            <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+                            <div class="node"><small>Chauffeurs</small><b>Application Android</b></div>
+                        </div>
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>Une interface « Atelier » sur PC permet de gérer les clients, les commandes, les pièces et les colis. Une application Android destinée aux chauffeurs affiche les colis à livrer et les points de livraison sur une carte, et fonctionne hors ligne.</p>
+                <p>Étape suivante : l'optimisation de la boucle de livraison.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>API Spring Boot (Java 21, Maven), conteneurisée avec Docker</li>
+                <li>Application Android utilisable hors ligne</li>
+                <li>Géocodage des adresses via la Géoplateforme de l'IGN</li>
+                <li>Intégration continue avec GitHub Actions</li>
+                <li>Organisation Scrum, suivi sur GitHub Projects</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#watchd">Projet suivant : Watchd<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="watchd" aria-labelledby="t-watchd">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 06 / 07</p>
+            <a class="btn small" href="#gestionprojet">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero" style="--shot: url(images/Watchd.jpg)">
+            <div class="panel">
+                <p class="metas"><span>PHP / SQLite / TMDB</span><span>Perso</span><span class="rec">Septembre 2026</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-watchd">Watchd</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Une application web personnelle pour gérer sa collection de films et de séries, branchée sur l'API TMDB.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>Projet personnel</dd></div>
+                <div><dt>Période</dt><dd>Septembre 2026</dd></div>
+                <div><dt>Technos</dt><dd>PHP, SQLite, PDO, API TMDB, HTML / CSS, JavaScript, Cloudflare</dd></div>
+            </dl>
+            <div class="stage red" data-label="Viewport — 800 × 600" style="--tilt: 10deg">
+                <img class="shot" src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600" loading="lazy">
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>On recherche un titre via l'API TMDB (recherche en direct, tendances) et on l'ajoute à sa collection, puis on le marque « à voir », « en cours » ou « vu », avec un suivi par saison pour les séries.</p>
+                <p>On peut noter ce qu'on a vu sur 10 et laisser un commentaire. Les films d'une même saga sont regroupés, avec une fiche détaillée (bande-annonce YouTube) et une interface « cinéma » responsive, sur mobile comme sur PC.</p>
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Recherche en direct et tendances via l'API TMDB</li>
+                <li>Statuts « à voir », « en cours », « vu » et suivi par saison</li>
+                <li>Notes sur 10 et commentaires</li>
+                <li>Regroupement des sagas et fiches détaillées</li>
+                <li>CSS écrit à la main, responsive</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#gestionprojet">Projet suivant : GestionProjet-IUT<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="work" id="gestionprojet" aria-labelledby="t-gestionprojet">
+        <nav class="work-bar" aria-label="Navigation du projet">
+            <form method="dialog"><button class="btn ghost small"><svg class="i back"><use href="#i-arrow"/></svg>Retour</button></form>
+            <p>Projet 07 / 07</p>
+            <a class="btn small" href="#api-itop">Projet suivant<svg class="i"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <header class="work-hero" style="--shot: url(images/GestionProjetSprints.png)">
+            <div class="panel">
+                <p class="metas"><span>FastAPI / React</span><span>Perso</span><span class="rec">Août – octobre 2026</span><span>Dorian Vidal © MMXXVI</span></p>
+                <h2 id="t-gestionprojet">GestionProjet-IUT</h2>
+                <svg class="i down" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </div>
+        </header>
+        <div class="work-body">
+            <p class="tag">En bref</p>
+            <p class="statement">Un outil web de suivi de projet agile (Scrum) pour des équipes étudiantes : heures de travail, sprints synchronisés depuis GitHub, burndown chart et diagramme de Gantt.</p>
+            <dl class="credits">
+                <div><dt>Contexte</dt><dd>Projet personnel</dd></div>
+                <div><dt>Période</dt><dd>Août – octobre 2026</dd></div>
+                <div><dt>Technos</dt><dd>Python, FastAPI, SQLAlchemy, MySQL, React 19, TypeScript, Vite, Docker, GitHub Actions</dd></div>
+            </dl>
+            <div class="stage ink" data-label="Viewport — 1440 × 900" style="--tilt: 10deg">
+                <img class="shot" src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900" loading="lazy">
+            </div>
+            <p class="tag">Détails</p>
+            <div class="overview">
+                <p>Les membres saisissent leurs heures de travail par catégorie, synchronisent les issues et les sprints depuis GitHub, et suivent l'avancement avec un dashboard, un burndown chart et un diagramme de Gantt.</p>
+                <p>L'outil génère aussi les comptes-rendus des cérémonies Scrum (daily, planification, review, rétrospective) en Word, et des exports Excel des heures.</p>
+            </div>
+            <div class="stage red flip" data-label="Viewport — 1440 × 900" style="--tilt: -10deg">
+                <img class="shot" src="images/GestionProjetSprints.png" alt="Page Sprints de GestionProjet-IUT : planning et burndown chart" width="1440" height="900" loading="lazy">
+            </div>
+            <p class="tag">Points clés</p>
+            <ol class="table">
+                <li>Saisie des heures par catégorie, dashboard et exports Excel</li>
+                <li>Synchronisation des issues et des sprints depuis GitHub</li>
+                <li>Burndown chart et diagramme de Gantt</li>
+                <li>Comptes-rendus de cérémonies Scrum générés en Word</li>
+                <li>Authentification par Cloudflare Access (JWT)</li>
+                <li>Docker Compose, CI/CD GitHub Actions, tests pytest</li>
+                <li>Déployé sur un Raspberry Pi via Cloudflare Tunnel</li>
+            </ol>
+            <div class="work-end">
+                <form method="dialog"><button class="btn ghost"><svg class="i back"><use href="#i-arrow"/></svg>Retour aux projets</button></form>
+                <a class="btn" href="#api-itop">Projet suivant : API iTop<svg class="i"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </dialog>
 </body>
 </html>
