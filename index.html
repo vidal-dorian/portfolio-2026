@@ -3,8 +3,9 @@
 <!--
     Portfolio de Dorian Vidal : une seule page, sans build ni dépendance.
 
-    Ordre du fichier : barre fixe, accueil, projets (une « feuille » par projet), à propos,
-    stack, contact, puis une « page » <dialog> par projet tout en bas.
+    Ordre du fichier : barre fixe, le défilé (une diapositive de présentation puis une par
+    projet), la page « À propos » (à propos, stack, contact), puis une page par projet. Les
+    pages sont des <dialog> plein écran.
     Mode d'emploi (modifier un texte, ajouter un projet, déployer) : voir README.md.
 -->
 <head>
@@ -30,81 +31,70 @@
         <a class="logo" href="#accueil">Dorian<span>.</span>Vidal</a>
         <p class="status">Disponible (stage / alternance)</p>
         <p class="place">Rodez, France<span class="clock"></span></p>
-        <nav aria-label="Sections">
-            <a href="#accueil">Accueil</a>
-            <a href="#projets">Projets</a>
+        <nav aria-label="Pages">
             <a href="#a-propos">À propos</a>
-            <a href="#competences">Stack</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
 
-    <!-- ==================== ACCUEIL ==================== -->
-    <section id="accueil" class="hero">
-        <div class="hero-sheet">
-            <h1 class="sr">Dorian Vidal, développeur logiciel</h1>
-            <p class="hero-title" aria-hidden="true">Développeur <span class="swap">logiciel</span></p>
-            <div class="hero-side">
-                <p class="hero-lead">
-                    Passionné par le développement logiciel et les nouvelles technologies.
-                    Actuellement en 3<sup>e</sup> année de BUT Informatique, je construis des solutions
-                    élégantes et efficaces.
-                </p>
-                <p class="actions">
-                    <a class="btn light" href="#projets">Voir mes 7 projets<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                    <a class="btn light ghost" href="#contact">Me contacter</a>
-                </p>
-            </div>
-
-            <!-- Tirages de travers : ils se redressent au survol et ouvrent la page du projet -->
-            <div class="prints">
-                <a class="print" href="#revisst">
-                    <img src="images/GrilleRevisst.webp" alt="" width="1276" height="850">
-                    <span>03 — ReviSST</span>
-                </a>
-                <a class="print" href="#wemember">
-                    <img src="images/AccueilWemember.png" alt="" width="1905" height="912">
-                    <span>04 — Wemember</span>
-                </a>
-                <a class="print" href="#watchd">
-                    <img src="images/Watchd.jpg" alt="" width="800" height="600">
-                    <span>06 — Watchd</span>
-                </a>
-                <a class="print" href="#gestionprojet">
-                    <img src="images/GestionProjetDashboard.png" alt="" width="1440" height="900">
-                    <span>07 — GestionProjet-IUT</span>
-                </a>
-            </div>
-            <p class="hero-foot" aria-hidden="true"><span>Défiler pour explorer</span><span>Viewport <span class="viewport">1440 × 900</span></span></p>
-            <svg class="mark" viewBox="0 0 1000 118" role="img" aria-label="Dorian Vidal">
-                <text x="0" y="112" textLength="1000" lengthAdjust="spacingAndGlyphs">DORIAN<tspan>.</tspan>VIDAL</text>
-            </svg>
-        </div>
-    </section>
-
+    <!-- ==================== LE DÉFILÉ ==================== -->
+    <!-- L'accueil est un défilé horizontal plein écran : une diapositive de présentation, puis
+         une par projet. On le fait avancer en glissant, à la molette, au clavier ou par les
+         points en bas à gauche. -->
     <main>
-        <!-- ==================== PROJETS ==================== -->
-        <section id="projets">
-            <header class="head">
-                <p class="tag">Stage, SAE et projets perso</p>
-                <h2 class="big">Projets</h2>
-                <p class="links">
-                    <a class="link" href="#s-api-itop">Stage<sup>[ 2 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                    <a class="link" href="#s-revisst">SAE<sup>[ 3 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                    <a class="link" href="#s-watchd">Perso<sup>[ 2 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                </p>
-            </header>
+        <div class="deck" id="projets">
+            <!-- Diapositive 00 : présentation -->
+            <section class="slide hero" id="accueil">
+                <h1 class="sr">Dorian Vidal, développeur logiciel</h1>
+                <p class="hero-title" aria-hidden="true">Développeur <span class="swap">logiciel</span></p>
+                <div class="hero-side">
+                    <p class="hero-lead">
+                        Passionné par le développement logiciel et les nouvelles technologies.
+                        Actuellement en 3<sup>e</sup> année de BUT Informatique, je construis des solutions
+                        élégantes et efficaces.
+                    </p>
+                    <p class="actions">
+                        <a class="btn light" href="#s-api-itop">Voir mes 7 projets<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="btn light ghost" href="#contact">Me contacter</a>
+                    </p>
+                    <p class="links">
+                        <a class="link" href="#s-api-itop">Stage<sup>[ 2 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="link" href="#s-revisst">SAE<sup>[ 3 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="link" href="#s-watchd">Perso<sup>[ 2 ]</sup><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    </p>
+                </div>
 
-            <!-- Une « feuille » plein écran par projet : elle arrive de travers, se redresse et recouvre
-                 la précédente. Elle ouvre la page du projet (les <dialog> en bas du fichier). -->
-            <div class="sheets">
-                <a class="sheet" id="s-api-itop" href="#api-itop">
+                <!-- Tirages de travers : ils se redressent au survol et ouvrent la page du projet -->
+                <div class="prints">
+                    <a class="print" href="#revisst">
+                        <img src="images/GrilleRevisst.webp" alt="" width="1276" height="850">
+                        <span>03 — ReviSST</span>
+                    </a>
+                    <a class="print" href="#wemember">
+                        <img src="images/AccueilWemember.png" alt="" width="1905" height="912">
+                        <span>04 — Wemember</span>
+                    </a>
+                    <a class="print" href="#watchd">
+                        <img src="images/Watchd.jpg" alt="" width="800" height="600">
+                        <span>06 — Watchd</span>
+                    </a>
+                    <a class="print" href="#gestionprojet">
+                        <img src="images/GestionProjetDashboard.png" alt="" width="1440" height="900">
+                        <span>07 — GestionProjet-IUT</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Une diapositive par projet. La scène (stage ink / stage red) donne sa couleur à
+                 tout l'écran ; le titre géant la traverse. Toute la diapositive est un lien vers
+                 la page du projet (les <dialog> en bas du fichier). -->
+                <a class="slide sheet" id="s-api-itop" href="#api-itop">
                     <div class="sheet-head">
                         <p class="tag">01 / 07 — Stage — Avril – août 2026</p>
                         <h3>API iTop</h3>
                         <p class="sheet-desc">Une API REST interne qui fait communiquer les applications de l'entreprise avec iTop pour mettre à jour la CMDB.</p>
                         <ul class="chips"><li>C#</li><li>ASP.NET Core</li><li>OQL</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage ink" data-label="Schéma du projet">
                         <div class="flow">
@@ -117,13 +107,13 @@
                     </div>
                 </a>
 
-                <a class="sheet" href="#synchro-itop">
+                <a class="slide sheet" id="s-synchro-itop" href="#synchro-itop">
                     <div class="sheet-head">
                         <p class="tag">02 / 07 — Stage — Avril – août 2026</p>
                         <h3>Synchro iTop</h3>
                         <p class="sheet-desc">La synchronisation automatique de données fournisseurs et clients vers le CMDB iTop, à la place d'une saisie manuelle.</p>
                         <ul class="chips"><li>PHP</li><li>OAuth2</li><li>ETL</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage red" data-label="Schéma du projet">
                         <div class="flow">
@@ -138,39 +128,39 @@
                     </div>
                 </a>
 
-                <a class="sheet" id="s-revisst" href="#revisst">
+                <a class="slide sheet" id="s-revisst" href="#revisst">
                     <div class="sheet-head">
                         <p class="tag">03 / 07 — SAE — 2025</p>
                         <h3>ReviSST</h3>
                         <p class="sheet-desc">Une application desktop pour réviser les situations et les pictogrammes des Sauveteurs Secouristes du Travail.</p>
                         <ul class="chips"><li>Java</li><li>JavaFX</li><li>JSON</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage ink" data-label="Viewport — 1276 × 850">
-                        <img class="shot" src="images/GrilleRevisst.webp" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850" loading="lazy">
+                        <img class="shot" src="images/GrilleRevisst.webp" alt="Écran « Grille » de l'application ReviSST" width="1276" height="850">
                     </div>
                 </a>
 
-                <a class="sheet" href="#wemember">
+                <a class="slide sheet" id="s-wemember" href="#wemember">
                     <div class="sheet-head">
                         <p class="tag">04 / 07 — SAE — 2025</p>
                         <h3>Wemember</h3>
                         <p class="sheet-desc">Une plateforme web pour gérer une association : authentification, rôles, documents et tableau de bord.</p>
                         <ul class="chips"><li>PHP</li><li>MySQL</li><li>Bootstrap</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage red" data-label="Viewport — 1905 × 912">
-                        <img class="shot" src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912" loading="lazy">
+                        <img class="shot" src="images/AccueilWemember.png" alt="Page d'accueil de Wemember" width="1905" height="912">
                     </div>
                 </a>
 
-                <a class="sheet" href="#livreo">
+                <a class="slide sheet" id="s-livreo" href="#livreo">
                     <div class="sheet-head">
                         <p class="tag">05 / 07 — SAE en cours — 2026</p>
                         <h3>Livreo</h3>
                         <p class="sheet-desc">La gestion de tournées de livraison : une interface Atelier sur PC, une API et une application Android pour les chauffeurs.</p>
                         <ul class="chips"><li>Java 21</li><li>Spring Boot</li><li>Android</li><li>Docker</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage ink" data-label="Schéma du projet">
                         <div class="flow">
@@ -183,39 +173,65 @@
                     </div>
                 </a>
 
-                <a class="sheet" id="s-watchd" href="#watchd">
+                <a class="slide sheet" id="s-watchd" href="#watchd">
                     <div class="sheet-head">
                         <p class="tag">06 / 07 — Perso — Septembre 2026</p>
                         <h3>Watchd</h3>
                         <p class="sheet-desc">Une application web pour gérer sa collection de films et de séries, branchée sur l'API TMDB.</p>
                         <ul class="chips"><li>PHP</li><li>SQLite</li><li>API TMDB</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage red" data-label="Viewport — 800 × 600">
-                        <img class="shot" src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600" loading="lazy">
+                        <img class="shot" src="images/Watchd.jpg" alt="Collection Watchd : grille d'affiches avec recherche et filtres" width="800" height="600">
                     </div>
                 </a>
 
-                <a class="sheet" href="#gestionprojet">
+                <a class="slide sheet" id="s-gestionprojet" href="#gestionprojet">
                     <div class="sheet-head">
                         <p class="tag">07 / 07 — Perso — Août – octobre 2026</p>
                         <h3>GestionProjet-IUT</h3>
                         <p class="sheet-desc">Un outil web de suivi de projet agile : heures de travail, sprints GitHub, burndown et diagramme de Gantt.</p>
                         <ul class="chips"><li>Python</li><li>FastAPI</li><li>React</li><li>TypeScript</li></ul>
-                        <span class="btn">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                        <span class="btn light">Voir le projet<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </div>
                     <div class="stage ink" data-label="Viewport — 1440 × 900">
-                        <img class="shot" src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900" loading="lazy">
+                        <img class="shot" src="images/GestionProjetDashboard.png" alt="Dashboard de GestionProjet-IUT : heures par contributeur, par user story et par catégorie" width="1440" height="900">
                     </div>
                 </a>
-            </div>
-        </section>
+        </div>
 
-        <!-- ==================== À PROPOS ==================== -->
-        <section id="a-propos">
+        <!-- Bas de l'écran : un point par diapositive (dans le même ordre) à gauche, les liens
+             directs à droite -->
+        <nav class="dots" aria-label="Diapositives">
+            <a href="#accueil" aria-label="Présentation"></a>
+            <a href="#s-api-itop" aria-label="01 — API iTop"></a>
+            <a href="#s-synchro-itop" aria-label="02 — Synchro iTop"></a>
+            <a href="#s-revisst" aria-label="03 — ReviSST"></a>
+            <a href="#s-wemember" aria-label="04 — Wemember"></a>
+            <a href="#s-livreo" aria-label="05 — Livreo"></a>
+            <a href="#s-watchd" aria-label="06 — Watchd"></a>
+            <a href="#s-gestionprojet" aria-label="07 — GestionProjet-IUT"></a>
+        </nav>
+        <p class="socials">
+            <a href="https://www.linkedin.com/in/dorian-vidal-08867138a/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/vidal-dorian" target="_blank" rel="noopener">GitHub</a>
+            <a href="mailto:dorian.vidal@iut-rodez.fr">Email</a>
+        </p>
+    </main>
+
+    <!-- ==================== À PROPOS, STACK, CONTACT ==================== -->
+    <!-- Une page <dialog> comme celles des projets, ouverte par #a-propos, #competences ou
+         #contact (script.js ouvre la page qui contient l'ancre, puis fait défiler jusqu'à elle). -->
+    <dialog class="work about" id="a-propos" aria-labelledby="t-a-propos">
+        <nav class="work-bar" aria-label="Navigation de la page">
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <p>Dorian Vidal</p>
+            <a class="btn light small" href="#contact">Contact<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </nav>
+        <section>
             <header class="head">
                 <p class="tag">Qui suis-je</p>
-                <h2 class="big">À propos</h2>
+                <h2 class="big" id="t-a-propos">À propos</h2>
             </header>
             <div class="cols">
                 <div class="cards">
@@ -224,7 +240,7 @@
                         <p>Je travaille en équipe sur Livreo, un système de gestion de tournées de livraison : une API Spring Boot et une application Android.</p>
                         <span class="link">Voir Livreo<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                     </a>
-                    <dl class="card ink stats">
+                    <dl class="card light stats">
                         <div><dt>année de BUT</dt><dd>3<sup>e</sup></dd></div>
                         <div><dt>projets</dt><dd>7</dd></div>
                         <div><dt>langages pratiqués</dt><dd>5</dd></div>
@@ -280,10 +296,8 @@
                 <div><dt class="tag">Outils<sup>[ 8 ]</sup></dt><dd><ul><li>IntelliJ</li><li>PHPStorm</li><li>Git</li><li>GitHub</li><li>SQL Developer</li><li>Docker</li><li>Linux</li><li>Figma</li></ul></dd></div>
             </dl>
         </section>
-    </main>
 
-    <!-- ==================== CONTACT ==================== -->
-    <footer id="contact" class="foot">
+        <footer id="contact" class="foot">
         <svg class="mark" viewBox="0 0 1000 118" aria-hidden="true">
             <text x="0" y="112" textLength="1000" lengthAdjust="spacingAndGlyphs">DORIAN<tspan>.</tspan>VIDAL</text>
         </svg>
@@ -311,7 +325,6 @@
                 <div>
                     <p class="tag">Nav</p>
                     <ul>
-                        <li><a href="#accueil">Accueil</a></li>
                         <li><a href="#projets">Projets</a></li>
                         <li><a href="#a-propos">À propos</a></li>
                         <li><a href="#competences">Stack</a></li>
@@ -320,19 +333,22 @@
             </div>
             <div class="foot-end">
                 <a class="talk" href="mailto:dorian.vidal@iut-rodez.fr">Parlons-en<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                <p>© Dorian Vidal 2026 / HTML, CSS et JavaScript, sans framework / <a href="#accueil">Haut</a></p>
+                <p>© Dorian Vidal 2026 / HTML, CSS et JavaScript, sans framework / <a href="#a-propos">Haut</a></p>
             </div>
         </div>
-    </footer>
+        </footer>
+    </dialog>
 
     <!-- ==================== PAGES PROJET ==================== -->
-    <!-- Ouvertes par script.js quand l'adresse se termine par leur #id (lien d'une feuille, « projet suivant »…) -->
+    <!-- Ouvertes par script.js quand l'adresse se termine par leur #id (lien d'une diapositive,
+         « projet suivant »…). Même ordre que les diapositives : la couleur de leur en-tête
+         alterne toute seule, noir puis rouge, comme les scènes du défilé. -->
 
-    <dialog class="work" id="api-itop" aria-labelledby="t-api-itop">
+    <dialog class="work project" id="api-itop" aria-labelledby="t-api-itop">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 01 / 07</p>
-            <a class="btn small" href="#synchro-itop">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#synchro-itop">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
             <div class="panel">
@@ -372,18 +388,18 @@
                 <li>Documentation API via Swashbuckle / OpenAPI</li>
                 <li>Analyse statique et qualité de code (SonarQube / Roslyn)</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#synchro-itop">Projet suivant : Synchro iTop<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#synchro-itop">
+            <span class="tag">Projet suivant — 02 / 07</span>
+            <b>Synchro iTop</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="synchro-itop" aria-labelledby="t-synchro-itop">
+    <dialog class="work project" id="synchro-itop" aria-labelledby="t-synchro-itop">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 02 / 07</p>
-            <a class="btn small" href="#revisst">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#revisst">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
             <div class="panel">
@@ -434,21 +450,21 @@
                 <li>Gestion explicite des erreurs HTTP et logging structuré</li>
                 <li>Pattern reproductible pour l'ajout de nouvelles sources de données</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#revisst">Projet suivant : ReviSST<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#revisst">
+            <span class="tag">Projet suivant — 03 / 07</span>
+            <b>ReviSST</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="revisst" aria-labelledby="t-revisst">
+    <dialog class="work project" id="revisst" aria-labelledby="t-revisst">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 03 / 07</p>
-            <a class="btn small" href="#wemember">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#wemember">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
-            <img class="hero-shot" src="images/GrilleRevisst.webp" alt="" loading="lazy">
+            <img class="hero-shot" src="images/GrilleRevisst.webp" alt="" width="1276" height="850" decoding="sync">
             <div class="panel">
                 <p class="metas"><span>Java / JavaFX</span><span>SAE</span><span class="rec">2025</span><span>Dorian Vidal © MMXXVI</span></p>
                 <h2 id="t-revisst">ReviSST</h2>
@@ -476,21 +492,21 @@
                 <li>Plusieurs modes de jeu</li>
                 <li>Persistance des données en JSON</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#wemember">Projet suivant : Wemember<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#wemember">
+            <span class="tag">Projet suivant — 04 / 07</span>
+            <b>Wemember</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="wemember" aria-labelledby="t-wemember">
+    <dialog class="work project" id="wemember" aria-labelledby="t-wemember">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 04 / 07</p>
-            <a class="btn small" href="#livreo">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#livreo">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
-            <img class="hero-shot" src="images/AccueilWemember.png" alt="" loading="lazy">
+            <img class="hero-shot" src="images/AccueilWemember.png" alt="" width="1905" height="912" decoding="sync">
             <div class="panel">
                 <p class="metas"><span>PHP / MySQL</span><span>SAE</span><span class="rec">2025</span><span>Dorian Vidal © MMXXVI</span></p>
                 <h2 id="t-wemember">Wemember</h2>
@@ -519,18 +535,18 @@
                 <li>Gestion des documents et export PDF</li>
                 <li>Interface responsive</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#livreo">Projet suivant : Livreo<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#livreo">
+            <span class="tag">Projet suivant — 05 / 07</span>
+            <b>Livreo</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="livreo" aria-labelledby="t-livreo">
+    <dialog class="work project" id="livreo" aria-labelledby="t-livreo">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 05 / 07</p>
-            <a class="btn small" href="#watchd">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#watchd">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
             <div class="panel">
@@ -569,21 +585,21 @@
                 <li>Intégration continue avec GitHub Actions</li>
                 <li>Organisation Scrum, suivi sur GitHub Projects</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#watchd">Projet suivant : Watchd<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#watchd">
+            <span class="tag">Projet suivant — 06 / 07</span>
+            <b>Watchd</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="watchd" aria-labelledby="t-watchd">
+    <dialog class="work project" id="watchd" aria-labelledby="t-watchd">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 06 / 07</p>
-            <a class="btn small" href="#gestionprojet">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#gestionprojet">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
-            <img class="hero-shot" src="images/Watchd.jpg" alt="" loading="lazy">
+            <img class="hero-shot" src="images/Watchd.jpg" alt="" width="800" height="600" decoding="sync">
             <div class="panel">
                 <p class="metas"><span>PHP / SQLite / TMDB</span><span>Perso</span><span class="rec">Septembre 2026</span><span>Dorian Vidal © MMXXVI</span></p>
                 <h2 id="t-watchd">Watchd</h2>
@@ -614,21 +630,21 @@
                 <li>Regroupement des sagas et fiches détaillées</li>
                 <li>CSS écrit à la main, responsive</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#gestionprojet">Projet suivant : GestionProjet-IUT<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#gestionprojet">
+            <span class="tag">Projet suivant — 07 / 07</span>
+            <b>GestionProjet-IUT</b>
+        </a>
     </dialog>
 
-    <dialog class="work" id="gestionprojet" aria-labelledby="t-gestionprojet">
+    <dialog class="work project" id="gestionprojet" aria-labelledby="t-gestionprojet">
         <nav class="work-bar" aria-label="Navigation du projet">
-            <a class="btn ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
+            <a class="btn light ghost small" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour</a>
             <p>Projet 07 / 07</p>
-            <a class="btn small" href="#api-itop">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn light small" href="#api-itop">Projet suivant<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
         <header class="work-hero">
-            <img class="hero-shot" src="images/GestionProjetSprints.png" alt="" loading="lazy">
+            <img class="hero-shot" src="images/GestionProjetDashboard.png" alt="" width="1440" height="900" decoding="sync">
             <div class="panel">
                 <p class="metas"><span>FastAPI / React</span><span>Perso</span><span class="rec">Août – octobre 2026</span><span>Dorian Vidal © MMXXVI</span></p>
                 <h2 id="t-gestionprojet">GestionProjet-IUT</h2>
@@ -664,11 +680,11 @@
                 <li>Docker Compose, CI/CD GitHub Actions, tests pytest</li>
                 <li>Déployé sur un Raspberry Pi via Cloudflare Tunnel</li>
             </ol>
-            <div class="work-end">
-                <a class="btn ghost" href="#projets"><svg class="i back" aria-hidden="true"><use href="#i-arrow"/></svg>Retour aux projets</a>
-                <a class="btn" href="#api-itop">Projet suivant : API iTop<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            </div>
         </div>
+        <a class="next" href="#api-itop">
+            <span class="tag">Projet suivant — 01 / 07</span>
+            <b>API iTop</b>
+        </a>
     </dialog>
 </body>
 </html>
