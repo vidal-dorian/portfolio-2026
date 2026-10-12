@@ -8,8 +8,9 @@ Le style mélange deux inspirations. De [The Line Studio](https://thelinestudio.
 papier clair, le noir, un seul rouge, les étiquettes `/ EN CAPITALES`, les repères de cadrage
 et **des blocs qui arrivent de travers et se posent droits**. De
 [Robin Mastromarino](http://robinmastromarino.com/) : un site qui tient dans un écran,
-**un défilé horizontal de projets plein écran**, des titres géants inclinés qui traversent
-l'image, et des pages qui s'ouvrent sans jamais changer de décor.
+**un défilé de projets plein écran** (horizontal sur ordinateur, vertical sur téléphone), des
+titres géants inclinés qui traversent l'image, et des pages qui s'ouvrent sans jamais changer
+de décor.
 
 ## Sommaire
 
@@ -104,9 +105,12 @@ un autre nombre, adapter les règles `.pipe li:nth-child(…)` et les pourcentag
 
 ### Le défilé
 
-L'accueil ne défile pas verticalement : c'est une piste horizontale (`<div class="deck">`)
-dont chaque diapositive remplit l'écran. Le mouvement est celui du navigateur, un défilement
-natif aimanté (`scroll-snap`) : au doigt et au pavé tactile il n'y a aucun code. `script.js`
+L'accueil est une piste (`<div class="deck">`) dont chaque diapositive remplit l'écran. Sur
+ordinateur elle est horizontale ; sur téléphone et tablette à la verticale elle descend,
+parce que c'est le geste qu'on fait naturellement sur un écran tenu en main (voir
+[Les tailles d'écran](#les-tailles-décran)). Dans les deux sens le mouvement est celui du
+navigateur, un défilement natif aimanté (`scroll-snap`) : au doigt et au pavé tactile il n'y
+a aucun code. `script.js`
 ajoute seulement les autres façons d'avancer (glisser à la souris, molette, flèches du
 clavier, points) et se contente à chaque fois de demander au navigateur d'amener une
 diapositive à l'écran.
@@ -168,13 +172,20 @@ n'existe pas, le changement est immédiat.
 
 ### Les tailles d'écran
 
-Rien ne défile dans le défilé : chaque disposition doit tenir dans un écran. La section
-« Petits écrans » de `style.css` en prévoit quatre : large (ordinateur, tablette à
+Une diapositive remplit toujours exactement l'écran : chaque disposition doit y tenir. La
+section « Petits écrans » de `style.css` en prévoit quatre : large (ordinateur, tablette à
 l'horizontale), tablette à la verticale (≤ 900 px : présentation et pages sur une colonne),
-téléphone à la verticale (≤ 620 px : le visuel en haut, les textes dans la moitié basse, un
-mot du titre par ligne) et téléphone à l'horizontale (≤ 520 px de haut : disposition en
-largeur, réduite à l'essentiel). Au doigt, le défilé se parcourt par un simple glissement de
-côté.
+téléphone à la verticale (≤ 620 px : le visuel en haut, les textes dessous, un mot du titre
+par ligne) et téléphone à l'horizontale (≤ 520 px de haut : disposition en largeur, réduite
+à l'essentiel).
+
+**Sur les trois dernières, le défilé est vertical.** Le bloc « Défilé vertical » de la même
+section retourne la piste, et tout suit : les points passent en colonne sur le bord droit,
+une invitation « Défiler » apparaît au bas de la présentation, les flèches des boutons
+pointent vers le bas, et les animations changent de sens (les titres montent en place au
+lieu de glisser de côté, le bord en biais se déploie en hauteur). La condition de ce bloc
+figure à deux endroits de `style.css` (sections 9 et 10) : les garder identiques. `script.js`
+ne la répète pas, il lit le sens sur la piste elle-même.
 
 ### Les rotations
 
@@ -221,9 +232,9 @@ aucune donnée de visiteur traitée, aucun script tiers. Les protections en plac
 
 ## Accessibilité
 
-- Navigation complète au clavier, focus toujours visible : flèches gauche et droite pour le
-  défilé, Tab pour atteindre chaque diapositive (elle vient alors à l'écran), Entrée pour
-  ouvrir son projet.
+- Navigation complète au clavier, focus toujours visible : les flèches (ou page suivante /
+  précédente) pour le défilé, Tab pour atteindre chaque diapositive (elle vient alors à
+  l'écran), Entrée pour ouvrir son projet.
 - Les pages sont de vrais `<dialog>` modaux : focus piégé dedans, fermeture par Échap.
 - Le point de la diapositive affichée porte `aria-current`.
 - Les éléments décoratifs (icônes, lettres animées, tirages de la présentation) sont cachés

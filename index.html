@@ -38,9 +38,10 @@
     </header>
 
     <!-- ==================== LE DÉFILÉ ==================== -->
-    <!-- L'accueil est un défilé horizontal plein écran : une diapositive de présentation, puis
-         une par projet. On le fait avancer en glissant, à la molette, au clavier ou par les
-         points en bas à gauche. -->
+    <!-- L'accueil est un défilé plein écran : une diapositive de présentation, puis une par
+         projet. Sur grand écran il est horizontal (on glisse, ou molette, clavier, points en
+         bas à gauche) ; sur téléphone et tablette à la verticale il descend, comme une page
+         ordinaire, et les points passent sur le bord droit. -->
     <main>
         <div class="deck" id="projets">
             <!-- Diapositive 00 : présentation -->
@@ -83,6 +84,9 @@
                         <span>07 — GestionProjet-IUT</span>
                     </a>
                 </div>
+
+                <!-- Invitation à défiler : affichée seulement quand le défilé est vertical -->
+                <p class="hint" aria-hidden="true">Défiler<svg class="i"><use href="#i-arrow"/></svg></p>
             </section>
 
             <!-- Une diapositive par projet. La scène (stage ink / stage red) donne sa couleur à
