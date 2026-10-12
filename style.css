@@ -2,22 +2,23 @@
    Portfolio de Dorian Vidal — feuille de style unique, sans préprocesseur.
 
    Sommaire
-     1. Réglages          couleurs, marges, hauteur de barre
+     1. Réglages          couleurs, marges, courbes d'animation
      2. Base              remise à zéro, éléments nus, utilitaires
-     3. Briques           étiquette, grand titre, bouton, lien, grand nom
-     4. Barre du haut
-     5. Accueil           feuille rouge, tirages des projets
-     6. Projets           une feuille plein écran par projet, scène, capture, schéma
-     7. À propos
-     8. Stack
-     9. Contact           pied de page
-    10. Pages projet      les <dialog>
-    11. Petits écrans
-    12. Mouvement         toutes les animations, regroupées
+     3. Briques           étiquette, titres « affiche », bouton, lien, grand nom
+     4. Interface         les quatre coins de l'écran : logo, liens, points, réseaux
+     5. Défilé            la piste, la diapositive de présentation, les diapositives projet
+     6. Scène             fond coloré, repères de cadrage, capture, schéma
+     7. Pages             les <dialog> : en-tête, corps, projet suivant
+     8. À propos          cartes, textes, stack, contact
+     9. Petits écrans
+    10. Mouvement         toutes les animations, regroupées
 
-   Le geste du site : un bloc arrive de travers et se pose droit. Chaque bloc concerné
-   déclare son angle de départ dans --tilt (et, s'il ne finit pas droit, son angle de repos
-   dans --rest) ; l'animation « settle » de la section 12 fait le reste.
+   Le site tient dans un écran : l'accueil est un défilé horizontal, et chaque page (un projet,
+   « À propos ») s'ouvre par-dessus sans jamais quitter le document.
+
+   Deux gestes se répondent. Un bloc arrive de travers et se pose droit (captures, cartes,
+   scènes) : il déclare son angle de départ dans --tilt, et son angle de repos dans --rest
+   s'il ne finit pas droit. Les titres géants, eux, restent inclinés et traversent l'image.
    ========================================================================================== */
 
 
@@ -25,14 +26,30 @@
 
 :root {
     --paper: #f8f8f8;
-    --gray: #dddee2;
     --ink: #0b0b0b;
     /* Couleur d'accent : changer cette ligne recolore tout le site (penser aussi au favicon
        dans index.html). Ce rouge garde un contraste d'au moins 4,5 avec le blanc ET avec le
-       fond papier : à vérifier si on le remplace. */
+       fond papier : à vérifier si on le remplace. Sur le noir il n'atteint que 4,1 : il n'y
+       sert donc qu'à des formes ou à du très gros texte. */
     --accent: #dc2a0c;
-    --pad: clamp(.75rem, 1.1vw, 1.1rem);   /* marge latérale des sections */
-    --bar-h: 3.25rem;                      /* hauteur de la barre du haut : les feuilles se calent dessous */
+    --pad: clamp(.75rem, 1.1vw, 1.1rem);   /* marge latérale */
+    --bar-h: 3.25rem;                      /* hauteur des bandes d'interface, en haut et en bas de l'écran */
+
+    /* Zone de l'écran où se pose le visuel d'un projet : distance au haut, au bas et aux côtés.
+       La diapositive et l'en-tête de la page du projet utilisent la même, pour que le visuel
+       soit exactement au même endroit des deux côtés d'une ouverture. */
+    --zt: max(15vh, 5.5rem);     /* jamais sous la barre du haut… */
+    --zb: max(33vh, 14.5rem);    /* …ni sur les textes du bas, même dans une fenêtre peu haute */
+    --zx: 15vw;
+
+    /* Position de la souris, de -0,5 à 0,5 (script.js) : titres et visuels la suivent un peu */
+    --mx: 0;
+    --my: 0;
+
+    /* Deux courbes pour tout le site : --ease part vite et se pose très doucement (blocs,
+       transitions de page), --back dépasse légèrement sa cible (petits éléments). */
+    --ease: cubic-bezier(.19, 1, .22, 1);
+    --back: cubic-bezier(.175, .885, .32, 1.275);
 
     color-scheme: only light;              /* pas d'inversion automatique des couleurs en mode sombre */
 }
@@ -42,18 +59,13 @@
 
 * { box-sizing: border-box; margin: 0; }
 
-html { background: var(--paper); scroll-padding-top: var(--bar-h); }
-html:has(dialog[open]) { overflow: hidden; }   /* page figée derrière une page projet ouverte */
+html { background: var(--ink); }
 
 body {
     color: var(--ink);
     font: 450 1.0625rem/1.5 Archivo, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-
-/* Les blocs inclinés dépassent sur les côtés : on coupe sans créer de zone de scroll
-   (overflow: hidden casserait le position: sticky des feuilles). */
-.hero, main, .foot { overflow-x: clip; }
 
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; padding: 0; }
@@ -82,13 +94,23 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .tag::before { content: "/ "; font-weight: 400; }
 .tag sup { margin-left: .4em; font-size: .85em; }
 
+/* Titres « affiche » : Archivo dans sa largeur la plus étroite, en capitales grasses. C'est
+   la police variable du reste du site, réglée autrement (axe wdth) : rien de plus à charger. */
+.big, .hero-title, .sheet h3, .panel h2, .next b, .stats dd, .talk, .probe {
+    font-stretch: 62%;
+    font-weight: 800;
+    line-height: .86;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+}
+
+/* Règle invisible : script.js y compose le texte d'un titre pour mesurer sa largeur en em */
+.probe { position: absolute; visibility: hidden; font-size: 100px; white-space: nowrap; }
+
 /* Grand titre de section. script.js le découpe en lettres (<b><i>…</i></b>). */
 .big {
-    margin-left: -.04em;   /* compense l'approche de la première lettre */
-    font-size: clamp(3.5rem, 8.7vw, 9.5rem);
-    font-weight: 500;
-    line-height: .95;
-    letter-spacing: -.05em;
+    margin-left: -.03em;   /* compense l'approche de la première lettre */
+    font-size: clamp(4.5rem, 14vw, 15rem);
     white-space: nowrap;
 }
 
@@ -117,7 +139,7 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     transition: background .2s, color .2s, border-color .2s;
 }
 
-.btn:hover, .sheet:hover .btn { border-color: var(--accent); background: var(--accent); }
+.btn:hover { border-color: var(--accent); background: var(--accent); }
 .btn.ghost { background: none; color: var(--ink); }
 .btn.ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .btn.light { border-color: var(--paper); background: var(--paper); color: var(--ink); }
@@ -148,9 +170,7 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 
 .link sup { align-self: flex-start; margin-left: -.8em; font-size: .42em; line-height: 1.6; letter-spacing: .02em; }
 .link .i { align-self: center; width: .8em; height: .8em; transition: translate .25s; }
-.link:hover { color: var(--accent); }
 .link:hover .i, .card:hover .link .i { translate: .3em 0; }
-.card .link:hover { color: inherit; }   /* sur la carte rouge, l'accent serait invisible */
 
 .links { display: flex; flex-wrap: wrap; gap: .75rem 2.25rem; }
 
@@ -160,99 +180,134 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .mark text { fill: currentColor; font-size: 150px; font-weight: 900; font-stretch: 125%; }
 
 
-/* ---------- 4. Barre du haut ---------- */
+/* ---------- 4. Interface ---------- */
 
-/* Fond papier, pour rester lisible au-dessus de ce qui défile. Transparente seulement tout
-   en haut de la page, sur le rouge de l'accueil (classe .light posée par script.js). */
-.bar {
+/* L'interface se réduit à quatre coins posés sur le défilé : le nom et le statut en haut à
+   gauche, les pages en haut à droite, les points en bas à gauche, les réseaux en bas à
+   droite. Les bandes elles-mêmes laissent passer la souris, pour qu'on puisse attraper le
+   défilé n'importe où. */
+.bar, .dots, .socials {
     position: fixed;
-    inset: 0 0 auto;
     z-index: 10;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: .1rem 1.5rem;
-    min-height: var(--bar-h);
-    padding: .35rem var(--pad);
-    border-bottom: 1px solid rgb(from var(--ink) r g b / .14);
-    background: var(--paper);
-    color: var(--ink);
+    height: var(--bar-h);
+    color: var(--paper);
     font-size: .78rem;
     font-weight: 600;
     letter-spacing: .04em;
     text-transform: uppercase;
-    transition: background .25s, color .25s, border-color .25s;
 }
 
-.bar.light { border-color: transparent; background: none; color: var(--paper); }
+.bar { inset: 0 0 auto; gap: 1.5rem; padding: 0 var(--pad); pointer-events: none; }
+.bar > * { pointer-events: auto; }
 
 .logo { font-size: 1.3rem; font-weight: 900; font-stretch: 125%; line-height: 1; letter-spacing: -.04em; }
-.logo span { color: var(--accent); }
-.bar.light .logo span { color: var(--ink); }
 
 .status { display: flex; align-items: center; gap: .45rem; margin-left: clamp(1rem, 10vw, 11rem); }
 .status::before, .rec::before { content: ""; width: .6em; height: .6em; border-radius: 50%; background: currentColor; }   /* pastille */
 .place { margin-left: clamp(0rem, 2vw, 3rem); }
+.status, .place { white-space: nowrap; }
 .clock:not(:empty)::before { content: " — "; }   /* l'heure n'apparaît que si script.js l'a remplie */
 
-.bar nav { display: flex; margin-left: auto; font-size: clamp(.9rem, 1.15vw, 1.05rem); letter-spacing: .01em; }
-.bar nav a { padding: .45rem 0; white-space: nowrap; transition: color .2s; }
-.bar nav a:not(:last-child)::after { content: "/"; margin: 0 .4em; color: var(--ink); font-weight: 400; opacity: .5; }
-.bar.light nav a::after { color: var(--paper); }
-.bar nav a:hover { text-decoration: underline 2px; text-underline-offset: .3em; }
+.bar nav { display: flex; gap: 1.75rem; margin-left: auto; }
+.bar nav a, .socials a { padding: .45rem 0; white-space: nowrap; }
+.bar nav a:hover, .socials a:hover { text-decoration: underline 2px; text-underline-offset: .3em; }
 
-/* Section en cours de lecture (classe .on posée par script.js) */
-.bar nav a.on { color: var(--accent); }
-.bar nav a.on::before { content: ""; display: inline-block; width: .62em; height: .62em; margin-right: .35em; border-radius: 50%; background: currentColor; }
-.bar.light nav a.on { color: inherit; }   /* sur le rouge, seule la pastille signale la section active */
+.socials { right: var(--pad); bottom: 0; gap: 1.75rem; }
+
+/* Un point par diapositive ; celui de la diapositive affichée s'entoure d'un anneau
+   (attribut aria-current posé par script.js). */
+.dots { bottom: 0; left: calc(var(--pad) - .55rem); }
+.dots a { display: grid; place-items: center; width: 1.5rem; height: 100%; }   /* toute la hauteur de la bande : facile à viser */
+
+.dots a::before {
+    content: "";
+    width: .4rem;
+    height: .4rem;
+    border-radius: 50%;
+    background: currentColor;
+    outline: 1.5px solid transparent;
+    outline-offset: 0;
+    transition: outline-offset .5s var(--back), outline-color .3s, scale .5s var(--back);
+}
+
+.dots a:hover::before { scale: 1.5; }
+.dots [aria-current="true"]::before { outline-color: currentColor; outline-offset: .3rem; scale: .75; }
 
 
-/* ---------- 5. Accueil ---------- */
+/* ---------- 5. Défilé ---------- */
 
-.hero { background: var(--gray); }   /* visible derrière la feuille rouge quand elle bascule */
+main { height: 100svh; overflow: clip; }
 
-/* Grande feuille rouge. Grille de 12 colonnes : titre à gauche, texte à droite, puis les
-   tirages, la ligne de légende et le grand nom sur toute la largeur. */
-.hero-sheet {
+/* La piste : un défilement horizontal natif, aimanté sur chaque diapositive. Le doigt et le
+   pavé tactile le font avancer tout seuls ; script.js ajoute la souris (glisser, molette),
+   le clavier et les points.
+   --peek : ce que le titre d'un projet laisse dépasser sur la diapositive voisine. */
+.deck {
+    --peek: 8vw;
+    display: flex;
+    height: 100%;
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;   /* pas de « page précédente » du navigateur en bout de course */
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    background: var(--ink);
+    color: var(--paper);
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-x pinch-zoom;              /* au doigt : glisser de côté, rien d'autre ne bouge */
+    -webkit-tap-highlight-color: transparent;    /* pas de voile gris quand on touche une diapositive */
+}
+
+.deck::-webkit-scrollbar { display: none; }
+
+/* Pendant un glisser à la souris, script.js déplace la piste lui-même : l'aimant et le
+   défilement adouci sont coupés pour qu'elle suive la main sans retard. */
+.deck.grab { scroll-behavior: auto; scroll-snap-type: none; cursor: grabbing; }
+
+.slide { position: relative; flex: none; width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+
+/* --- Diapositive de présentation --- */
+
+/* Grille de 12 colonnes : titre à gauche, texte à droite, puis les tirages sur toute la largeur. */
+.hero {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-rows: auto minmax(0, 1fr);
     column-gap: var(--pad);
-    min-height: 100svh;
-    padding: calc(var(--bar-h) + clamp(1rem, 5vh, 3.5rem)) var(--pad) var(--pad);
+    padding: calc(var(--bar-h) + clamp(1.25rem, 7vh, 4.5rem)) var(--pad) var(--bar-h);
     background: var(--accent);
-    color: var(--paper);
-    transform-origin: 0 100%;   /* pivot en bas à gauche pour la bascule de sortie */
 }
 
 .hero-title {
-    grid-area: 1 / 1 / 2 / 8;
-    margin-left: -.04em;
-    font-size: clamp(2.7rem, 7.4vw, 8rem);
-    font-weight: 500;
-    line-height: .9;
-    letter-spacing: -.05em;
+    grid-area: 1 / 1 / 2 / 9;
+    margin-left: -.03em;
+    font-size: clamp(3.4rem, min(12.5vw, 23vh), 14rem);
+    rotate: -4deg;
+    transform-origin: 0 0;   /* pivot en haut à gauche : le bout droit remonte, rien ne sort de l'écran */
 }
 
 .swap { display: block; color: var(--ink); }   /* le mot qui tourne (script.js) */
 
-.hero-side { grid-area: 1 / 8 / 2 / 13; display: grid; align-content: start; gap: 1.5rem; padding-top: .5rem; }
-.hero-lead { max-width: 32rem; font-size: clamp(1.15rem, 1.5vw, 1.4rem); font-weight: 500; line-height: 1.32; }
+.hero-side { grid-area: 1 / 9 / 2 / 13; display: grid; align-content: start; gap: 1.5rem; }
+.hero-lead { max-width: 32rem; font-size: clamp(1.1rem, 1.5vw, 1.4rem); font-weight: 500; line-height: 1.32; }
+.hero .link { font-size: clamp(1rem, 1.3vw, 1.2rem); }
 
 /* Tirages des projets. Chacun ne recouvre que le bord droit du précédent (marge négative),
    donc sa légende, en bas à gauche, reste toujours lisible. */
-.prints { grid-area: 2 / 1 / 3 / 13; display: flex; align-items: center; justify-content: center; padding: clamp(1.5rem, 5vh, 3.5rem) 1.5% 0; }
+.prints { grid-area: 2 / 1 / 3 / 13; display: flex; align-items: center; justify-content: center; padding: clamp(1rem, 4vh, 3rem) 1.5%; }
 
 .print {
     position: relative;
-    flex: 0 1 23%;
+    flex: 0 1 min(23%, 36vh);
     margin-right: -1.5%;
     padding: .5rem .5rem .55rem;
     background: var(--paper);
     box-shadow: 0 1rem 2.5rem rgb(0 0 0 / .28);
     color: var(--ink);
     rotate: var(--tilt);
-    transition: rotate .4s cubic-bezier(.2, .8, .2, 1), scale .4s cubic-bezier(.2, .8, .2, 1);
+    transition: rotate .4s var(--ease), scale .4s var(--ease);
 }
 
 .print:nth-child(1) { --tilt: -9deg; }
@@ -265,80 +320,93 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .print span { display: block; margin-top: .5rem; overflow: hidden; font-size: .78rem; font-weight: 600; line-height: 1.2; letter-spacing: .04em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
 .print:hover, .print:focus-visible { z-index: 1; rotate: 0deg; scale: 1.1; }   /* se redresse et passe devant */
 
-.hero-foot {
-    grid-area: 3 / 1 / 4 / 13;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: clamp(1.5rem, 6vh, 3.5rem) 0 .75rem;
-    font-size: .8125rem;
-    font-weight: 600;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-}
+/* --- Diapositive d'un projet --- */
 
-.hero .mark { grid-area: 4 / 1 / 5 / 13; }
-.hero .mark tspan { fill: var(--ink); }   /* le point du nom */
+/* La scène remplit l'écran et le titre géant la traverse, incliné. Les textes se rangent en
+   bas : étiquette, description et technos à gauche, bouton à droite. Les bandes du haut et
+   du bas restent libres pour l'interface.
+   --rest est l'inclinaison du titre au repos ; elle s'inverse d'un projet à l'autre.
 
-
-/* ---------- 6. Projets ---------- */
-
-/* En-tête commun aux sections (étiquette, grand titre, liens) */
-.head { padding: clamp(4rem, 15vh, 9rem) var(--pad) clamp(2.5rem, 9vh, 6rem); }
-.head .tag { margin-bottom: 1rem; }   /* laisse la place de l'accent de « À propos » */
-.head .links { margin-top: clamp(1.5rem, 5vh, 3rem); }
-
-/* Une feuille plein écran par projet. Elle se cale sous la barre (sticky) ; la suivante
-   arrive inclinée, se redresse et la recouvre entièrement.
-   Le pivot est en haut à gauche pour une inclinaison positive, en haut à droite pour une
-   négative : ainsi le coin qui « pend » descend toujours vers le bas, jamais sur le contenu
-   au-dessus. --shift décale la feuille vers l'intérieur pendant la bascule, pour que son
-   texte ne sorte pas de l'écran. */
+   L'ordre d'empilement est le même pour toutes les diapositives, pour que rien ne passe
+   tantôt devant, tantôt derrière pendant un glissement :
+     0  la scène (fond et visuel)
+     1  les petits textes
+     2  le bord en biais de la diapositive suivante, qui les recouvre
+     3  les titres géants, toujours au-dessus de tout */
 .sheet {
-    --tilt: 13deg;
-    --shift: 7vw;
-    position: sticky;
-    top: var(--bar-h);
-    display: flex;
-    flex-direction: column;
-    gap: clamp(.75rem, 2.2vh, 1.5rem);
-    height: calc(100svh - var(--bar-h));
-    padding: clamp(.9rem, 2.4vh, 1.75rem) var(--pad) var(--pad);
-    background: var(--gray);
-    box-shadow: 0 -1.5rem 4rem rgb(0 0 0 / .2);
-    transform-origin: 0 0;
+    --rest: -4deg;
+    display: grid;
+    -webkit-touch-callout: none;   /* pas d'aperçu du lien à l'appui long : on est en train de glisser */
+    grid-template: var(--bar-h) minmax(0, 1fr) auto auto auto calc(var(--bar-h) + .5rem) / minmax(0, 1fr) auto;
+    column-gap: 2rem;
+    padding: 0 clamp(1rem, 7vw, 7.5rem);
 }
 
-.sheet:nth-child(even) { --tilt: -13deg; --shift: -7vw; background: #ececef; transform-origin: 100% 0; }
+.sheet:nth-child(odd) { --rest: 4deg; }
+.sheet:focus-visible { outline-offset: -8px; }   /* la diapositive remplit l'écran : le contour de focus passe à l'intérieur */
 
-/* Écrans très bas (téléphone à l'horizontale) : le contenu ne tient plus dans la hauteur,
-   les feuilles redeviennent des blocs qui défilent normalement. */
-@media (max-height: 560px) {
-    .sheet { position: relative; top: 0; height: auto; }
-    .stage { min-height: 16rem; }
+/* Bord de la diapositive : un triangle de sa couleur, accroché à gauche, qui mord sur la
+   précédente. Replié au repos (largeur nulle), il se déploie pendant le glissement
+   (section 10) : la frontière entre deux projets penche en avançant, puis se redresse. */
+.sheet::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: calc(100% - 1px);   /* un pixel de recouvrement : pas de liseré entre le triangle et sa diapositive */
+    z-index: 2;
+    width: 14vw;
+    height: 100%;
+    background: var(--ink);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    transform-origin: 100% 50%;
+    scale: 0 1;
 }
 
-.sheet-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .5rem 2rem; }
-.sheet-head .tag { grid-column: 1 / -1; }
-.sheet h3 { margin-left: -.04em; font-size: clamp(2.5rem, min(7vw, 11vh), 7rem); font-weight: 500; line-height: .95; letter-spacing: -.05em; transition: color .2s; }
-.sheet:hover h3 { color: var(--accent); }
-.sheet-desc { grid-column: 1; max-width: 46rem; font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.4; }
-.sheet-head .btn { grid-area: 2 / 2 / 5 / 3; }   /* à droite, sur la hauteur titre + description + technos */
+.sheet:has(.stage.red)::before { background: var(--accent); }
 
-.chips { grid-column: 1; display: flex; flex-wrap: wrap; gap: .4rem; }
+/* Les enfants de .sheet-head se placent directement dans la grille de la diapositive */
+.sheet-head { display: contents; }
+.sheet-head > * { position: relative; z-index: 1; }
+
+/* Le titre occupe la même largeur quelle que soit sa longueur : script.js mesure sa largeur
+   en em (--w), le corps (--fs) s'en déduit, plafonné par la hauteur de l'écran. --tw est la
+   largeur qui en résulte : les animations en ont besoin sous forme de longueur.
+   58 vw et pas plus : deux titres voisins ne doivent jamais se toucher pendant un glissement. */
+.sheet h3 {
+    --fs: min(58vw / var(--w, 5), 30vh);
+    --tw: calc(var(--fs) * var(--w, 5));
+    grid-area: 2 / 1 / 3 / -1;
+    place-self: center;
+    z-index: 3;
+    font-size: var(--fs);
+    white-space: nowrap;
+    rotate: var(--rest);
+    transform: translate(calc(var(--mx) * 1.6vw), calc(var(--my) * 1.6vw));   /* suit légèrement la souris */
+    transition: transform 1s var(--ease);
+}
+
+.sheet-head .tag { grid-area: 3 / 1; }
+.sheet-desc { grid-area: 4 / 1; max-width: 40rem; margin-top: .5rem; font-size: clamp(1rem, 1.25vw, 1.2rem); line-height: 1.4; }
+
+.chips { grid-area: 5 / 1; display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
 .chips li { padding: .3rem .65rem; border: 1.5px solid; font-size: .78rem; font-weight: 600; line-height: 1; letter-spacing: .04em; text-transform: uppercase; }
 
-/* Scène colorée qui porte la capture d'écran ou le schéma du projet.
-   Elle prend toute la hauteur restante de la feuille. */
+.sheet-head .btn { grid-area: 3 / 2 / 6 / 3; align-self: end; }
+.sheet:hover .btn { border-color: var(--paper); background: none; color: var(--paper); }   /* lisible sur le noir comme sur le rouge */
+
+
+/* ---------- 6. Scène ---------- */
+
+/* Bloc coloré qui porte la capture d'écran ou le schéma d'un projet. Dans une page projet
+   c'est un cadre parmi le texte ; dans le défilé il devient le fond de toute la diapositive. */
 .stage {
     --sx: clamp(1.25rem, 4.5vw, 4.5rem);   /* marges intérieures : côtés, haut, bas */
     --st: clamp(2rem, 6vh, 4rem);
     --sb: clamp(1.25rem, 4vh, 3rem);
+    --frame: clamp(.5rem, 1.4vh, .9rem);   /* distance entre le repère de cadrage et le contenu… ou le bord */
     position: relative;
-    flex: 1;
     display: grid;
     place-items: center;
-    min-height: 0;
     padding: var(--st) var(--sx) var(--sb);
     overflow: hidden;
     color: var(--paper);
@@ -348,15 +416,14 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .stage.red { background: var(--accent); }
 
 /* Repère de cadrage en pointillé et son étiquette (attribut data-label du HTML) */
-.stage::before { content: ""; position: absolute; inset: clamp(.5rem, 1.4vh, .9rem); border: 1px dashed; opacity: .55; pointer-events: none; }
-.stage::after { content: attr(data-label); position: absolute; top: clamp(.95rem, 2.3vh, 1.5rem); left: clamp(1.1rem, 2.4vh, 1.6rem); font-size: .75rem; font-weight: 600; line-height: 1; letter-spacing: .05em; text-transform: uppercase; }
+.stage::before { content: ""; position: absolute; inset: var(--frame); border: 1px dashed; opacity: .55; pointer-events: none; }
+.stage::after { content: attr(data-label); position: absolute; top: calc(var(--frame) + .5rem); left: calc(var(--frame) + .7rem); font-size: .75rem; font-weight: 600; line-height: 1; letter-spacing: .05em; text-transform: uppercase; }
 
 /* Capture centrée dans les marges de la scène : réduite si besoin, jamais agrandie au-delà
    de sa taille réelle (pas de flou). Positionnée en absolu pour que ses max-width / max-height
    en pourcentage se calculent sur la scène, quelle que soit la façon dont celle-ci a reçu sa
-   hauteur. Elle penche dans le sens opposé à sa feuille. */
+   hauteur. */
 .shot {
-    --tilt: -9deg;
     position: absolute;
     inset: var(--st) var(--sx) var(--sb);
     width: auto;
@@ -366,8 +433,6 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
     margin: auto;
     box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .5);
 }
-
-.sheet:nth-child(even) .shot { --tilt: 9deg; }
 
 /* Schéma des projets sans capture : des blocs reliés par des flèches */
 .flow { display: flex; align-items: center; gap: clamp(.5rem, 1.8vw, 1.75rem); width: 100%; }
@@ -395,23 +460,197 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 .stage.ink .node.hot { border-color: var(--accent); background: var(--accent); }
 .stage.red .node.hot { border-color: var(--ink); background: var(--ink); }
 
+/* --- Dans le défilé --- */
 
-/* ---------- 7. À propos ---------- */
+/* La scène couvre toute la diapositive ; ses marges intérieures délimitent la zone centrale
+   où se pose le visuel (--zt, --zb, --zx), et le repère de cadrage entoure cette zone au lieu
+   de longer les bords. */
+.sheet .stage {
+    --st: var(--zt);
+    --sb: var(--zb);
+    --sx: var(--zx);
+    --frame: 1.75rem;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.sheet .stage::before { inset: calc(var(--st) - var(--frame)) calc(var(--sx) - var(--frame)) calc(var(--sb) - var(--frame)); }
+.sheet .stage::after { top: calc(var(--st) - var(--frame) + .6rem); left: calc(var(--sx) - var(--frame) + .75rem); }
+
+/* Le titre passe devant le visuel : celui-ci est donc ramené à une seule teinte, sur
+   laquelle le blanc reste lisible partout. Sur le rouge la capture est imprimée en noir
+   (elle ne peut que foncer le fond) ; sur le noir elle est grisée et atténuée. La capture en
+   couleurs est dans la page du projet. */
+.sheet .shot, .sheet .flow, .hero-shot { transform: translate(calc(var(--mx) * -1.2vw), calc(var(--my) * -1.2vw)); transition: transform 1.2s var(--ease); }
+.sheet .stage.red .shot, .project:nth-child(even of .project) .hero-shot { filter: grayscale(1) contrast(1.1); mix-blend-mode: multiply; }
+.sheet .stage.ink .shot, .project:nth-child(odd of .project) .hero-shot { filter: grayscale(1); opacity: .4; }
+.sheet .flow { opacity: .45; }
+.sheet .node b { visibility: hidden; }   /* derrière le titre, le schéma se réduit à ses blocs */
+
+
+/* ---------- 7. Pages ---------- */
+
+/* Un projet, ou « À propos » : un <dialog> plein écran ouvert par script.js quand l'adresse
+   désigne son #id (ou celui d'un élément qu'il contient). */
+.work {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    scroll-padding-top: var(--bar-h);
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.work::backdrop { background: var(--ink); }
+.work:focus-visible { outline: none; }   /* à l'ouverture le focus va sur la page elle-même : rien à entourer */
+
+/* Sans JavaScript, l'ancre suffit à afficher la page. Réservé à ce cas : avec JavaScript,
+   :target reste vrai un instant après la fermeture et la page réapparaîtrait. */
+@media (scripting: none) {
+    .work:is(:target, :has(:target)) { display: block; position: fixed; inset: 0; z-index: 20; }
+}
+
+/* Barre de la page : collée en haut, posée par-dessus le contenu (la marge négative lui
+   retire sa place dans le flux), comme la barre du défilé l'est par-dessus les diapositives.
+   Sur l'en-tête elle est transparente, puis elle prend son fond noir quand le corps de la page
+   arrive dessous (section 10) ; sans animations liées au défilement, elle reste noire. */
+.work-bar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: var(--bar-h);
+    margin-bottom: calc(-1 * var(--bar-h));
+    padding: 0 var(--pad);
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.work-bar p { font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.work-bar .btn.light:not(.ghost):hover { border-color: var(--accent); background: var(--accent); }   /* le noir du survol habituel se confondrait avec la barre */
+
+/* En-tête : la scène du projet, telle qu'on l'a quittée dans le défilé. Elle remplit l'écran
+   comme la diapositive, même couleur, et même visuel exactement au même endroit (la zone
+   --zt / --zb / --zx) : à l'ouverture seuls le titre et les textes changent, le décor ne
+   bouge pas. Les couleurs alternent dans l'ordre des pages, comme les scènes des
+   diapositives : noir, rouge, noir… */
+.work-hero { position: relative; display: flex; min-height: 100dvh; padding-top: var(--bar-h); overflow: clip; background: var(--ink); color: var(--paper); }
+.project:nth-child(even of .project) .work-hero { background: var(--accent); }
+
+/* « 100vw - 100% » est la largeur de la barre de défilement de la page, quand elle prend de
+   la place : on la retire du côté droit pour que la zone reste centrée sur la fenêtre, comme
+   dans le défilé, et non sur la page un peu plus étroite. */
+.hero-shot {
+    position: absolute;
+    inset: var(--zt) calc(var(--zx) - (100vw - 100%)) var(--zb) var(--zx);
+    width: auto;
+    max-width: calc(100vw - 2 * var(--zx));
+    height: auto;
+    max-height: calc(100% - var(--zt) - var(--zb));
+    margin: auto;
+    box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .5);
+}
+
+.panel { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 1rem var(--pad) 1.5rem; }
+
+.metas { align-self: stretch; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1.5rem; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.rec { display: inline-flex; align-items: center; gap: .45em; }
+
+.panel h2 { margin: auto 0; font-size: min(86vw / var(--w, 5), 38vh); text-align: center; white-space: nowrap; }
+
+.down { width: clamp(2.5rem, 5vw, 4.5rem); height: auto; aspect-ratio: 1; stroke-width: 2.2; rotate: 90deg; }
+
+/* Corps : une colonne centrée, l'étiquette à gauche et son contenu à droite. Les blocs qui
+   n'ont pas d'étiquette (fiche technique, scène) prennent toute la largeur. */
+.work-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr);
+    gap: clamp(3rem, 11vh, 6.5rem) var(--pad);
+    max-width: 82rem;
+    margin: 0 auto;
+    padding: clamp(3.5rem, 13vh, 8rem) var(--pad) clamp(4rem, 15vh, 9rem);
+}
+
+.work-body > * { grid-column: 2; }
+.work-body > .tag { grid-column: 1; padding-top: .5em; }
+.work-body > :is(.credits, .stage) { grid-column: 1 / -1; }
+
+.statement { font-size: clamp(1.7rem, 3.1vw, 3rem); line-height: 1.12; letter-spacing: -.035em; text-wrap: balance; }
+
+/* Fiche technique : une ligne par information, sur les mêmes colonnes que le corps */
+.credits { border-bottom: 1px solid; }
+.credits div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr); gap: var(--pad); padding: 1.1rem 0; border-top: 1px solid; }
+.credits dt { padding-top: .2em; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.credits dd { font-size: 1.0625rem; font-weight: 500; line-height: 1.4; }
+
+/* Ici la scène est un cadre dans la page : c'est elle qui arrive de travers, et sa capture
+   reste droite dedans. .flip = inclinaison négative, donc pivot en haut à droite. */
+.work .stage { --tilt: 10deg; aspect-ratio: 16 / 9; max-height: 84vh; transform-origin: 0 0; }
+.work .stage.flip { --tilt: -10deg; transform-origin: 100% 0; }
+
+.overview { display: grid; gap: 1em; max-width: 46rem; font-size: clamp(1.1rem, 1.35vw, 1.25rem); line-height: 1.55; }
+
+/* Liste numérotée façon tableau : la ligne survolée passe en rouge */
+.table { counter-reset: row; border-top: 1px solid; font-size: clamp(1.1rem, 1.7vw, 1.55rem); font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
+.table li { display: grid; grid-template-columns: clamp(2.75rem, 7vw, 6rem) 1fr 1.2em; padding: .55em .5em; border-bottom: 1px solid; counter-increment: row; }
+.table li::before { content: counter(row, decimal-leading-zero); }
+.table li::after { content: "◀"; align-self: center; font-size: .6em; opacity: 0; }
+.table li:hover { background: var(--accent); color: var(--paper); }
+.table li:hover::after { opacity: 1; }
+
+/* Variante « pipeline » : trois colonnes (numéro, étape, détail) et une ligne rouge qui
+   descend d'étape en étape (section 10). --i est le rang de l'étape, 0 pour la première. */
+.pipe { text-transform: uppercase; letter-spacing: 0; }
+.pipe li { grid-template-columns: clamp(2.75rem, 7vw, 6rem) 1fr 1.4fr 1.2em; }
+.pipe small { font-size: inherit; }
+.pipe li:nth-child(2) { --i: 1; }
+.pipe li:nth-child(3) { --i: 2; }
+.pipe li:nth-child(4) { --i: 3; }
+.pipe li:nth-child(5) { --i: 4; }
+.pipe li:nth-child(6) { --i: 5; }
+.pipe li:nth-child(7) { --i: 6; }
+
+/* Projet suivant : un bandeau à la couleur de la page suivante, avec son titre déjà
+   incliné. Au clic il s'agrandit pour devenir l'en-tête de cette page (section 10). */
+.next { display: grid; place-content: center; justify-items: center; gap: 1.5rem; min-height: 62vh; padding: 3rem var(--pad); overflow: clip; background: var(--accent); color: var(--paper); }
+.project:nth-child(even of .project) .next { background: var(--ink); }
+.next b { font-size: min(74vw / var(--w, 5), 26vh); white-space: nowrap; rotate: -4deg; transition: rotate .7s var(--ease), letter-spacing .7s var(--ease); }
+.next:hover b { letter-spacing: .05em; rotate: 0deg; }   /* se redresse et s'étire, comme il le fera en s'ouvrant */
+
+
+/* ---------- 8. À propos ---------- */
+
+/* Même page <dialog> que les projets, en sombre : à propos, stack, puis le pied rouge. */
+.about { background: var(--ink); color: var(--paper); }
+
+/* En-tête de section (étiquette, grand titre) */
+.head { padding: clamp(4rem, 15vh, 9rem) var(--pad) clamp(2.5rem, 9vh, 6rem); }
+.head .tag { margin-bottom: 1rem; }   /* laisse la place de l'accent de « À propos » */
 
 .cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 3rem var(--pad); padding: 0 var(--pad) clamp(4rem, 12vh, 8rem); }
 
-/* Deux cartes qui se chevauchent : la noire (chiffres) passe devant le tiers gauche de la
+/* Deux cartes qui se chevauchent : la claire (chiffres) passe devant le tiers gauche de la
    rouge, laissé vide exprès par son padding. Elles arrivent en ciseaux (inclinaisons de
-   signes opposés) pour que la noire ne balaie jamais le texte de la rouge. */
+   signes opposés) pour que la claire ne balaie jamais le texte de la rouge. */
 .cards { grid-column: 1 / span 6; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.card { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 1.25rem; color: var(--paper); transform-origin: 0 0; rotate: var(--rest); }
+.card { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 1.25rem; transform-origin: 0 0; rotate: var(--rest); }
 .card.red { --tilt: -12deg; --rest: 6deg; grid-area: 1 / 3 / 2 / 7; align-items: flex-start; aspect-ratio: 4 / 4.4; margin-top: 4.5rem; padding-left: calc(25% + 3.75rem); background: var(--accent); }
 .card.red p:not(.tag) { font-size: clamp(1.15rem, 1.55vw, 1.45rem); font-weight: 500; line-height: 1.25; }
-.card.ink { --tilt: 12deg; --rest: -1.5deg; grid-area: 1 / 1 / 2 / 4; aspect-ratio: 4 / 5.2; background: var(--ink); }
+.card.light { --tilt: 12deg; --rest: -1.5deg; grid-area: 1 / 1 / 2 / 4; aspect-ratio: 4 / 5.2; background: var(--paper); color: var(--ink); }
 
 /* Chiffres : dans le HTML le libellé (dt) précède la valeur (dd), on les inverse à l'affichage */
 .stats div { display: flex; flex-direction: column-reverse; }
-.stats dd { font-size: clamp(3.25rem, 6.6vw, 7rem); font-weight: 500; line-height: .85; letter-spacing: -.05em; }
+.stats dd { font-size: clamp(3.75rem, 8vw, 8.5rem); }
 .stats dd sup { font-size: .45em; }
 .stats dt { margin-top: .5rem; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 
@@ -424,9 +663,7 @@ code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; }
 
 blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; text-transform: uppercase; }
 
-
-/* ---------- 8. Stack ---------- */
-
+/* Stack : une ligne par famille, l'étiquette et son compteur à gauche */
 .stack { padding-bottom: clamp(5rem, 16vh, 10rem); }
 .stack > div { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: .5rem var(--pad); padding: 1rem var(--pad) 1.2rem; border-top: 1px solid; }
 .stack dt { grid-column: span 2; padding-top: .6rem; }
@@ -434,15 +671,12 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .stack ul { display: flex; flex-wrap: wrap; font-size: clamp(1.6rem, 3.3vw, 3.1rem); line-height: 1.12; letter-spacing: -.04em; }
 .stack li { transition: color .15s; }
 .stack li:hover { color: var(--accent); }
-.stack li:not(:last-child)::after { content: "/"; margin: 0 .25em; color: var(--ink); font-weight: 300; opacity: .45; }
+.stack li:not(:last-child)::after { content: "/"; margin: 0 .25em; color: var(--paper); font-weight: 300; opacity: .45; }
 
-
-/* ---------- 9. Contact ---------- */
-
-/* Pied de page rouge coupé en biais sous le grand nom. Le nom est incliné de -6° ; le bord
+/* Contact : pied rouge coupé en biais sous le grand nom. Le nom est incliné de -6° ; le bord
    haut du bloc rouge est découpé (clip-path) avec le même dénivelé : 10,5 vw sur 100 vw de
    large, soit tan(6°). Si on change l'angle, il faut changer les trois « 10.5vw » avec lui. */
-.foot { padding-top: 11vw; }   /* place pour l'extrémité droite du nom, qui remonte */
+.foot { padding-top: 11vw; overflow-x: clip; }   /* place pour l'extrémité droite du nom, qui remonte */
 .foot > .mark { padding: 0 var(--pad); transform-origin: 0 100%; rotate: -6deg; }
 .foot > .mark tspan { fill: var(--accent); }
 
@@ -450,7 +684,6 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     margin-top: -10.5vw;
     padding: 16vw var(--pad) var(--pad);
     background: var(--accent);
-    color: var(--paper);
     clip-path: polygon(0 10.5vw, 100% 0, 100% 100%, 0 100%);
 }
 
@@ -464,169 +697,60 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
 .reach > p:last-child { max-width: 32rem; margin-top: 1.25rem; font-size: 1.0625rem; line-height: 1.5; }
 
 .foot-end { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-top: clamp(4rem, 18vh, 11rem); }
-.talk { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-width: min(100%, 35vw); border-bottom: 2px solid; font-size: clamp(2.6rem, 5.4vw, 5.25rem); font-weight: 500; line-height: 1.15; letter-spacing: -.05em; }
-.talk .i { width: .7em; height: .7em; transition: translate .25s; }
+.talk { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-width: min(100%, 35vw); padding-top: .12em; border-bottom: 2px solid; font-size: clamp(3.25rem, 7.5vw, 7.5rem); }
+.talk .i { width: .6em; height: .6em; transition: translate .25s; }
 .talk:hover .i { translate: .2em 0; }
 .foot-end p { font-size: .9rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 .foot-end p a { border-bottom: 2px solid; }
 
 
-/* ---------- 10. Pages projet ---------- */
+/* ---------- 9. Petits écrans ---------- */
 
-/* Chaque projet a sa « page » : un <dialog> plein écran, ouvert par script.js quand
-   l'adresse se termine par son #id. */
-.work {
-    width: 100vw;
-    max-width: none;
-    height: 100dvh;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    overflow: hidden auto;
-    background: var(--paper);
-    color: var(--ink);
+/* Du plus large au plus étroit, puis le cas des écrans très bas :
+     ≤ 1000 px            la barre du haut s'allège
+     ≤ 900 px             tablette à la verticale : présentation et pages sur une colonne
+     ≤ 620 px             téléphone : interface réduite, schémas en colonne
+     ≤ 620 px, vertical   la diapositive d'un projet passe elle aussi sur une colonne
+     ≤ 520 px de haut     téléphone à l'horizontale : disposition en largeur, réduite à l'essentiel
+   Rien ne défile dans le défilé : chaque disposition doit tenir dans un écran, d'où les
+   tailles qui suivent aussi la hauteur (vh). */
+
+/* Le lieu et l'heure ne tiennent plus entre le statut et les pages */
+@media (max-width: 1000px) {
+    .place { display: none; }
 }
 
-.work::backdrop { background: var(--accent); }
+@media (max-width: 900px) {
+    .deck { --peek: 7vw; }
+    .sheet::before { width: 24vw; }
 
-/* Sans JavaScript, l'ancre suffit à afficher la page du projet. Réservé à ce cas : avec
-   JavaScript, :target reste vrai un instant après la fermeture et la page réapparaîtrait. */
-@media (scripting: none) {
-    .work:target { display: block; position: fixed; inset: 0; z-index: 20; }
-}
+    /* Présentation : titre, texte, puis les quatre tirages sur une ligne */
+    .hero { grid-template-rows: auto auto minmax(0, 1fr); row-gap: clamp(.6rem, 2.5vh, 1.75rem); padding-top: calc(var(--bar-h) + clamp(.5rem, 3vh, 2rem)); }
+    .hero-title { grid-area: 1 / 1 / 2 / 13; font-size: min(17vw, 12vh); }
+    .hero-side { grid-area: 2 / 1 / 3 / 13; gap: clamp(.6rem, 2vh, 1.25rem); }
+    .hero-lead { max-width: 36rem; font-size: clamp(.95rem, 2.3vh, 1.25rem); }
+    .hero .btn { min-height: clamp(2.6rem, 6.5vh, 3rem); }
+    .hero .links { gap: .25rem 1.25rem; }
+    .prints { grid-area: 3 / 1 / 4 / 13; padding: 0 2% .75rem; }
+    .print { flex-basis: min(31%, 24vh); margin-right: -8%; padding: .25rem; }
+    .print span { display: none; }
 
-.work-bar {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: var(--bar-h);
-    padding: .35rem var(--pad);
-    border-bottom: 1px solid rgb(from var(--ink) r g b / .14);
-    background: var(--paper);
-}
+    /* Pages : une seule colonne, l'étiquette au-dessus de son contenu */
+    .work-bar p { display: none; }
+    .panel h2 { font-size: min(88vw / var(--word, 4), 22vh); white-space: normal; }
+    .work-body { grid-template-columns: minmax(0, 1fr); row-gap: 1rem; }
+    .work-body > * { grid-column: 1; }
+    .work-body > :not(.tag) { margin-bottom: clamp(2rem, 7vh, 4rem); }
+    .credits div { grid-template-columns: minmax(0, 1fr); gap: .2rem; padding: .8rem 0; }
+    .work .stage { aspect-ratio: 4 / 3; }
+    .pipe li { grid-template-columns: 2.75rem 1fr 1.2em; }
+    .pipe small { grid-area: 2 / 2; font-size: .8em; }   /* le détail passe sous le nom de l'étape */
+    .next b { font-size: min(88vw / var(--word, 4), 18vh); text-align: center; white-space: normal; }
 
-.work-bar p { font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-
-/* En-tête : la capture du projet en fond (ou du gris s'il n'y en a pas), et un panneau
-   rouge décalé qui porte le titre. */
-.work-hero {
-    position: relative;
-    display: flex;
-    min-height: calc(100dvh - var(--bar-h));
-    padding: 18vh var(--pad) 0 clamp(1rem, 11.7vw, 14rem);
-    background: var(--gray);
-}
-
-.hero-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
-
-/* Panneau opaque : la capture reste visible autour, en haut et à gauche, et le texte
-   blanc garde tout son contraste. */
-.panel {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: .9rem clamp(.9rem, 1.5vw, 1.5rem) 1.25rem;
-    background: var(--accent);
-    color: var(--paper);
-}
-
-.metas { align-self: stretch; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1.5rem; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-.rec { display: inline-flex; align-items: center; gap: .45em; }
-
-.panel h2 {
-    margin: .12em 0 .14em -.045em;
-    overflow-wrap: anywhere;   /* « GestionProjet-IUT » doit pouvoir se couper sur mobile */
-    font-size: clamp(2.4rem, 9.4vw, 9.75rem);
-    font-weight: 500;
-    line-height: .95;
-    letter-spacing: -.055em;
-}
-
-.down { width: clamp(3.5rem, 8vw, 7.5rem); height: auto; aspect-ratio: 1; margin-top: auto; stroke-width: 2.2; rotate: 90deg; }
-
-.work-body { padding: 1.25rem var(--pad) 5rem; }
-.work-body > .tag { margin: clamp(3rem, 11vh, 6.5rem) 0 .75rem; }
-.work-body > .tag:first-child { margin-top: 0; }
-
-.statement { max-width: 62rem; margin-bottom: clamp(3rem, 14vh, 8rem); font-size: clamp(1.7rem, 3.1vw, 3rem); line-height: 1.12; letter-spacing: -.035em; text-wrap: balance; }
-
-.credits { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1.25rem var(--pad); margin-bottom: 2rem; padding: 1.1rem 0; border-block: 1px solid; }
-.credits dt { margin-bottom: .3rem; font-size: .78rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
-.credits dd { font-size: 1.0625rem; font-weight: 500; line-height: 1.4; }
-
-/* Ici la scène n'est plus dans une feuille : c'est elle qui arrive de travers, et sa
-   capture reste droite dedans. .flip = inclinaison négative, donc pivot en haut à droite. */
-.work .stage { --tilt: 10deg; width: 100%; aspect-ratio: 16 / 9; max-height: 84vh; margin: clamp(1.5rem, 5vh, 3rem) 0; transform-origin: 0 0; }
-.work .stage.flip { --tilt: -10deg; transform-origin: 100% 0; }
-.work .stage .shot { --tilt: 0deg; }
-
-.overview { display: grid; gap: 1em; max-width: 46rem; font-size: clamp(1.1rem, 1.35vw, 1.25rem); line-height: 1.55; }
-
-/* Liste numérotée façon tableau : la ligne survolée passe en rouge */
-.table { max-width: 64rem; counter-reset: row; border-top: 1px solid; font-size: clamp(1.1rem, 1.7vw, 1.55rem); font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
-.table li { display: grid; grid-template-columns: clamp(2.75rem, 9vw, 8rem) 1fr 1.2em; padding: .55em .5em; border-bottom: 1px solid; counter-increment: row; }
-.table li::before { content: counter(row, decimal-leading-zero); }
-.table li::after { content: "◀"; align-self: center; font-size: .6em; opacity: 0; }
-.table li:hover { background: var(--accent); color: var(--paper); }
-.table li:hover::after { opacity: 1; }
-
-/* Variante « pipeline » : trois colonnes (numéro, étape, détail) et une ligne rouge qui
-   descend d'étape en étape (section 12). --i est le rang de l'étape, 0 pour la première. */
-.pipe { text-transform: uppercase; letter-spacing: 0; }
-.pipe li { grid-template-columns: clamp(2.75rem, 9vw, 8rem) 1fr 1.4fr 1.2em; }
-.pipe small { font-size: inherit; }
-.pipe li:nth-child(2) { --i: 1; }
-.pipe li:nth-child(3) { --i: 2; }
-.pipe li:nth-child(4) { --i: 3; }
-.pipe li:nth-child(5) { --i: 4; }
-.pipe li:nth-child(6) { --i: 5; }
-.pipe li:nth-child(7) { --i: 6; }
-
-.work-end { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: clamp(3.5rem, 14vh, 8rem); }
-
-
-/* ---------- 11. Petits écrans ---------- */
-
-@media (max-width: 760px) {
-    :root { --bar-h: 4.75rem; }   /* la barre passe sur deux lignes */
-
-    /* Barre : le logo (qui ramène à l'accueil), puis les quatre autres sections */
-    .status, .place, .bar nav a:first-child { display: none; }
-    .bar { align-content: center; }
-    .bar nav { justify-content: space-between; width: 100%; margin-left: 0; font-size: .85rem; }
-    .bar nav a:not(:last-child)::after { content: none; }
-
-    /* Accueil : tout en colonne, tirages deux par deux */
-    .hero-sheet { grid-template-rows: auto auto auto 1fr auto; row-gap: 1.5rem; }
-    .hero-title { grid-area: 1 / 1 / 2 / 13; }
-    .hero-side { grid-area: 2 / 1 / 3 / 13; }
-    .prints { grid-area: 3 / 1 / 4 / 13; flex-wrap: wrap; gap: 1.25rem 0; padding: 1rem 3% 0; }
-    .print { flex-basis: 50%; }
-    .print:nth-child(even) { translate: 0 8%; }
-    .hero-foot { grid-area: 4 / 1 / 5 / 13; align-items: end; }
-    .hero .mark { grid-area: 5 / 1 / 6 / 13; }
-
-    /* Projets : bouton sous le texte, schéma en colonne */
-    .sheet-head { grid-template-columns: minmax(0, 1fr); }
-    .sheet-head .btn { grid-area: auto; justify-self: start; }
-    .sheet-desc { font-size: 1rem; }
-    .stage { --sx: 1.1rem; }
-    .flow { flex-direction: column; align-items: stretch; gap: .4rem; }
-    .flow > .i { align-self: center; width: 1.25rem; rotate: 90deg; }
-    .node { flex: none; flex-direction: row; align-items: baseline; gap: 1rem; aspect-ratio: auto; padding: .7rem .8rem; }
-    .node b { font-size: 1.1rem; text-align: right; }
-
-    /* À propos : la carte rouge passe sous la noire, qui mord sur son haut (vide) */
+    /* À propos : la carte rouge passe sous la claire, qui mord sur son haut (vide) */
     .cards, .text { grid-column: 1 / -1; padding-left: 0; }
     .cards { margin-bottom: 2rem; }
-    .card.ink { grid-area: 1 / 1 / 2 / 5; }
+    .card.light { grid-area: 1 / 1 / 2 / 5; }
     .card.red { grid-area: 2 / 2 / 3 / 7; aspect-ratio: auto; margin-top: -2.5rem; padding: 4rem 1.1rem 1.1rem; }
     .lists { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .stack dt, .stack dd { grid-column: 1 / -1; }
@@ -634,81 +758,188 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
     .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .reach { grid-column: 1 / -1; }
     .talk { min-width: 100%; }
+}
 
-    /* Pages projet */
-    .work-bar p { display: none; }
-    .work-hero { padding: 12vh var(--pad) 0 1.5rem; }
-    .work .stage { aspect-ratio: 4 / 3; }
-    .pipe li { grid-template-columns: 2.75rem 1fr 1.2em; }
-    .pipe small { grid-area: 2 / 2; font-size: .8em; }   /* le détail passe sous le nom de l'étape */
-    .work-end > * { flex: 1 1 100%; }
+@media (max-width: 620px) {
+    /* Interface : le nom et les deux pages en haut, les points en bas. Les réseaux, qui ne
+       tiendraient pas à côté des points, restent accessibles par « Contact ». */
+    .status, .socials { display: none; }
+    .logo { font-size: 1.15rem; }
+    .bar nav { gap: 1.1rem; }
+    .bar nav a { padding: .9rem 0; }   /* zone de toucher plus haute */
+    .dots a { width: 2rem; }
+
+    /* Schéma en colonne */
+    .stage { --sx: 1.1rem; }
+    .flow { flex-direction: column; align-items: stretch; gap: .4rem; }
+    .flow > .i { align-self: center; width: 1.25rem; rotate: 90deg; }
+    .node { flex: none; flex-direction: row; align-items: baseline; gap: 1rem; aspect-ratio: auto; padding: .7rem .8rem; }
+    .node b { font-size: 1.1rem; text-align: right; }
+    .sheet .node { padding: .4rem .6rem; }
+}
+
+/* Très petit téléphone : la barre du haut se resserre pour que « Contact » reste entier */
+@media (max-width: 380px) {
+    .bar { gap: .75rem; }
+    .logo { font-size: 1rem; }
+    .bar nav { gap: .8rem; font-size: .72rem; }
+}
+
+@media (max-width: 620px) and (orientation: portrait) {
+    /* Projet : le visuel en haut, les textes dans la moitié basse. Le titre passe à un mot
+       par ligne (width: min-content) et son corps se règle sur la largeur de son mot le
+       plus long, --word ; le bouton passe sous le texte. */
+    :root { --zt: max(11vh, 5rem); --zb: 50vh; --zx: 9vw; }
+    .sheet { grid-template: var(--bar-h) minmax(0, 1fr) auto auto auto auto calc(var(--bar-h) + .5rem) / minmax(0, 1fr); padding: 0 var(--pad); }
+    .sheet h3 { --fs: min(76vw / var(--word, 4), 15vh); --tw: calc(var(--fs) * var(--word, 4)); width: min-content; text-align: center; white-space: normal; }
+    .sheet-desc { font-size: 1rem; }
+    .sheet-head .btn { grid-area: 6 / 1; justify-self: start; margin-top: .9rem; }
+    .sheet .stage { --frame: 1.1rem; }
+}
+
+/* Petit téléphone : la description ne tient plus entre le visuel et le bouton */
+@media (max-width: 620px) and (orientation: portrait) and (max-height: 620px) {
+    .sheet-desc, .hero .links { display: none; }
+}
+
+/* Téléphone à l'horizontale : très peu de hauteur. La présentation se range en largeur (le
+   texte à gauche, les tirages à droite, deux par deux) et chaque diapositive ne garde que
+   l'essentiel. Placé en dernier : il l'emporte sur les dispositions en colonne ci-dessus. */
+@media (max-height: 520px) and (orientation: landscape) {
+    :root { --zt: 4.5rem; --zb: 9rem; }
+    .sheet .stage { --frame: .9rem; }
+    .sheet-desc, .hero .links, .print span { display: none; }
+
+    .hero { grid-template-rows: auto minmax(0, 1fr); row-gap: .6rem; padding-top: calc(var(--bar-h) + .25rem); }
+    .hero-title { grid-area: 1 / 1 / 2 / 8; font-size: min(11vw, 17vh); }
+    .hero-side { grid-area: 2 / 1 / 3 / 8; gap: .75rem; }
+    .hero-lead { font-size: .95rem; line-height: 1.3; }
+    .hero .btn { min-height: 2.6rem; }
+    .prints { grid-area: 1 / 8 / 3 / 13; flex-wrap: wrap; align-content: center; gap: 1rem 0; padding: 0; }
+    .print { flex-basis: 46%; margin-right: -4%; padding: .3rem; }
+    .print:nth-child(even) { translate: 0 10%; }
 }
 
 
-/* ---------- 12. Mouvement ---------- */
+/* ---------- 10. Mouvement ---------- */
 
-/* Le geste du site : le bloc part de --tilt et se pose à --rest (0° par défaut).
-   --shift est le décalage horizontal de départ (voir .sheet). */
+/* Le geste des blocs : partir de --tilt et se poser à --rest (0° par défaut) */
 @keyframes settle {
-    from { rotate: var(--tilt); translate: var(--shift, 0px) 8vh; scale: .94; }
+    from { rotate: var(--tilt); translate: 0 8vh; scale: .94; }
     75% { rotate: calc(var(--tilt) * .12 + var(--rest, 0deg)); translate: 0 0; scale: 1; }
     to { rotate: var(--rest, 0deg); translate: 0 0; scale: 1; }
 }
 
 @keyframes rise { from { opacity: 0; translate: 0 28px; } }                                    /* apparition par le bas */
+@keyframes pop { from { opacity: 0; translate: 0 20px; scale: 1 1.6; } }                         /* interface : monte en se tassant */
 @keyframes letter { from { opacity: 0; transform: translateY(.5em) rotate(8deg); } }             /* lettre d'un grand titre */
-@keyframes swing-in { from { rotate: -9deg; translate: 0 18vh; } }                               /* feuille rouge, au chargement */
-@keyframes tilt-away { to { rotate: -15deg; } }                                                  /* feuille rouge, à la sortie */
+@keyframes curtain { to { rotate: -14deg; translate: 0 -135vh; } }                               /* rideau d'ouverture : bascule et s'envole */
 @keyframes drop-in { from { opacity: 0; rotate: calc(var(--tilt) * 3.5); translate: 0 -6vh; scale: .8; } }   /* tirage qui tombe */
-@keyframes work-in { from { opacity: 0; translate: 0 45vh; rotate: 14deg; } }                    /* ouverture d'une page projet */
 @keyframes blink { 50% { opacity: .15; } }                                                       /* pastille de statut */
 @keyframes step { 0%, 13.9% { background: var(--accent); color: var(--paper); } 14%, 100% { background: none; color: inherit; } }   /* étape active du pipeline : 1 s sur 7 */
 @keyframes step-mark { 0%, 13.9% { opacity: 1; } 14%, 100% { opacity: 0; } }                     /* son marqueur ◀ */
 
+/* Traversée d'une diapositive, de son entrée à droite (0 %) à sa sortie à gauche (100 %) ;
+   à 50 % elle est au centre. Tout ce qui suit n'anime que des transformations et de
+   l'opacité, avec des longueurs fixes (pas de pourcentage) : le navigateur peut alors faire
+   ces animations sur la carte graphique, au même rythme que le défilement lui-même. C'est
+   ce qui les garde collées au doigt.
+
+   Le titre va moins vite que sa diapositive : aux deux bouts il dépasse de --peek sur la
+   diapositive voisine, si bien que le titre du projet d'à côté pointe toujours au bord de
+   l'écran. (--peek-from permet à un titre de ne pas dépasser du côté de son entrée.) */
+@keyframes title-pass {
+    0% { translate: calc(var(--tw) / 2 - 50vw - var(--peek-from, var(--peek))) 0; opacity: .3; rotate: calc(var(--rest) * 2.5); }
+    50% { translate: 0 0; opacity: 1; rotate: var(--rest); }
+    100% { translate: calc(50vw + var(--peek) - var(--tw) / 2) 0; opacity: .3; rotate: calc(var(--rest) * -.5); }
+}
+
+/* Ses lettres s'écartent pendant le mouvement et se resserrent à l'arrivée. Animation à
+   part : elle refait la mise en page du titre, et ne doit pas ralentir les autres. */
+@keyframes title-spread {
+    0%, 50%, 100% { letter-spacing: -.01em; }
+    25%, 75% { letter-spacing: .05em; }
+}
+
+/* Le visuel, lui, arrive de travers et se pose droit */
+@keyframes visual-pass {
+    0% { rotate: 14deg; translate: 16vw 0; scale: .82; }
+    50% { rotate: 0deg; translate: 0 0; scale: 1; }
+    100% { rotate: -14deg; translate: -16vw 0; scale: .82; }
+}
+
+/* Les petits textes montent en place, puis s'effacent vers le haut */
+@keyframes text-pass {
+    0% { opacity: 0; translate: 0 5vh; }
+    42%, 58% { opacity: 1; translate: 0 0; }
+    100% { opacity: 0; translate: 0 -5vh; }
+}
+
+/* Le bord en biais : replié quand la diapositive entre, déployé à mi-course, replié quand
+   elle arrive */
+/* Barre d'une page : transparente tant que l'en-tête est dessous */
+@keyframes bar-fill { from { background-color: transparent; } }
+
+@keyframes edge-pass {
+    0%, 50%, 100% { scale: 0 1; }
+    25% { scale: 1 1; }
+}
+
+/* « Projet suivant » : la page suivante se découvre par le bas, là où était le bandeau */
+@keyframes reveal-up { from { clip-path: inset(100% 0 0); } to { clip-path: inset(0); } }
+
 @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
+    .deck, .work { scroll-behavior: smooth; }
 
     .status::before, .rec::before { animation: blink 1.6s ease-in-out infinite; }
 
-    /* Au chargement : la feuille rouge bascule en place, puis son contenu, puis les tirages */
-    .hero-sheet { animation: swing-in 1s cubic-bezier(.2, .8, .2, 1) both; }
-    .hero-title, .hero-side > *, .hero-foot, .hero .mark { animation: rise .9s .35s cubic-bezier(.2, .8, .2, 1) both; }
-    .hero-side > * { animation-delay: .5s; }
-    .hero-foot, .hero .mark { animation-delay: .6s; }
+    /* Ouverture du site : une feuille de papier couvre l'écran, bascule et s'envole. Dessous,
+       le contenu de la présentation monte, les tirages tombent, puis l'interface apparaît. */
+    body::before { content: ""; position: fixed; inset: -25vh -25vw; z-index: 30; background: var(--paper); transform-origin: 0 100%; pointer-events: none; animation: curtain 1.1s .2s cubic-bezier(.7, 0, .2, 1) both; }
+
+    .hero-title, .hero-side > * { animation: rise 1s .75s var(--ease) both; }
+    .hero-side > * { animation-delay: .9s; }
     /* « backwards » et non « both » : une fois le tirage posé, l'animation ne s'applique
        plus et le survol (rotate / scale en transition) reprend la main. */
-    .print { animation: drop-in .8s cubic-bezier(.2, .8, .2, 1) backwards; }
-    .print:nth-child(1) { animation-delay: .7s; }
-    .print:nth-child(2) { animation-delay: .82s; }
-    .print:nth-child(3) { animation-delay: .94s; }
-    .print:nth-child(4) { animation-delay: 1.06s; }
+    .print { animation: drop-in .8s var(--ease) backwards; }
+    .print:nth-child(1) { animation-delay: 1s; }
+    .print:nth-child(2) { animation-delay: 1.1s; }
+    .print:nth-child(3) { animation-delay: 1.2s; }
+    .print:nth-child(4) { animation-delay: 1.3s; }
 
-    /* Ouverture d'une page projet */
-    .work[open] { transform-origin: 0 100%; animation: work-in .7s cubic-bezier(.2, .8, .2, 1); }
-    .work[open] .panel > * { animation: rise .8s .3s cubic-bezier(.2, .8, .2, 1) both; }
-    .work[open] .panel > h2 { animation-delay: .4s; }
+    .bar > *, .dots a, .socials a { animation: pop .9s 1.3s var(--back) backwards; }
+    .dots a:nth-child(n + 3), .socials a:nth-child(2) { animation-delay: 1.4s; }
+    .dots a:nth-child(n + 6), .socials a:nth-child(3) { animation-delay: 1.5s; }
 
     /* Pipeline : chaque étape s'allume 1 s, l'une après l'autre. Le délai négatif fait
        démarrer le cycle en cours de route, sans attendre 7 s le premier passage. */
     .pipe li { animation: step 7s linear infinite; animation-delay: calc(var(--i, 0) * 1s - 7s); }
     .pipe li::after { animation: step-mark 7s linear infinite; animation-delay: inherit; }
 
-    /* --- Animations liées au scroll (Chrome, Edge, Safari récents) --- */
+    /* --- Animations liées au défilement (Chrome, Edge, Safari récents) --- */
     @supports (animation-timeline: view()) {
-        /* La feuille rouge bascule en quittant l'écran, en plus de son entrée au chargement */
-        .hero-sheet {
-            animation: swing-in 1s cubic-bezier(.2, .8, .2, 1) both, tilt-away linear both;
-            animation-timeline: auto, view();
-            animation-range: normal, exit 0% exit 100%;
+        /* Chaque diapositive donne sa propre progression à ce qu'elle contient */
+        .slide { view-timeline: --slide inline; }
+        .sheet h3 { animation: title-pass linear both; animation-timeline: --slide; animation-range: cover; }
+        .sheet :is(.shot, .flow) { animation: visual-pass linear both; animation-timeline: --slide; animation-range: cover; }
+        .sheet-head > :not(h3) { animation: text-pass linear both; animation-timeline: --slide; animation-range: cover; }
+        .sheet::before { animation: edge-pass linear both; animation-timeline: --slide; animation-range: cover; }
+
+        /* Sur la présentation, le titre du premier projet ne dépasse pas : il attend hors champ */
+        .hero + .sheet h3 { --peek-from: -3vw; }
+
+        /* L'écartement des lettres est réservé aux grands écrans : sur téléphone les titres
+           sont plus larges que la moitié de l'écran et finiraient par se toucher. */
+        @media (min-width: 901px) {
+            .sheet h3 { animation-name: title-pass, title-spread; }
         }
 
-        /* Feuilles de projet : « entry 100% » = feuille entièrement entrée, c'est-à-dire
-           l'instant exact où elle se cale sous la barre. Elle y arrive donc droite. */
-        .sheet { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+        /* Dans les pages : la barre prend son fond pendant que l'en-tête finit de sortir */
+        .work-bar { animation: bar-fill linear both; animation-timeline: scroll(nearest); animation-range: 60vh 95vh; }
 
-        /* Cartes, scènes des pages projet, captures et blocs de schéma */
+        /* Cartes, scènes et blocs de schéma se posent en entrant à l'écran */
         .card, .work .stage { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
-        .shot, .node { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
+        .work .node { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
 
         /* Lettres des grands titres, décalées selon leur rang (--i, posé par script.js) */
         .big i {
@@ -717,26 +948,59 @@ blockquote { margin-top: 2.5rem; font-size: clamp(1.3rem, 1.75vw, 1.65rem); font
             animation-range: entry calc(var(--i, 0) * 14px) entry calc(var(--i, 0) * 14px + 150px);
         }
 
-        /* Blocs de texte : apparition sur les 160 premiers pixels de leur entrée. Les
-           derniers blocs d'une page (.work-end, bas du pied de page) en sont exclus : faute
-           de place pour défiler, ils resteraient à moitié transparents. */
-        .head > :not(.big), .text > *, .stack > div, .foot-grid > div, .work-body > :not(.work-end, .stage) {
+        /* Blocs de texte : apparition sur les 160 premiers pixels de leur entrée. Le bas du
+           pied de page en est exclu : faute de place pour défiler, il resterait à moitié
+           transparent. */
+        .head > :not(.big), .text > *, .stack > div, .foot-grid > div, .work-body > :not(.stage) {
             animation: rise linear both;
             animation-timeline: view();
             animation-range: entry 0% entry 160px;
         }
     }
 
-    /* --- Navigateurs sans animations liées au scroll (Firefox) : même geste, en transition,
-       déclenché par la classe .in que script.js pose à l'entrée dans l'écran. Réservé au cas
-       où JavaScript tourne : sinon les blocs resteraient de travers. --- */
+    /* --- Navigateurs sans animations liées au défilement : le geste des blocs se joue en
+       transition, déclenché par la classe .in que script.js pose à l'entrée dans l'écran.
+       Réservé au cas où JavaScript tourne : sinon les blocs resteraient de travers. --- */
     @media (scripting: enabled) {
         @supports not (animation-timeline: view()) {
-            .sheet, .card, .work .stage, .shot, .node { rotate: var(--tilt); transition: rotate 1s cubic-bezier(.2, .8, .2, 1); }
-            :is(.sheet, .card, .work .stage, .shot, .node).in { rotate: var(--rest, 0deg); }
+            .card, .work .stage, .work .node { rotate: var(--tilt); transition: rotate 1s var(--ease); }
+            :is(.card, .work .stage, .work .node).in { rotate: var(--rest, 0deg); }
         }
     }
 }
+
+/* --- Passage d'un écran à l'autre (View Transitions, déclenchées par script.js) ---
+   Ouvrir un projet ne change pas de décor. Le titre de la diapositive porte le même nom que
+   celui de l'en-tête de la page : le navigateur anime l'un vers l'autre (il se redresse en
+   grossissant). Tout le reste de l'écran se fond d'un seul bloc : la diapositive et
+   l'en-tête ayant la même couleur et le même visuel au même endroit, le fond ne bouge pas.
+   La classe .vt désigne la diapositive concernée, le temps de la transition.
+
+   Le visuel n'est volontairement pas animé à part : il est teinté par un mélange avec le
+   fond (mix-blend-mode), qu'un élément isolé de son fond pendant la transition perdrait. */
+.slide.vt h3, .work[open] .panel h2, .work.going .next b { view-transition-name: title; }
+
+::view-transition-group(*) { animation-duration: .8s; animation-timing-function: var(--ease); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; }
+
+/* Les deux barres du haut (celle du défilé, celle des pages) occupent la même place : fondues
+   ensemble, leurs textes se superposeraient un instant. Chacune est donc traitée à part, et
+   elles se relaient : celle qui part s'efface d'abord, l'autre apparaît ensuite. La barre du
+   défilé ne compte que lorsqu'aucune page n'est ouverte par-dessus. D'une page à l'autre, la
+   barre des pages reste simplement en place (:only-child ne vise que les cas où elle est
+   seule, à l'arrivée ou au départ). */
+html:not(:has(dialog[open])) .bar { view-transition-name: deck-bar; }
+.work[open] .work-bar { view-transition-name: page-bar; }
+::view-transition-old(deck-bar):only-child, ::view-transition-old(page-bar):only-child { animation-duration: .2s; }
+::view-transition-new(deck-bar):only-child, ::view-transition-new(page-bar):only-child { animation-duration: .3s; animation-delay: .2s; }
+
+/* « Projet suivant » (classe .going sur la page quittée, .to-next sur <html> le temps de la
+   transition) : c'est le titre du bandeau qui devient celui de la page suivante, et celle-ci
+   se découvre par le bas au lieu de se fondre. Le bandeau a sa couleur : il semble grandir
+   jusqu'à remplir l'écran. */
+.work.going .panel h2 { view-transition-name: none; }
+.to-next::view-transition-old(root) { animation: none; mix-blend-mode: normal; }
+.to-next::view-transition-new(root) { animation: reveal-up .8s var(--ease) both; mix-blend-mode: normal; }
 
 /* Animations désactivées dans le système : tout est statique */
 @media (prefers-reduced-motion: reduce) {

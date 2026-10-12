@@ -4,9 +4,12 @@ Site d'une seule page, en **HTML, CSS et JavaScript purs** : aucun framework, au
 dépendance, aucune étape de build. Ce qui est dans le dépôt est exactement ce qui est mis en
 ligne.
 
-Le style s'inspire de [The Line Studio](https://thelinestudio.com/) : papier clair, noir, un
-seul rouge, typographie géante, et un geste répété partout, **des blocs qui arrivent de
-travers et se posent droits**.
+Le style mélange deux inspirations. De [The Line Studio](https://thelinestudio.com/) : le
+papier clair, le noir, un seul rouge, les étiquettes `/ EN CAPITALES`, les repères de cadrage
+et **des blocs qui arrivent de travers et se posent droits**. De
+[Robin Mastromarino](http://robinmastromarino.com/) : un site qui tient dans un écran,
+**un défilé horizontal de projets plein écran**, des titres géants inclinés qui traversent
+l'image, et des pages qui s'ouvrent sans jamais changer de décor.
 
 ## Sommaire
 
@@ -25,9 +28,9 @@ travers et se posent droits**.
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Tout le contenu : barre, accueil, projets, à propos, stack, contact, puis une « page » par projet en fin de fichier. |
-| `style.css` | Toute la mise en forme et toutes les animations. Un sommaire en tête de fichier liste ses 12 sections. |
-| `script.js` | Les comportements : pages projet, barre, textes animés, bouton « Copier ». Le site reste lisible sans lui. |
+| `index.html` | Tout le contenu : l'interface (les quatre coins de l'écran), le défilé (une diapositive de présentation puis une par projet), la page « À propos » (à propos, stack, contact), puis une page par projet. |
+| `style.css` | Toute la mise en forme et toutes les animations. Un sommaire en tête de fichier liste ses 10 sections. |
+| `script.js` | Les comportements : défilé (souris, molette, clavier), pages, textes animés, bouton « Copier ». Le site reste lisible sans lui. |
 | `images/` | Captures d'écran des projets. |
 | `_headers` | En-têtes HTTP de sécurité, lus par Cloudflare Pages (voir [Sécurité](#sécurité)). |
 
@@ -55,33 +58,41 @@ du site.
   couleur dans le favicon (balise `<link rel="icon">` de `index.html`, la valeur après
   `fill='%23`). Vérifier que la nouvelle couleur garde un contraste d'au moins 4,5 avec le
   blanc et avec le fond `--paper`, puisqu'elle sert dans les deux sens.
-- **Le mot qui tourne à l'accueil** : la liste `SWAP_WORDS` dans `script.js`.
+- **Le mot qui tourne sur la présentation** : la liste `SWAP_WORDS` dans `script.js`.
 - **Une capture d'écran** : remplacer le fichier dans `images/`, puis mettre à jour les
   attributs `width` et `height` de ses balises `<img>` et l'étiquette `data-label` de sa scène
   (« Viewport — largeur × hauteur »). Une capture n'est jamais agrandie au-delà de sa taille
   réelle : la fournir en au moins 1200 px de large pour qu'elle remplisse bien la scène.
+  Dans le défilé elle est volontairement ramenée à une seule teinte (voir
+  [Le défilé](#le-défilé)) ; c'est dans la page du projet qu'elle apparaît en couleurs.
 
 ## Ajouter un projet
 
-Il n'y a pas de générateur : un projet existe à deux endroits de `index.html`, et quelques
+Il n'y a pas de générateur : un projet existe à trois endroits de `index.html`, et quelques
 compteurs sont écrits en dur. Dans l'ordre :
 
-1. **La feuille** (section « PROJETS ») : dupliquer un bloc `<a class="sheet">` dans
-   `<div class="sheets">`. Adapter l'étiquette, le titre, la description, les technos et le
-   lien `href="#identifiant"`. Dans la scène (`<div class="stage ink">` ou `stage red`),
-   mettre soit une capture (`<img class="shot">`), soit un schéma (`<div class="flow">`).
-   L'inclinaison alterne toute seule d'une feuille à l'autre.
-2. **La page du projet** (fin du fichier) : dupliquer un bloc `<dialog class="work">`. Son
-   `id` doit être celui du lien de la feuille, et l'`id` de son `<h2>` doit correspondre à
-   son attribut `aria-labelledby`.
-3. **La chaîne « Projet suivant »** : chaque page pointe vers la suivante, la dernière vers la
-   première. Il y a deux liens par page (barre du haut et bas de page).
-4. **Les compteurs**, à mettre à jour partout :
-   - « 0X / 07 » dans l'étiquette de chaque feuille et « Projet 0X / 07 » dans chaque page ;
-   - « Voir mes 7 projets » à l'accueil ;
-   - le chiffre « projets » de la carte noire d'« À propos » ;
-   - les compteurs `[ 2 ]`, `[ 3 ]`, `[ 2 ]` sous le titre « Projets ».
-5. **Optionnel, le tirage à l'accueil** : un bloc `<a class="print">` dans
+1. **La diapositive** (dans `<div class="deck">`) : dupliquer un bloc `<a class="slide sheet">`.
+   Adapter son `id` (`s-identifiant`), l'étiquette, le titre, la description, les technos et le
+   lien `href="#identifiant"`. Dans la scène, mettre soit une capture (`<img class="shot">`),
+   soit un schéma (`<div class="flow">`). La classe de la scène donne sa couleur à toute la
+   diapositive : alterner `stage ink` (noir) et `stage red` (rouge) d'un projet à l'autre.
+   L'inclinaison du titre alterne toute seule, et sa taille se cale sur sa longueur.
+2. **Le point** (dans `<nav class="dots">`) : un lien `<a href="#s-identifiant">` de plus, à la
+   même position que la diapositive.
+3. **La page du projet** (fin du fichier) : dupliquer un bloc `<dialog class="work project">`.
+   Son `id` doit être celui du lien de la diapositive, et l'`id` de son `<h2>` doit
+   correspondre à son attribut `aria-labelledby`. Les pages sont dans le même ordre que les
+   diapositives : la couleur de leur en-tête alterne toute seule (noir, rouge, noir…) et doit
+   donc tomber sur celle de la scène de la diapositive.
+4. **La chaîne « Projet suivant »** : chaque page pointe vers la suivante, la dernière vers la
+   première. Il y a deux liens par page : le bouton de la barre du haut et le bandeau
+   `<a class="next">` du bas, qui porte aussi le titre et le numéro du projet suivant.
+5. **Les compteurs**, à mettre à jour partout :
+   - « 0X / 07 » dans l'étiquette de chaque diapositive, « Projet 0X / 07 » dans chaque page
+     et « Projet suivant — 0X / 07 » dans chaque bandeau ;
+   - « Voir mes 7 projets » et les compteurs `[ 2 ]`, `[ 3 ]`, `[ 2 ]` sur la présentation ;
+   - le chiffre « projets » de la carte claire d'« À propos ».
+6. **Optionnel, le tirage de la présentation** : un bloc `<a class="print">` dans
    `<div class="prints">`. La mise en page est prévue pour quatre tirages (quatre règles
    `.print:nth-child(…)` dans `style.css`).
 
@@ -91,36 +102,96 @@ un autre nombre, adapter les règles `.pipe li:nth-child(…)` et les pourcentag
 
 ## Comment ça marche
 
-### Les pages projet
+### Le défilé
 
-Chaque projet a sa « page » : un élément `<dialog class="work">` placé en fin de `index.html`,
-affiché en plein écran. `script.js` ouvre celui dont l'`id` correspond à l'ancre de l'adresse
-(`…/#watchd`). Passer par l'adresse donne trois choses sans routeur :
+L'accueil ne défile pas verticalement : c'est une piste horizontale (`<div class="deck">`)
+dont chaque diapositive remplit l'écran. Le mouvement est celui du navigateur, un défilement
+natif aimanté (`scroll-snap`) : au doigt et au pavé tactile il n'y a aucun code. `script.js`
+ajoute seulement les autres façons d'avancer (glisser à la souris, molette, flèches du
+clavier, points) et se contente à chaque fois de demander au navigateur d'amener une
+diapositive à l'écran.
 
-- chaque projet a un lien partageable ;
-- le bouton « précédent » du navigateur referme le projet ;
-- sans JavaScript, l'ancre suffit à afficher la page (règle `@media (scripting: none)`).
+Ce qui bouge pendant le glissement est écrit en CSS, piloté par la position de chaque
+diapositive (`view-timeline`) : le titre va moins vite que sa diapositive, si bien que celui
+du projet voisin dépasse toujours au bord de l'écran ; ses lettres s'écartent pendant le
+mouvement ; le visuel arrive de travers et se pose droit ; la frontière entre deux projets
+penche en avançant puis se redresse.
+
+Deux règles gardent ce mouvement net, à respecter si on y touche :
+
+- **Un seul ordre d'empilement** pour toutes les diapositives (scène, petits textes, bord en
+  biais de la suivante, titres géants), décrit au-dessus de `.sheet` dans `style.css`. Rien
+  ne passe ainsi tantôt devant, tantôt derrière.
+- **Seulement des transformations et de l'opacité, avec des longueurs fixes** (pas de
+  pourcentage) dans ces animations : le navigateur peut alors les confier à la carte
+  graphique, au même rythme que le défilement. L'écartement des lettres, qui refait la mise
+  en page, est une animation à part et n'existe que sur grand écran.
+
+Le titre passe devant le visuel. Pour qu'il reste lisible quelle que soit la capture, celle-ci
+est ramenée à une seule teinte dans le défilé : imprimée en noir sur les scènes rouges
+(`mix-blend-mode: multiply`, qui ne peut que foncer le fond), grisée et atténuée sur les
+scènes noires.
+
+### Les pages
+
+Chaque projet a sa page, et « À propos » aussi : un élément `<dialog class="work">` affiché en
+plein écran. `script.js` ouvre celle que désigne l'ancre de l'adresse (`…/#watchd`), ou qui
+contient l'élément désigné (`…/#contact` ouvre « À propos » à la hauteur du contact). Passer
+par l'adresse donne trois choses sans routeur :
+
+- chaque page a un lien partageable ;
+- le bouton « précédent » du navigateur la referme ;
+- sans JavaScript, l'ancre suffit à l'afficher (règle `@media (scripting: none)`).
 
 « Projet suivant » remplace l'entrée d'historique au lieu d'en ajouter une : un seul retour
-arrière ramène toujours à la page, là où on l'avait laissée.
+arrière ramène toujours au défilé, sur la diapositive du projet qu'on vient de quitter.
+
+### La continuité entre les écrans
+
+Ouvrir un projet ne « change pas de page ». L'en-tête de la page remplit l'écran comme la
+diapositive, dans la même couleur, avec le même visuel **exactement au même endroit** (les
+variables `--zt`, `--zb`, `--zx` de `style.css`, partagées par les deux) : seuls le titre et
+les textes changent. `script.js` enveloppe le changement dans l'API
+[View Transitions](https://developer.mozilla.org/docs/Web/API/View_Transition_API) du
+navigateur, qui fait trois choses (fin de `style.css`) :
+
+- le titre de la diapositive et celui de la page portent le même `view-transition-name` : il
+  se redresse en grossissant ;
+- les deux barres du haut (celle du défilé, celle des pages) se relaient au lieu de se
+  superposer ;
+- tout le reste se fond d'un seul bloc.
+
+Le bandeau « Projet suivant » fonctionne de la même façon : son titre devient celui de la page
+suivante, qui se découvre par le bas à partir du bandeau. À la fermeture, on retombe sur la
+diapositive du projet quitté, que le défilé a rejointe dès l'ouverture de la page. Là où l'API
+n'existe pas, le changement est immédiat.
+
+### Les tailles d'écran
+
+Rien ne défile dans le défilé : chaque disposition doit tenir dans un écran. La section
+« Petits écrans » de `style.css` en prévoit quatre : large (ordinateur, tablette à
+l'horizontale), tablette à la verticale (≤ 900 px : présentation et pages sur une colonne),
+téléphone à la verticale (≤ 620 px : le visuel en haut, les textes dans la moitié basse, un
+mot du titre par ligne) et téléphone à l'horizontale (≤ 520 px de haut : disposition en
+largeur, réduite à l'essentiel). Au doigt, le défilé se parcourt par un simple glissement de
+côté.
 
 ### Les rotations
 
 Chaque bloc concerné déclare son angle de départ dans la variable CSS `--tilt` (et son angle
-de repos dans `--rest` s'il ne finit pas droit). L'animation `settle` de `style.css` fait le
-trajet, pilotée par le défilement (`animation-timeline: view()`).
-
-Les feuilles de projet sont en `position: sticky` : chacune se cale sous la barre et la
-suivante la recouvre. Le pivot de la rotation est choisi pour que le coin qui dépasse descende
-toujours vers le bas, jamais sur le contenu au-dessus.
+de repos dans `--rest` s'il ne finit pas droit). Dans les pages, l'animation `settle` de
+`style.css` fait le trajet, pilotée par le défilement (`animation-timeline: view()`). Les
+titres géants, eux, restent inclinés : `--rest` vaut -4° ou 4° selon le projet.
 
 Dans les navigateurs sans animations liées au défilement, `script.js` pose une classe `.in`
-quand le bloc entre à l'écran et le même geste se joue en transition.
+quand le bloc entre à l'écran et le même geste se joue en transition ; le défilé, lui, reste
+simplement statique d'une diapositive à l'autre.
 
 ### Sans JavaScript, sans animations
 
-- **Sans JavaScript** : tout le contenu est lisible, les pages projet s'ouvrent par leur
-  ancre, seuls les effets (mot tournant, heure, compteurs) manquent.
+- **Sans JavaScript** : tout le contenu est lisible, le défilé se parcourt au doigt, au pavé
+  tactile ou par ses points, les pages s'ouvrent par leur ancre. Seuls les effets (mot
+  tournant, heure, compteurs, transitions entre écrans) manquent.
 - **Animations réduites** (réglage du système) : tout est statique.
 
 ## Sécurité
@@ -150,22 +221,27 @@ aucune donnée de visiteur traitée, aucun script tiers. Les protections en plac
 
 ## Accessibilité
 
-- Navigation complète au clavier, focus toujours visible. Une feuille de projet cachée sous
-  les autres revient au premier plan quand elle reçoit le focus.
-- Les pages projet sont de vrais `<dialog>` modaux : focus piégé dedans, fermeture par Échap.
-- Les éléments décoratifs (icônes, lettres animées, légende de l'accueil) sont cachés aux
-  lecteurs d'écran ; le texte réel leur est fourni à part quand il est découpé.
+- Navigation complète au clavier, focus toujours visible : flèches gauche et droite pour le
+  défilé, Tab pour atteindre chaque diapositive (elle vient alors à l'écran), Entrée pour
+  ouvrir son projet.
+- Les pages sont de vrais `<dialog>` modaux : focus piégé dedans, fermeture par Échap.
+- Le point de la diapositive affichée porte `aria-current`.
+- Les éléments décoratifs (icônes, lettres animées, tirages de la présentation) sont cachés
+  aux lecteurs d'écran ; le texte réel leur est fourni à part quand il est découpé.
 - Les animations respectent le réglage « réduire les animations » du système.
-- Contrastes de texte d'au moins 4,5 pour 1, y compris le blanc sur le rouge.
+- Contrastes de texte d'au moins 4,5 pour 1, y compris le blanc sur le rouge et les titres
+  qui passent devant une capture.
+- Sur écran tactile, les points et les liens du haut ont une zone de toucher agrandie.
 
 ## Navigateurs
 
 Versions récentes de Chrome, Edge, Safari et Firefox. Le site utilise des fonctions CSS de
-2022-2023 (`:has()`, unités `svh` / `dvh`, propriétés `rotate` / `translate`, couleurs
-relatives) : sur un navigateur plus ancien la mise en page sera dégradée.
+2022-2023 (`:has()`, unités `svh` / `dvh`, propriétés `rotate` / `translate`,
+`:nth-child(… of …)`) : sur un navigateur plus ancien la mise en page sera dégradée.
 
-Les animations liées au défilement ne sont pas disponibles partout ; voir
-[Les rotations](#les-rotations) pour le repli.
+Les animations liées au défilement et les View Transitions ne sont pas disponibles partout ;
+voir [Les rotations](#les-rotations) et
+[La continuité entre les écrans](#la-continuité-entre-les-écrans) pour les replis.
 
 ## Mise en ligne sur Cloudflare Pages
 
@@ -185,6 +261,7 @@ la console n'affiche aucune ressource bloquée.
 ## Crédits
 
 - Conception et développement : Dorian Vidal.
-- Inspiration visuelle : [The Line Studio](https://thelinestudio.com/).
+- Inspirations visuelles : [The Line Studio](https://thelinestudio.com/) et
+  [Robin Mastromarino](http://robinmastromarino.com/).
 - Police : [Archivo](https://fonts.google.com/specimen/Archivo), sous licence SIL Open Font
   License, servie par Google Fonts.
