@@ -37,13 +37,20 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 // 1. DÉFILÉ
 // ============================================
 
-// Le défilé est un défilement horizontal natif, aimanté sur chaque diapositive (CSS). Au doigt
-// et au pavé tactile il n'y a donc rien à faire ; ce qui suit ajoute les autres façons de le
-// parcourir. Tout passe par goTo, qui laisse le navigateur faire le mouvement.
+// Le défilé est un défilement natif, aimanté sur chaque diapositive (CSS) : horizontal sur
+// grand écran, vertical sur téléphone. Au doigt et au pavé tactile il n'y a donc rien à
+// faire ; ce qui suit ajoute les autres façons de le parcourir. Tout passe par goTo, qui
+// laisse le navigateur faire le mouvement, dans un sens comme dans l'autre.
 const deck = $('.deck');
 const slides = $$('.slide');
 const dots = $$('.dots a');
 const works = $$('dialog.work');
+
+/**
+ * Vrai quand le défilé est vertical. C'est le CSS qui en décide (section « Petits écrans ») ;
+ * on le lit sur la piste plutôt que de répéter ici ses conditions.
+ */
+const isVertical = () => getComputedStyle(deck).flexDirection === 'column';
 
 /** Rang de la diapositive affichée, 0 pour la présentation. */
 let current = 0;
@@ -62,7 +69,7 @@ let aim = 0;
  */
 function goTo(index, behavior = 'auto') {
     aim = Math.max(0, Math.min(index, slides.length - 1));
-    slides[aim].scrollIntoView({ behavior, inline: 'start', block: 'nearest' });
+    slides[aim].scrollIntoView({ behavior, inline: 'start', block: 'start' });
 }
 
 // Fin d'un déplacement, quelle que soit sa cause : la piste n'a plus bougé depuis un instant.
@@ -80,13 +87,14 @@ function settleSoon() {
 }
 deck.addEventListener('scroll', settleSoon, { passive: true });
 
-// La diapositive qui traverse le milieu de la piste devient la diapositive affichée. La marge
-// de -50 % à gauche et à droite réduit la zone observée à une ligne verticale au centre.
+// La diapositive qui passe par le centre de la piste devient la diapositive affichée. La marge
+// de -50 % sur les quatre côtés réduit la zone observée à ce seul point : la règle vaut donc
+// dans les deux sens de défilement.
 const slideObserver = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting) return;
     current = slides.indexOf(entry.target);
     dots.forEach((dot, index) => { dot.ariaCurrent = String(index === current); });
-}), { root: deck, rootMargin: '0px -50% 0px -50%' });
+}), { root: deck, rootMargin: '-50%' });
 slides.forEach(slide => slideObserver.observe(slide));
 
 // Liens vers une diapositive (points, « Voir mes 7 projets »…) : le défilé y glisse, sans
@@ -99,16 +107,17 @@ document.addEventListener('click', event => {
     goTo(index);
 });
 
-// Clavier : flèches gauche et droite, tant qu'aucune page n'est ouverte par-dessus.
+// Clavier : les flèches (et page suivante / précédente), tant qu'aucune page n'est ouverte
+// par-dessus. Les quatre flèches servent dans les deux sens de défilement.
 addEventListener('keydown', event => {
-    const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+    const step = { ArrowRight: 1, ArrowDown: 1, PageDown: 1, ArrowLeft: -1, ArrowUp: -1, PageUp: -1 }[event.key];
     if (!step || works.some(work => work.open)) return;
     event.preventDefault();
     goTo(aim + step);
 });
 
-// Molette : un geste vertical fait avancer d'une diapositive (il n'y a rien à faire défiler
-// verticalement). Un geste horizontal, lui, est laissé au défilement natif.
+// Molette : un geste vertical fait avancer d'une diapositive, que le défilé soit horizontal
+// ou vertical. Un geste horizontal, lui, est laissé au défilement natif.
 // Un « geste » est une rafale d'événements rapprochés : un pavé tactile en envoie des dizaines
 // pour un seul balayage, inertie comprise. On n'avance donc qu'une fois par rafale, dès qu'elle
 // a assez d'ampleur, et une pause de 160 ms en ouvre une nouvelle : rien n'est verrouillé, un
@@ -125,7 +134,8 @@ deck.addEventListener('wheel', event => {
     goTo(aim + Math.sign(wheel.sum));
 }, { passive: false });
 
-// Glisser à la souris. Pendant le geste la classe .grab coupe l'aimant (CSS) et la piste suit
+// Glisser à la souris, quand le défilé est horizontal (vertical, la molette suffit et un
+// glisser n'y est pas attendu). Pendant le geste la classe .grab coupe l'aimant (CSS) et la piste suit
 // la main ; au relâchement on glisse vers la diapositive voisine si le geste a dépassé 12 % de
 // la largeur ou s'il était vif (un coup de poignet), sinon on revient. L'aimant est rétabli
 // une fois ce dernier mouvement terminé (settleSoon).
@@ -135,7 +145,7 @@ let dragFrom = null;
 let dragged = false;
 
 deck.addEventListener('pointerdown', event => {
-    if (event.pointerType !== 'mouse' || event.button !== 0) return;
+    if (event.pointerType !== 'mouse' || event.button !== 0 || isVertical()) return;
     dragFrom = { x: event.clientX, left: deck.scrollLeft, time: event.timeStamp };
     dragged = false;
 });
